@@ -1,0 +1,132 @@
+﻿<Window x:Class="Kasyno.Views.Games.Blackjack"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Blackjack"
+        Width="1000" Height="650"
+        WindowStartupLocation="CenterScreen"
+        Background="#0F3B21"               
+    FontFamily="Segoe UI">
+    <Window.Resources>
+        <!-- Styl okrągłych złotych przycisków -->
+        <Style x:Key="CasinoActionButton" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="25"
+                                BorderBrush="Black"
+                                BorderThickness="2">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="#FFD700"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="10,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- UKŁAD GŁÓWNY -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <!-- karty attempt/dealera -->
+            <RowDefinition Height="*"/>
+            <!-- karty gracza -->
+            <RowDefinition Height="Auto"/>
+            <!-- panel przycisków -->
+        </Grid.RowDefinitions>
+
+        <!-- ====== DEALER ====== -->
+        <StackPanel Grid.Row="0"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="0,20">
+            <TextBlock Text="KRUPIER"
+                       Foreground="White"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,10"
+                        x:Name="DealerCardsPanel">
+                <!-- Przykładowe zakryte / odkryte karty -->
+                <Border Width="70" Height="100" Background="DarkRed" CornerRadius="6" Margin="4">
+                    <TextBlock Text="🂠" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Width="70" Height="100" Background="White" CornerRadius="6" Margin="4">
+                    <TextBlock Text="A♠" FontWeight="Bold" FontSize="24"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+            <TextBlock x:Name="DealerValueText"
+                       Text="Wartość: 11"
+                       Foreground="Gold"
+                       FontSize="16"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- ====== GRACZ ====== -->
+        <StackPanel Grid.Row="1"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="0,20">
+            <TextBlock Text="GRACZ"
+                       Foreground="White"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,10"
+                        x:Name="PlayerCardsPanel">
+                <!-- Przykładowe karty gracza -->
+                <Border Width="70" Height="100" Background="White" CornerRadius="6" Margin="4">
+                    <TextBlock Text="10♦" FontWeight="Bold" FontSize="24"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Foreground="Red"/>
+                </Border>
+                <Border Width="70" Height="100" Background="White" CornerRadius="6" Margin="4">
+                    <TextBlock Text="7♣" FontWeight="Bold" FontSize="24"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+            <TextBlock x:Name="PlayerValueText"
+                       Text="Wartość: 17"
+                       Foreground="Gold"
+                       FontSize="16"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- ====== PRZYCISKI AKCJI ====== -->
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="0,20">
+            <Button Content="Dobierz"
+                    Style="{StaticResource CasinoActionButton}"
+                    Click="Hit_Click"/>
+            <Button Content="Stój"
+                    Style="{StaticResource CasinoActionButton}"
+                    Click="Stand_Click"/>
+            <Button Content="Nowa gra"
+                    Style="{StaticResource CasinoActionButton}"
+                    Click="NewGame_Click"/>
+            <Button Content="Wyjście"
+                    Style="{StaticResource CasinoActionButton}"
+                    />
+        </StackPanel>
+    </Grid>
+</Window>

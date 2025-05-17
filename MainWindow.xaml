@@ -5,8 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kasyno"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Height="450" Width="400">
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="M" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40"/>
+            <TextBlock Text="E" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40"/>
+            <TextBlock Text="M" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40"/>
+            <TextBlock Text="M" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40"/>
+            <Grid Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="1">
+                <TextBlock Text="Kasyno" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" FontWeight="Bold"/>
+            </Grid>
+            <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Text="Witaj w Kasynie!" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10"/>
+        </Grid>
+        <StackPanel Grid.Row="1" Grid.Column="1" Background="Transparent">
+            <TextBlock Text="Username" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" />
+            <TextBox Name="UsernameTextBox" Width="200" Margin="5" />
+            <TextBlock Text="Password" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" />
+            <PasswordBox Name="PasswordTextBox" Margin="5" />
+            <Button Name="LoginButton" Content="Login" Width="100" Margin="5"/>
+            <TextBlock Text="Nie masz konta? Zarejestruj się!" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Foreground="Blue" TextDecorations="Underline" Cursor="Hand"/>
+        </StackPanel>
     </Grid>
 </Window>

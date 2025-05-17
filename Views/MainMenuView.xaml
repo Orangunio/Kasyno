@@ -1,0 +1,92 @@
+﻿<Window x:Class="Kasyno.Views.MainMenuView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Menu Główne" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#1A1A1A">
+    <Window.Resources>
+        <DropShadowEffect x:Key="DropShadowEffect"
+                          Color="Black"
+                          BlurRadius="10"
+                          ShadowDepth="2"
+                          Opacity="0.6" />
+        <Style x:Key="CasinoButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="30"
+                                BorderBrush="Black"
+                                BorderThickness="2"
+                                SnapsToDevicePixels="True"
+                                Effect="{StaticResource DropShadowEffect}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="#FFD700"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Główne menu -->
+        <StackPanel Grid.Column="0"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Width="300">
+            <TextBlock Text="🎰 Zagrajmy"
+                       FontSize="48"
+                       FontWeight="Bold"
+                       Foreground="Gold"
+                       TextAlignment="Center"
+                       Margin="0,0,0,30"/>
+
+            <Button Content="Ruletka" Style="{StaticResource CasinoButtonStyle}"/>
+            <Button Content="Automaty" Style="{StaticResource CasinoButtonStyle}"/>
+            <Button Content="Blackjack" Style="{StaticResource CasinoButtonStyle}"/>
+            <Button Content="Wojna" Style="{StaticResource CasinoButtonStyle}"/>
+            <Button Content="Wyjście" Style="{StaticResource CasinoButtonStyle}"/>
+        </StackPanel>
+        <!-- Informacje o graczu -->
+        <Grid Grid.Column="1">
+            <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Margin="0,20">
+                <TextBlock Text="👤"
+                           FontSize="48"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,10"/>
+                <Button Content="Nazwa gracza"
+                        Padding="20,10"
+                        Style="{StaticResource CasinoButtonStyle}"
+                        FontSize="18"
+                        Width="180"
+                        Height="50"/>
+                <TextBlock Text="Stan konta: 1000$"
+                           FontSize="24"
+                           HorizontalAlignment="Center"
+                           Margin="0,10,0,0"
+                           Foreground="White"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

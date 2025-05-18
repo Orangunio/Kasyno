@@ -38,7 +38,7 @@
         <!-- UKŁAD GŁÓWNY -->
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <!-- karty attempt/dealera -->
+            <!-- karty dealera -->
             <RowDefinition Height="*"/>
             <!-- karty gracza -->
             <RowDefinition Height="Auto"/>
@@ -117,13 +117,13 @@
                     Margin="0,20">
             <Button Content="Dobierz"
                     Style="{StaticResource CasinoActionButton}"
-                    Click="Hit_Click"/>
+                    />
             <Button Content="Stój"
                     Style="{StaticResource CasinoActionButton}"
-                    Click="Stand_Click"/>
+                    />
             <Button Content="Nowa gra"
                     Style="{StaticResource CasinoActionButton}"
-                    Click="NewGame_Click"/>
+                    />
             <Button Content="Wyjście"
                     Style="{StaticResource CasinoActionButton}"
                     />

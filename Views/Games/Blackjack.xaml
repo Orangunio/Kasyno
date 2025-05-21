@@ -1,13 +1,34 @@
 ﻿<Window x:Class="Kasyno.Views.Games.Blackjack"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Kasyno.ViewModels"
+        xmlns:models="clr-namespace:Kasyno.Models"
+        xmlns:con="clr-namespace:Kasyno.Helper"
         Title="Blackjack"
         Width="1000" Height="650"
         WindowStartupLocation="CenterScreen"
-        Background="#0F3B21"               
-    FontFamily="Segoe UI">
+        Background="#0F3B21"
+        FontFamily="Segoe UI">
+
+    <Window.DataContext>
+        <vm:BlackjackViewModel/>
+    </Window.DataContext>
+
     <Window.Resources>
-        <!-- Styl okrągłych złotych przycisków -->
+        <con:SuitToColorConverter x:Key="SuitToColorConverter"/>
+        <!-- Styl kart -->
+        <DataTemplate DataType="{x:Type models:Card}">
+            <Border Width="70" Height="100" Background="White" CornerRadius="6" Margin="4">
+                <TextBlock Text="{Binding Rank}"
+                           FontWeight="Bold"
+                           FontSize="24"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="{Binding Suit, Converter={StaticResource SuitToColorConverter}}"/>
+            </Border>
+        </DataTemplate>
+
+        <!-- Styl przycisków -->
         <Style x:Key="CasinoActionButton" TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>
@@ -35,98 +56,86 @@
     </Window.Resources>
 
     <Grid>
-        <!-- UKŁAD GŁÓWNY -->
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <!-- karty dealera -->
+            <!-- Dealer -->
             <RowDefinition Height="*"/>
-            <!-- karty gracza -->
+            <!-- Gracz -->
             <RowDefinition Height="Auto"/>
-            <!-- panel przycisków -->
+            <!-- Przyciski -->
+            <RowDefinition Height="Auto"/>
+            <!-- Wynik końcowy -->
         </Grid.RowDefinitions>
 
-        <!-- ====== DEALER ====== -->
-        <StackPanel Grid.Row="0"
-                    Orientation="Vertical"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Margin="0,20">
+        <!-- ===== KRUPIER ===== -->
+        <StackPanel Grid.Row="0" Orientation="Vertical"
+            HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
             <TextBlock Text="KRUPIER"
-                       Foreground="White"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        Margin="0,10"
-                        x:Name="DealerCardsPanel">
-                <!-- Przykładowe zakryte / odkryte karty -->
-                <Border Width="70" Height="100" Background="DarkRed" CornerRadius="6" Margin="4">
-                    <TextBlock Text="🂠" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
-                <Border Width="70" Height="100" Background="White" CornerRadius="6" Margin="4">
-                    <TextBlock Text="A♠" FontWeight="Bold" FontSize="24"
-                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
-            </StackPanel>
-            <TextBlock x:Name="DealerValueText"
-                       Text="Wartość: 11"
-                       Foreground="Gold"
-                       FontSize="16"
-                       HorizontalAlignment="Center"/>
+               Foreground="White"
+               FontSize="20"
+               FontWeight="Bold"
+               HorizontalAlignment="Center"/>
+
+            <TextBlock Text="{Binding DealerValue, StringFormat=Wartość: {0}}"
+               Foreground="Gold"
+               FontSize="16"
+               HorizontalAlignment="Center"
+               Margin="0,5"/>
+
+            <ItemsControl ItemsSource="{Binding DealerCards}" Margin="0,10">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
         </StackPanel>
 
-        <!-- ====== GRACZ ====== -->
-        <StackPanel Grid.Row="1"
-                    Orientation="Vertical"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Margin="0,20">
+        <!-- ===== GRACZ ===== -->
+        <StackPanel Grid.Row="1" Orientation="Vertical"
+            HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
             <TextBlock Text="GRACZ"
-                       Foreground="White"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        Margin="0,10"
-                        x:Name="PlayerCardsPanel">
-                <!-- Przykładowe karty gracza -->
-                <Border Width="70" Height="100" Background="White" CornerRadius="6" Margin="4">
-                    <TextBlock Text="10♦" FontWeight="Bold" FontSize="24"
-                               HorizontalAlignment="Center" VerticalAlignment="Center"
-                               Foreground="Red"/>
-                </Border>
-                <Border Width="70" Height="100" Background="White" CornerRadius="6" Margin="4">
-                    <TextBlock Text="7♣" FontWeight="Bold" FontSize="24"
-                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
-            </StackPanel>
-            <TextBlock x:Name="PlayerValueText"
-                       Text="Wartość: 17"
-                       Foreground="Gold"
-                       FontSize="16"
-                       HorizontalAlignment="Center"/>
+               Foreground="White"
+               FontSize="20"
+               FontWeight="Bold"
+               HorizontalAlignment="Center"/>
+
+            <ItemsControl ItemsSource="{Binding PlayerCards}" Margin="0,10">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+
+            <TextBlock Text="{Binding PlayerValue, StringFormat=Wartość: {0}}"
+               Foreground="Gold"
+               FontSize="16"
+               HorizontalAlignment="Center"
+               Margin="0,5"/>
         </StackPanel>
 
-        <!-- ====== PRZYCISKI AKCJI ====== -->
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Margin="0,20">
-            <Button Content="Dobierz"
-                    Style="{StaticResource CasinoActionButton}"
-                    />
-            <Button Content="Stój"
-                    Style="{StaticResource CasinoActionButton}"
-                    />
-            <Button Content="Nowa gra"
-                    Style="{StaticResource CasinoActionButton}"
-                    />
-            <Button Content="Wyjście"
-                    Style="{StaticResource CasinoActionButton}"
-                    />
+
+        <!-- ===== PRZYCISKI ===== -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
+            <Button Content="Dobierz" Style="{StaticResource CasinoActionButton}"
+                    Command="{Binding HitCommand}"/>
+            <Button Content="Stój" Style="{StaticResource CasinoActionButton}"
+                    Command="{Binding StandCommand}"/>
+            <Button Content="Nowa gra" Style="{StaticResource CasinoActionButton}"
+                    Command="{Binding NewGameCommand}"/>
+            <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}"
+                    Click="ExitButton_Click"/>
         </StackPanel>
+
+        <!-- ===== WYNIK ===== -->
+        <TextBlock Grid.Row="3"
+                   Text="{Binding Result}"
+                   Foreground="Gold"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,10"/>
     </Grid>
 </Window>

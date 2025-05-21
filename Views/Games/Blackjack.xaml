@@ -27,46 +27,28 @@
                            Foreground="{Binding Suit, Converter={StaticResource SuitToColorConverter}}"/>
             </Border>
         </DataTemplate>
-
-        <!-- Styl przycisków -->
-        <Style x:Key="CasinoActionButton" TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="25"
-                                BorderBrush="Black"
-                                BorderThickness="2">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              Margin="{TemplateBinding Padding}"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="Background" Value="#FFD700"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Width" Value="120"/>
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Margin" Value="10,0"/>
-        </Style>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <!-- Dealer -->
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <!-- Gracz -->
             <RowDefinition Height="Auto"/>
-            <!-- Przyciski -->
-            <RowDefinition Height="Auto"/>
             <!-- Wynik końcowy -->
+            <RowDefinition Height="*"/>
+            <!-- Przyciski -->
         </Grid.RowDefinitions>
-
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Right" Height="100" Width="100" Margin="0,0,30,0">
+            <Rectangle Fill="Black" RadiusX="10" RadiusY="10"/>
+            <TextBlock Text="Stos kart"
+               Foreground="White"
+               FontWeight="Bold"
+               FontSize="16"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"/>
+        </Grid>
         <!-- ===== KRUPIER ===== -->
         <StackPanel Grid.Row="0" Orientation="Vertical"
             HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
@@ -117,7 +99,7 @@
 
 
         <!-- ===== PRZYCISKI ===== -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal"
+        <StackPanel Grid.Row="3" Orientation="Horizontal"
                     HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
             <Button Content="Dobierz" Style="{StaticResource CasinoActionButton}"
                     Command="{Binding HitCommand}"/>
@@ -130,7 +112,7 @@
         </StackPanel>
 
         <!-- ===== WYNIK ===== -->
-        <TextBlock Grid.Row="3"
+        <TextBlock Grid.Row="2"
                    Text="{Binding Result}"
                    Foreground="Gold"
                    FontSize="20"

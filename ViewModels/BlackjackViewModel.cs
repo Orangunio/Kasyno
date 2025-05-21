@@ -64,6 +64,14 @@ namespace Kasyno.ViewModels
 
             OnPropertyChanged(nameof(PlayerValue));
             OnPropertyChanged(nameof(DealerValue));
+            if (PlayerValue == 21)
+            {
+                Stand();
+            }
+            else if (DealerValue == 21)
+            {
+                Result = "Dealer ma blackjacka! Przegrana.";
+            }
         }
         public void Hit()
         {
@@ -73,12 +81,15 @@ namespace Kasyno.ViewModels
             if (PlayerValue > 21)
             {
                 Result = "Przegrana";
-                MessageBox.Show(Result); // potem zrobic aby ladnie sie wyswietlalo
+            }
+            if (PlayerValue == 21)
+            {
+                Stand();
             }
         }
         public void Stand()
         {
-            while (DealerValue < 17)
+            while (DealerValue < 17 && DealerValue != PlayerValue)
             {
                 DealerCards.Add(deck.DrawCard());
                 OnPropertyChanged(nameof(DealerValue));
@@ -88,12 +99,11 @@ namespace Kasyno.ViewModels
                           : PlayerValue > DealerValue ? "Wygrana"
                           : "Przegrana";
 
-            MessageBox.Show(Result);// tak samo jak wyzej
         }
         private int CalculateValue(ObservableCollection<Card> cards)
         {
             int sum = cards.Sum(c => c.Value);
-            int aceCount = cards.Count(c => c.Rank == "A");
+            int aceCount = cards.Count(c => c.Rank == "Ace");
 
             while (sum > 21 && aceCount-- > 0)
                 sum -= 10;

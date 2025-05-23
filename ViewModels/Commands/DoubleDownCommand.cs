@@ -7,31 +7,21 @@ using System.Windows.Input;
 
 namespace Kasyno.ViewModels.Commands
 {
-    public class HitCommand : ICommand
+    public class DoubleDownCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
         public BlackjackViewModel ViewModel { get; set; }
-        public HitCommand(BlackjackViewModel viewModel)
+        public DoubleDownCommand(BlackjackViewModel viewModel)
         {
             ViewModel = viewModel;
         }
-        public void RaiseCanExecuteChanged()
-        {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-        }
-
         public bool CanExecute(object? parameter)
         {
-            if(ViewModel.Result == string.Empty && ViewModel.BetAmount != 0)
-            {
-                return true;
-            }
-            else return false;
+            return true;
         }
-
         public void Execute(object? parameter)
         {
-            ViewModel.Hit();
+            ViewModel.DoubleDown();
         }
     }
 }

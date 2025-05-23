@@ -35,9 +35,9 @@
             <!-- Dealer -->
             <RowDefinition Height="Auto"/>
             <!-- Gracz -->
-            <RowDefinition Height="Auto"/>
-            <!-- Wynik końcowy -->
             <RowDefinition Height="*"/>
+            <!-- Wynik końcowy -->
+            <RowDefinition Height="Auto"/>
             <!-- Przyciski -->
         </Grid.RowDefinitions>
         <Grid VerticalAlignment="Center" HorizontalAlignment="Right" Height="100" Width="100" Margin="0,0,30,0">
@@ -105,12 +105,31 @@
                     Command="{Binding HitCommand}"/>
             <Button Content="Stój" Style="{StaticResource CasinoActionButton}"
                     Command="{Binding StandCommand}"/>
-            <Button Content="Nowa gra" Style="{StaticResource CasinoActionButton}"
+            <Button Content="Nowa Gra" Style="{StaticResource CasinoActionButton}"
                     Command="{Binding NewGameCommand}"/>
             <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}"
-                    Click="ExitButton_Click"/>
+                    Command="{Binding ExitGameCommand}"/>
         </StackPanel>
-
+        <StackPanel Grid.Row="3"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="0,0,60,0">
+            <TextBlock
+                   HorizontalAlignment="Center"
+                   Foreground="White"
+                   FontSize="16"
+                   Text="Saldo:"/>
+            <TextBlock Text="Pieniadze"
+                       Foreground="Wheat"
+                       FontSize="16"/>
+        </StackPanel>
+        <Button Grid.Row="2" 
+                Style="{StaticResource CasinoActionButton}" 
+                Content="DoubleDown" 
+                Visibility="{Binding Path=DoubleDownVisible}"
+                VerticalAlignment="Bottom">
+            
+        </Button>
         <!-- ===== WYNIK ===== -->
         <TextBlock Grid.Row="2"
                    Text="{Binding Result}"

@@ -3,35 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Kasyno.ViewModels.Commands
 {
-    public class HitCommand : ICommand
+    public class PlaceBetCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
         public BlackjackViewModel ViewModel { get; set; }
-        public HitCommand(BlackjackViewModel viewModel)
+        public PlaceBetCommand(BlackjackViewModel viewModel)
         {
             ViewModel = viewModel;
         }
-        public void RaiseCanExecuteChanged()
-        {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-        }
-
         public bool CanExecute(object? parameter)
         {
-            if(ViewModel.Result == string.Empty && ViewModel.BetAmount != 0)
-            {
-                return true;
-            }
-            else return false;
+            return true;
         }
 
         public void Execute(object? parameter)
         {
-            ViewModel.Hit();
+            if (parameter is string input && int.TryParse(input, out int bet))
+            {
+                ViewModel.PlaceBet(bet);
+            }
+            else
+            {
+                MessageBox.Show("Wprowadź poprawną wartość zakładu.");
+            }
         }
     }
 }

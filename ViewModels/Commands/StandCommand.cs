@@ -21,7 +21,7 @@ namespace Kasyno.ViewModels.Commands
         }
         public bool CanExecute(object? parameter)
         {
-            if(ViewModel.Result == string.Empty)
+            if(ViewModel.Result == string.Empty && ViewModel.BetAmount != 0)
             {
                 return true;
             }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -30,6 +31,26 @@ namespace Kasyno.ViewModels
                 StandCommand.RaiseCanExecuteChanged();
             }
         }
+        private int betAmount = 0;
+        public int BetAmount
+        {
+            get => betAmount;
+            set
+            {
+                betAmount = value;
+                OnPropertyChanged(nameof(BetAmount));
+            }
+        }
+        private Visibility doubleDownVisible;
+
+        public Visibility DoubleDownVisible
+        {
+            get { return doubleDownVisible; }
+            set {
+                doubleDownVisible = value;
+                OnPropertyChanged(nameof(DoubleDownVisible));
+            }
+        }
 
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -40,16 +61,19 @@ namespace Kasyno.ViewModels
         }
         public int PlayerValue => CalculateValue(PlayerCards);
         public int DealerValue => CalculateValue(DealerCards);
-
+        public PlaceBetCommand PlaceBetCommand { get; }
         public HitCommand HitCommand { get; }
         public StandCommand StandCommand { get; }
         public NewGameCommand NewGameCommand { get; }
+        public ExitGameCommand ExitGameCommand { get; }
         public BlackjackViewModel() 
         {
             HitCommand = new HitCommand(this);
             StandCommand = new StandCommand(this);
             NewGameCommand = new NewGameCommand(this);
-            NewGame();
+            PlaceBetCommand = new PlaceBetCommand(this);
+            ExitGameCommand = new ExitGameCommand(this);
+            doubleDownVisible = Visibility.Collapsed;
         }
         public void NewGame()
         {
@@ -58,19 +82,15 @@ namespace Kasyno.ViewModels
             DealerCards.Clear();
             Result = string.Empty;
             PlayerCards.Add(deck.DrawCard());
+            DealerCards.Add(deck.DrawCard());
             PlayerCards.Add(deck.DrawCard());
             DealerCards.Add(deck.DrawCard());
-            DealerCards.Add(deck.DrawCard());
-
+            DoubleDownVisibility();
             OnPropertyChanged(nameof(PlayerValue));
             OnPropertyChanged(nameof(DealerValue));
             if (PlayerValue == 21)
             {
                 Stand();
-            }
-            else if (DealerValue == 21)
-            {
-                Result = "Dealer ma blackjacka! Przegrana.";
             }
         }
         public void Hit()
@@ -99,6 +119,38 @@ namespace Kasyno.ViewModels
                           : PlayerValue > DealerValue ? "Wygrana"
                           : "Przegrana";
 
+        }
+        public void PlaceBet(int bet)
+        {
+            if (BetAmount < 10)
+            {
+                MessageBox.Show("Minimalna stawka to 10.");
+                return;
+            }
+            if (BetAmount > 100)// zmienic potem na saldo uzytkownika
+            {
+                MessageBox.Show("Nie masz wystarczającej ilości pieniędzy.");
+                return;
+            }
+            BetAmount = bet;
+            NewGame();
+        }
+        public void DoubleDown()
+        {
+            BetAmount *= 2;
+            Hit();
+            Stand();
+        }
+        public void DoubleDownVisibility()
+        {
+            if (PlayerCards.Count == 2 && PlayerValue < 21 && Result == string.Empty)
+            {
+                DoubleDownVisible = Visibility.Visible;
+            }
+            else
+            {
+                DoubleDownVisible = Visibility.Collapsed;
+            }
         }
         private int CalculateValue(ObservableCollection<Card> cards)
         {

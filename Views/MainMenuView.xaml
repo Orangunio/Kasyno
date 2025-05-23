@@ -3,43 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Kasyno.ViewModels"
+        xmlns:models="clr-namespace:Kasyno.Models"
         mc:Ignorable="d"
         Title="Menu Główne" Height="600" Width="900"
         WindowStartupLocation="CenterScreen"
         Background="#1A1A1A">
-    <Window.Resources>
-        <DropShadowEffect x:Key="DropShadowEffect"
-                          Color="Black"
-                          BlurRadius="10"
-                          ShadowDepth="2"
-                          Opacity="0.6" />
-        <Style x:Key="CasinoButtonStyle" TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="30"
-                                BorderBrush="Black"
-                                BorderThickness="2"
-                                SnapsToDevicePixels="True"
-                                Effect="{StaticResource DropShadowEffect}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              Margin="{TemplateBinding Padding}" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="Background" Value="#FFD700"/>
-            <Setter Property="FontSize" Value="24"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Height" Value="60"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="Margin" Value="0,10,0,0"/>
-        </Style>
-    </Window.Resources>
+    <Window.DataContext>
+        <vm:MainMenuViewModel/>
+    </Window.DataContext>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -59,11 +31,12 @@
                        TextAlignment="Center"
                        Margin="0,0,0,30"/>
 
-            <Button Content="Ruletka" Style="{StaticResource CasinoButtonStyle}"/>
-            <Button Content="Automaty" Style="{StaticResource CasinoButtonStyle}"/>
-            <Button Content="Blackjack" Style="{StaticResource CasinoButtonStyle}"/>
-            <Button Content="Wojna" Style="{StaticResource CasinoButtonStyle}"/>
-            <Button Content="Wyjście" Style="{StaticResource CasinoButtonStyle}"/>
+            <Button Content="Ruletka" Style="{StaticResource CasinoActionButton}"/>
+            <Button Content="Automaty" Style="{StaticResource CasinoActionButton}"/>
+            <Button Content="Blackjack" Style="{StaticResource CasinoActionButton}"
+                    Command="{Binding BlackjackCommand}"/>
+            <Button Content="Wojna" Style="{StaticResource CasinoActionButton}"/>
+            <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}"/>
         </StackPanel>
         <!-- Informacje o graczu -->
         <Grid Grid.Column="1">
@@ -77,7 +50,7 @@
                            Margin="0,0,0,10"/>
                 <Button Content="Nazwa gracza"
                         Padding="20,10"
-                        Style="{StaticResource CasinoButtonStyle}"
+                        Style="{StaticResource CasinoActionButton}"
                         FontSize="18"
                         Width="180"
                         Height="50"/>

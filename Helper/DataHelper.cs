@@ -18,7 +18,7 @@ namespace Kasyno.Helper
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.CreateTable<T>();
-                int rows= connection.Insert(item);
+                int rows = connection.Insert(item);
                 if (rows > 0)
                 {
                     result = true;

@@ -4,6 +4,31 @@
              xmlns:local="clr-namespace:Kasyno"
              StartupUri="Views/EntryWindow.xaml">
     <Application.Resources>
+        <!-- Styl globalny ToolTip -->
+        <Style TargetType="ToolTip">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="HasDropShadow" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToolTip">
+                        <Border Background="Black"
+                        BorderBrush="Gold"
+                        BorderThickness="2"
+                        CornerRadius="6"
+                        Padding="10"
+                        SnapsToDevicePixels="True">
+                            <ContentPresenter 
+                        Margin="2"
+                        RecognizesAccessKey="True"
+                        TextElement.Foreground="Gold"
+                        TextElement.FontSize="14"
+                        TextElement.FontFamily="Segoe UI"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Styl globalny Button --> 
         <Style x:Key="CasinoActionButton" TargetType="Button">
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="Background" Value="#FFD700"/>

@@ -20,7 +20,6 @@ namespace Kasyno.ViewModels.Commands
         {
             return true;
         }
-
         public void Execute(object? parameter)
         {
             if (parameter is string input && int.TryParse(input, out int bet))

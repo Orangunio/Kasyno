@@ -11,7 +11,9 @@ namespace Kasyno.Models
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
+        [Indexed]
         public int UserId { get; set; }
+        [Indexed]
         public int GameTypeId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }

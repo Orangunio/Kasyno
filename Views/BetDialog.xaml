@@ -7,14 +7,14 @@
         mc:Ignorable="d"
         Title="Stawka" Height="200" Width="400"
         WindowStartupLocation="CenterScreen"
-        Background="Black"
+        Background="Transparent"
         Foreground="Gold"
         FontFamily="Segoe UI"
         FontSize="16"
         ResizeMode="NoResize"
         WindowStyle="None"
         AllowsTransparency="True">
-    <Border BorderBrush="Gold" BorderThickness="3" CornerRadius="15" Background="Black" Padding="20">
+    <Border BorderBrush="Gold" BorderThickness="3" CornerRadius="15" Background="Black" Padding="20" SnapsToDevicePixels="True" UseLayoutRounding="True">
         <StackPanel>
             <TextBlock Text="Wprowadź stawkę (min. 10):" 
                        Margin="0,0,0,10"

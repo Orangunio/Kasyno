@@ -29,7 +29,23 @@ namespace Kasyno.ViewModels.Commands
 
         public void Execute(object? parameter)
         {
+            if (ViewModel.BetAmount <= 0)
+            {
+                var betDialog = new Views.BetDialog();
+                bool? result = betDialog.ShowDialog();
+
+                if (result == true)
+                {
+                    ViewModel.BetAmount = betDialog.EnteredBetAmount;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
             ViewModel.NewGame();
+
         }
     }
 }

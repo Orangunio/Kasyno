@@ -1,6 +1,7 @@
 ﻿using SQLite;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kasyno.Models
 {
-    public class User
+    public class User : INotifyPropertyChanged
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
@@ -17,7 +18,26 @@ namespace Kasyno.Models
         public string Password { get; set; }
         [Ignore]
         public string ConfirmPassword { get; set; }
-        public int balance { get; set; }
+        private int balance;
+
+        public int Balance
+        {
+            get => balance;
+            set
+            {
+                if (balance != value) 
+                {
+                    balance = value; 
+                    OnPropertyChanged(nameof(Balance));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
         public User() { }
         public User(string username, string password, int balance, string confirmPassword)
         {

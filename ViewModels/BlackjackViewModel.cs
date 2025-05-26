@@ -18,6 +18,8 @@ namespace Kasyno.ViewModels
         public ObservableCollection<Card> PlayerCards { get; } = new();
         public ObservableCollection<Card> DealerCards { get; } = new();
         private Deck deck;
+        public User User => App.User;
+
         private string result = string.Empty;
         public string Result
         {
@@ -26,7 +28,6 @@ namespace Kasyno.ViewModels
             {
                 result = value;
                 OnPropertyChanged(nameof(Result));
-                NewGameCommand.RaiseCanExecuteChanged();
                 HitCommand.RaiseCanExecuteChanged();
                 StandCommand.RaiseCanExecuteChanged();
             }
@@ -39,6 +40,9 @@ namespace Kasyno.ViewModels
             {
                 betAmount = value;
                 OnPropertyChanged(nameof(BetAmount));
+                NewGameCommand.RaiseCanExecuteChanged();
+                HitCommand.RaiseCanExecuteChanged();
+                StandCommand.RaiseCanExecuteChanged();
             }
         }
         private Visibility doubleDownVisible;
@@ -61,22 +65,23 @@ namespace Kasyno.ViewModels
         }
         public int PlayerValue => CalculateValue(PlayerCards);
         public int DealerValue => CalculateValue(DealerCards);
-        public PlaceBetCommand PlaceBetCommand { get; }
         public HitCommand HitCommand { get; }
         public StandCommand StandCommand { get; }
         public NewGameCommand NewGameCommand { get; }
         public ExitGameCommand ExitGameCommand { get; }
+        public DoubleDownCommand DoubleDownCommand { get; }
         public BlackjackViewModel() 
         {
             HitCommand = new HitCommand(this);
             StandCommand = new StandCommand(this);
             NewGameCommand = new NewGameCommand(this);
-            PlaceBetCommand = new PlaceBetCommand(this);
             ExitGameCommand = new ExitGameCommand();
+            DoubleDownCommand = new DoubleDownCommand(this);
             doubleDownVisible = Visibility.Collapsed;
         }
         public void NewGame()
         {
+            User.Balance -= BetAmount;
             deck = new Deck();
             PlayerCards.Clear();
             DealerCards.Clear();
@@ -97,10 +102,13 @@ namespace Kasyno.ViewModels
         {
             PlayerCards.Add(deck.DrawCard());
             OnPropertyChanged(nameof(PlayerValue));
-
+            DoubleDownVisibility();
             if (PlayerValue > 21)
             {
                 Result = "Przegrana";
+                BetAmount = 0;
+                OnPropertyChanged(nameof(BetAmount));
+                NewGameCommand.RaiseCanExecuteChanged();
             }
             if (PlayerValue == 21)
             {
@@ -109,6 +117,7 @@ namespace Kasyno.ViewModels
         }
         public void Stand()
         {
+            DoubleDownVisibility();
             while (DealerValue < 17 && DealerValue != PlayerValue)
             {
                 DealerCards.Add(deck.DrawCard());
@@ -118,32 +127,24 @@ namespace Kasyno.ViewModels
                           : DealerValue > 21 ? "Wygrana"
                           : PlayerValue > DealerValue ? "Wygrana"
                           : "Przegrana";
-
-        }
-        public void PlaceBet(int bet)
-        {
-            if (BetAmount < 10)
+            if (Result == "Wygrana")
             {
-                MessageBox.Show("Minimalna stawka to 10.");
-                return;
+                User.Balance += BetAmount * 2;
+                BetAmount = 0;
+                OnPropertyChanged(nameof(BetAmount));
+                NewGameCommand.RaiseCanExecuteChanged();
             }
-            if (BetAmount > 100)// zmienic potem na saldo uzytkownika
-            {
-                MessageBox.Show("Nie masz wystarczającej ilości pieniędzy.");
-                return;
-            }
-            BetAmount = bet;
-            NewGame();
         }
         public void DoubleDown()
         {
+            User.Balance -= BetAmount;
             BetAmount *= 2;
             Hit();
             Stand();
         }
         public void DoubleDownVisibility()
         {
-            if (PlayerCards.Count == 2 && PlayerValue < 21 && Result == string.Empty)
+            if (PlayerCards.Count == 2 && PlayerValue < 21 && Result == string.Empty && DoubleDownVisible == Visibility.Collapsed)
             {
                 DoubleDownVisible = Visibility.Visible;
             }

@@ -19,27 +19,30 @@ namespace Kasyno.Views
     /// </summary>
     public partial class BetDialog : Window
     {
-        public int? BetAmount { get; set; }
+        public int EnteredBetAmount { get; private set; } = 0;
+
         public BetDialog()
         {
             InitializeComponent();
         }
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            if (int.TryParse(BetTextBox.Text, out int value) && value >= 10)
+            if (int.TryParse(BetTextBox.Text, out int bet) && bet >= 10)
             {
-                BetAmount = value;
+                EnteredBetAmount = bet;
                 DialogResult = true;
+                Close();
             }
             else
             {
-                MessageBox.Show("Wprowadź prawidłową stawkę (minimum 10).");
+                ErrorDialog.ShowDialog("Wprowadź poprawną kwotę (min. 10), tylko liczby całkowite.", "Błąd");
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
+            Close();
         }
     }
 }

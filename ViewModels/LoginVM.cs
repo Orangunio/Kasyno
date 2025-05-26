@@ -83,7 +83,7 @@ namespace Kasyno.ViewModels
             var user = users.FirstOrDefault(u => u.Username == Username && u.Password == Password);
             if (user != null)
             {
-                User = user;
+                App.User = user;
                 return true;
             }
             return false;

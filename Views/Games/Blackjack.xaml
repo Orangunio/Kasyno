@@ -119,13 +119,14 @@
                    Foreground="White"
                    FontSize="16"
                    Text="Saldo:"/>
-            <TextBlock Text="Pieniadze"
+            <TextBlock Text="{Binding User.Balance}"
                        Foreground="Wheat"
                        FontSize="16"/>
         </StackPanel>
         <Button Grid.Row="2" 
                 Style="{StaticResource CasinoActionButton}" 
                 Content="DoubleDown" 
+                Command="{Binding DoubleDownCommand}"
                 Visibility="{Binding Path=DoubleDownVisible}"
                 VerticalAlignment="Bottom">
             

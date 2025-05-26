@@ -36,7 +36,7 @@
             <Button Content="Blackjack" Style="{StaticResource CasinoActionButton}"
                     Command="{Binding BlackjackCommand}"/>
             <Button Content="Wojna" Style="{StaticResource CasinoActionButton}"/>
-            <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}"/>
+            <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}" Click="Button_Click"/>
         </StackPanel>
         <!-- Informacje o graczu -->
         <Grid Grid.Column="1">

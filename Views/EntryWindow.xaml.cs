@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kasyno.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,12 @@ namespace Kasyno.Views
         public EntryWindow()
         {
             InitializeComponent();
+            var vm = (LoginVM)DataContext;
+            vm.SwitchToLoginView = async () =>
+            {
+                vm.ClearFields(); ;
+                await AnimatePanelSwitch(RegisterPanel, LoginPanel);
+            };
             var wejscie = (Storyboard)this.Resources["Wejscie"];
             wejscie?.Begin();
 
@@ -31,11 +38,15 @@ namespace Kasyno.Views
         }
         private async void RegisterTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (DataContext is LoginVM vm)
+                vm.ClearFields();
             await AnimatePanelSwitch(LoginPanel, RegisterPanel);
         }
 
         private async void LoginTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (DataContext is LoginVM vm)
+                vm.ClearFields();
             await AnimatePanelSwitch(RegisterPanel, LoginPanel);
         }
         private async Task AnimatePanelSwitch(StackPanel hidePanel, StackPanel showPanel)
@@ -61,6 +72,17 @@ namespace Kasyno.Views
             showPanel.Opacity = 0;
             fadeIn.Begin();
             await Task.Delay(300);
+        }
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is LoginVM vm)
+                vm.Password = ((PasswordBox)sender).Password;
+        }
+
+        private void ConfirmPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is LoginVM vm)
+                vm.ConfrimPassword = ((PasswordBox)sender).Password;
         }
 
     }

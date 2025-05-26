@@ -15,13 +15,16 @@ namespace Kasyno.Models
         [Unique, NotNull]
         public string Username { get; set; }
         public string Password { get; set; }
+        [Ignore]
+        public string ConfirmPassword { get; set; }
         public int balance { get; set; }
         public User() { }
-        public User(string username, string password, int balance)
+        public User(string username, string password, int balance, string confirmPassword)
         {
             Username = username;
             Password = password;
             this.balance = balance;
+            ConfirmPassword = confirmPassword;
         }
     }
 }

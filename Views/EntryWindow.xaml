@@ -3,12 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Kasyno.Views"
+        xmlns:local="clr-namespace:Kasyno.Views" 
+        xmlns:vm="clr-namespace:Kasyno.ViewModels"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Height="450" Width="400"
+        ResizeMode="NoResize"
         Background="#1A1A1A">
+    <Window.DataContext>
+        <vm:LoginVM />
+    </Window.DataContext>
     <Window.Resources>
+        
         <!-- Do zmieniania panelu logowania/rejestracji-->
         <Storyboard x:Key="FadeOut">
             <DoubleAnimation To="0" Duration="0:0:0.3" Storyboard.TargetProperty="Opacity"/>
@@ -139,19 +145,20 @@
         <!-- Logowanie -->
         <StackPanel x:Name="LoginPanel" Grid.Row="1" Grid.Column="1" Background="Transparent" Opacity="1">
             <TextBlock Text="Username" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" Foreground="#E0E0E0"/>
-            <TextBox Name="UsernameTextBox" Width="200" Margin="5" />
+            <TextBox Name="UsernameTextBox" Width="200" Margin="5" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             <TextBlock Text="Password" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" Foreground="#E0E0E0"/>
-            <PasswordBox Name="PasswordTextBox" Margin="5" />
+            <PasswordBox Name="PasswordTextBox" Margin="5" PasswordChanged="PasswordBox_PasswordChanged" />
             <Button Name="LoginButton"
-            Content="Login"
-            Width="100"
-            Margin="5"
-            Background="#C21807"
-            Foreground="White"
-            BorderBrush="#FFD700"
-            BorderThickness="2"
-            FontWeight="Bold"
-            Cursor="Hand"/>
+                Content="Login"
+                Width="100"
+                Margin="5"
+                Background="#C21807"
+                Foreground="White"
+                BorderBrush="#FFD700"
+                BorderThickness="2"
+                FontWeight="Bold"
+                Cursor="Hand"
+                    Command="{Binding LoginCommand}"/>
             <TextBlock Text="Nie masz konta? Zarejestruj się!"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
@@ -165,20 +172,23 @@
         <!-- Rejestracja -->
         <StackPanel x:Name="RegisterPanel" Grid.Row="1" Grid.Column="1" Background="Transparent" Visibility="Collapsed" Opacity="0">
             <TextBlock Text="Nowy użytkownik" FontWeight="Bold" FontSize="16" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-            <TextBlock Text="Username" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" Foreground="#E0E0E0"/>
-            <TextBox Name="RegisterUsernameTextBox" Width="200" Margin="5" />
-            <TextBlock Text="Password" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" Foreground="#E0E0E0"/>
-            <PasswordBox Name="RegisterPasswordTextBox" Margin="5" />
+            <TextBlock Text="Nazwa Użytkownika" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" Foreground="#E0E0E0"/>
+            <TextBox Name="RegisterUsernameTextBox" Width="200" Margin="5" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            <TextBlock Text="Hasło" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" Foreground="#E0E0E0"/>
+            <PasswordBox Name="RegisterPasswordTextBox" Margin="5" PasswordChanged="PasswordBox_PasswordChanged" />
+            <TextBlock Text="Potwierdź hasło" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="False" Foreground="#E0E0E0"/>
+            <PasswordBox Name="ConfirmPasswordTextBox" Margin="5" PasswordChanged="ConfirmPasswordBox_PasswordChanged" />
             <Button Name="RegisterButton"
-            Content="Register"
-            Width="100"
-            Margin="5"
-            Background="#2E7D32"
-            Foreground="White"
-            BorderBrush="#FFD700"
-            BorderThickness="2"
-            FontWeight="Bold"
-            Cursor="Hand"/>
+                Content="Register"
+                Width="100"
+                Margin="5"
+                Background="#2E7D32"
+                Foreground="White"
+                BorderBrush="#FFD700"
+                BorderThickness="2"
+                FontWeight="Bold"
+                Cursor="Hand"
+                Command="{Binding RegisterCommand}"/>
             <TextBlock Text="Masz już konto? Zaloguj się!"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"

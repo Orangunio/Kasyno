@@ -7,11 +7,27 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kasyno.Helper
+namespace Kasyno.Helpers
 {
     public class DataHelper
     {
-        private static string? databasePath = Path.Combine(Environment.CurrentDirectory, "Kasyno.db");
+        private static readonly string databasePath = GetDatabasePath();
+
+        private static string GetDatabasePath()
+        {
+            // Cofnij się z "bin/Debug/net8.0-windows" do katalogu głównego projektu
+            string? projectRoot = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
+
+            if (projectRoot == null)
+                throw new Exception("Nie można odnaleźć katalogu głównego projektu.");
+
+            string dbFolder = Path.Combine(projectRoot, "Data");
+
+            if (!Directory.Exists(dbFolder))
+                Directory.CreateDirectory(dbFolder);
+
+            return Path.Combine(dbFolder, "Kasyno.db");
+        }
         public static bool Insert<T>(T item)
         {
             bool result = false;

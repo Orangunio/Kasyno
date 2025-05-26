@@ -72,7 +72,7 @@ namespace Kasyno.ViewModels
             StandCommand = new StandCommand(this);
             NewGameCommand = new NewGameCommand(this);
             PlaceBetCommand = new PlaceBetCommand(this);
-            ExitGameCommand = new ExitGameCommand(this);
+            ExitGameCommand = new ExitGameCommand();
             doubleDownVisible = Visibility.Collapsed;
         }
         public void NewGame()

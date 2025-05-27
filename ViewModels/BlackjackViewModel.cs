@@ -1,4 +1,5 @@
-﻿using Kasyno.Models;
+﻿using Kasyno.Helpers;
+using Kasyno.Models;
 using Kasyno.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,17 @@ namespace Kasyno.ViewModels
                 OnPropertyChanged(nameof(DoubleDownVisible));
             }
         }
+        private bool isDealerTurnOver = false;
+        public bool IsDealerTurnOver
+        {
+            get => isDealerTurnOver;
+            set
+            {
+                isDealerTurnOver = value;
+                OnPropertyChanged(nameof(IsDealerTurnOver));
+                OnPropertyChanged(nameof(DealerValue));
+            }
+        }
 
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -64,7 +76,15 @@ namespace Kasyno.ViewModels
 
         }
         public int PlayerValue => CalculateValue(PlayerCards);
-        public int DealerValue => CalculateValue(DealerCards);
+        public int DealerValue
+        {
+            get
+            {
+                var cards = IsDealerTurnOver ? DealerCards : new ObservableCollection<Card> { DealerCards[0] };
+                return CalculateValue(cards);
+            }
+        }
+
         public HitCommand HitCommand { get; }
         public StandCommand StandCommand { get; }
         public NewGameCommand NewGameCommand { get; }
@@ -81,6 +101,7 @@ namespace Kasyno.ViewModels
         }
         public void NewGame()
         {
+            IsDealerTurnOver = false;
             User.Balance -= BetAmount;
             deck = new Deck();
             PlayerCards.Clear();
@@ -107,6 +128,7 @@ namespace Kasyno.ViewModels
             {
                 Result = "Przegrana";
                 BetAmount = 0;
+                DataHelper.Update(User);
                 OnPropertyChanged(nameof(BetAmount));
                 NewGameCommand.RaiseCanExecuteChanged();
             }
@@ -118,6 +140,7 @@ namespace Kasyno.ViewModels
         public void Stand()
         {
             DoubleDownVisibility();
+            IsDealerTurnOver = true;
             while (DealerValue < 17 && DealerValue != PlayerValue)
             {
                 DealerCards.Add(deck.DrawCard());
@@ -130,10 +153,11 @@ namespace Kasyno.ViewModels
             if (Result == "Wygrana")
             {
                 User.Balance += BetAmount * 2;
-                BetAmount = 0;
-                OnPropertyChanged(nameof(BetAmount));
-                NewGameCommand.RaiseCanExecuteChanged();
             }
+            BetAmount = 0;
+            OnPropertyChanged(nameof(BetAmount));
+            DataHelper.Update(User);
+            NewGameCommand.RaiseCanExecuteChanged();
         }
         public void DoubleDown()
         {

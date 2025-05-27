@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace Kasyno.Helper
+namespace Kasyno.Helpers
 {
     public class SuitToColorConverter : IValueConverter
     {

@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Kasyno.ViewModels"
         xmlns:models="clr-namespace:Kasyno.Models"
-        xmlns:con="clr-namespace:Kasyno.Helper"
+        xmlns:con="clr-namespace:Kasyno.Helpers"
+        xmlns:cto="clr-namespace:Kasyno.Helpers"
         Title="Blackjack"
         Width="1000" Height="650"
         WindowStartupLocation="CenterScreen"
@@ -16,6 +17,8 @@
 
     <Window.Resources>
         <con:SuitToColorConverter x:Key="SuitToColorConverter"/>
+        <cto:CardVisibilityConverter x:Key="CardVisibilityConverter"/>
+
         <!-- Styl kart -->
         <DataTemplate DataType="{x:Type models:Card}">
             <Border Width="70" Height="100" Background="White" CornerRadius="6" Margin="4">
@@ -64,13 +67,44 @@
                HorizontalAlignment="Center"
                Margin="0,5"/>
 
-            <ItemsControl ItemsSource="{Binding DealerCards}" Margin="0,10">
+            <ItemsControl ItemsSource="{Binding DealerCards}" Margin="0,10" AlternationCount="10">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="70" Height="100" Background="White" CornerRadius="6" Margin="4">
+                            <TextBlock x:Name="CardText"
+                                       FontWeight="Bold"
+                                       FontSize="24"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="{Binding Rank}"/>
+                                        <Setter Property="Foreground" Value="{Binding Suit, Converter={StaticResource SuitToColorConverter}}"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <!-- Sprawdź, czy to druga karta (index 1) -->
+                                                    <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}, Path=(ItemsControl.AlternationIndex)}" Value="1"/>
+                                                    <!-- I czy nadal tura gracza -->
+                                                    <Condition Binding="{Binding DataContext.IsDealerTurnOver, RelativeSource={RelativeSource AncestorType=Window}}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Text" Value="🂠"/>
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
             </ItemsControl>
+
         </StackPanel>
 
         <!-- ===== GRACZ ===== -->

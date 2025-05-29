@@ -128,7 +128,7 @@ namespace Kasyno.ViewModels
             {
                 Result = "Przegrana";
                 BetAmount = 0;
-                DataHelper.Update(User);
+                DataHelper.UpdateAsync(User);
                 OnPropertyChanged(nameof(BetAmount));
                 NewGameCommand.RaiseCanExecuteChanged();
             }
@@ -156,7 +156,7 @@ namespace Kasyno.ViewModels
             }
             BetAmount = 0;
             OnPropertyChanged(nameof(BetAmount));
-            DataHelper.Update(User);
+            DataHelper.UpdateAsync(User);
             NewGameCommand.RaiseCanExecuteChanged();
         }
         public void DoubleDown()

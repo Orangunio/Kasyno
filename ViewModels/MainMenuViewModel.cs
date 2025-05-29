@@ -1,4 +1,5 @@
-﻿using Kasyno.ViewModels.Commands.MainMenuCommands;
+﻿using Kasyno.Models;
+using Kasyno.ViewModels.Commands.MainMenuCommands;
 using Kasyno.Views.Games;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Kasyno.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         }
+        public User User => App.User;
         public BlackJackCommand BlackjackCommand { get;}
         public MainMenuViewModel()
         {

@@ -12,6 +12,7 @@
         FontFamily="Segoe UI"
         FontSize="16"
         ResizeMode="NoResize"
+        Topmost="True"
         WindowStyle="None"
         AllowsTransparency="True">
     <Border BorderBrush="Gold" BorderThickness="3" CornerRadius="15" Background="Black" Padding="20" SnapsToDevicePixels="True" UseLayoutRounding="True">

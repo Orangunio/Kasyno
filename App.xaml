@@ -35,8 +35,10 @@
             <!-- Złoty -->
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Width" Value="120"/>
-            <Setter Property="Height" Value="50"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="MinHeight" Value="50"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Margin" Value="10,0"/>
             <Setter Property="Template">

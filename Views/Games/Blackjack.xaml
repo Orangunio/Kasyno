@@ -7,6 +7,8 @@
         xmlns:cto="clr-namespace:Kasyno.Helpers"
         Title="Blackjack"
         Width="1000" Height="650"
+        ResizeMode="NoResize"
+        Topmost="True"
         WindowStartupLocation="CenterScreen"
         Background="#0F3B21"
         FontFamily="Segoe UI">
@@ -159,6 +161,7 @@
         </StackPanel>
         <Button Grid.Row="2" 
                 Style="{StaticResource CasinoActionButton}" 
+                HorizontalAlignment="Center"
                 Content="DoubleDown" 
                 Command="{Binding DoubleDownCommand}"
                 Visibility="{Binding Path=DoubleDownVisible}"

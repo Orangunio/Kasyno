@@ -69,17 +69,17 @@ namespace Kasyno.ViewModels
 		{
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confrimPassword) || ConfrimPassword != Password) return false;
 
-            var existingUsers = DataHelper.GetAll<User>();
+            var existingUsers = await DataHelper.GetAllAsync<User>();
             if (existingUsers.Any(u => u.Username == Username))
                 return false;
 
             var newUser = new User(Username, Password, 1000, confrimPassword); // startowy balans
             SwitchToLoginView?.Invoke();
-            return DataHelper.Insert(newUser);
+            return await DataHelper.InsertAsync(newUser);
         }
 		public async Task<bool> LoginAsync()
 		{
-            var users = DataHelper.GetAll<User>();
+            var users = await DataHelper.GetAllAsync<User>();
             var user = users.FirstOrDefault(u => u.Username == Username && u.Password == Password);
             if (user != null)
             {

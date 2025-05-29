@@ -7,8 +7,10 @@
         xmlns:models="clr-namespace:Kasyno.Models"
         mc:Ignorable="d"
         Title="Menu Główne" Height="600" Width="900"
+        Background="#1A1A1A"
+        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        Background="#1A1A1A">
+        AllowsTransparency="False">
     <Window.DataContext>
         <vm:MainMenuViewModel/>
     </Window.DataContext>
@@ -22,8 +24,7 @@
         <!-- Główne menu -->
         <StackPanel Grid.Column="0"
                     VerticalAlignment="Center"
-                    HorizontalAlignment="Stretch"
-                    Width="300">
+                    HorizontalAlignment="Center">
             <TextBlock Text="🎰 Zagrajmy"
                        FontSize="48"
                        FontWeight="Bold"
@@ -48,13 +49,13 @@
                            FontSize="48"
                            HorizontalAlignment="Center"
                            Margin="0,0,0,10"/>
-                <Button Content="Nazwa gracza"
+                <Button Content="{Binding User.Username}"
                         Padding="20,10"
                         Style="{StaticResource CasinoActionButton}"
                         FontSize="18"
                         Width="180"
                         Height="50"/>
-                <TextBlock Text="Stan konta: 1000$"
+                <TextBlock Text="{Binding User.Balance, StringFormat=Stan konta: {0} zł}"
                            FontSize="24"
                            HorizontalAlignment="Center"
                            Margin="0,10,0,0"

@@ -11,6 +11,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         WindowStyle="None"
+        Topmost="True"
         Background="#1E1E1E"
         AllowsTransparency="True">
     <Border BorderBrush="#FFD700" BorderThickness="3" CornerRadius="10" Background="#2C2C2C" Padding="20">

@@ -9,8 +9,7 @@
         Title="Menu Główne" Height="600" Width="900"
         Background="#1A1A1A"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen"
-        AllowsTransparency="False">
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:MainMenuViewModel/>
     </Window.DataContext>
@@ -54,7 +53,8 @@
                         Style="{StaticResource CasinoActionButton}"
                         FontSize="18"
                         Width="180"
-                        Height="50"/>
+                        Height="50"
+                        Command="{Binding StatsCommand}"/>
                 <TextBlock Text="{Binding User.Balance, StringFormat=Stan konta: {0} zł}"
                            FontSize="24"
                            HorizontalAlignment="Center"

@@ -1,5 +1,4 @@
 ﻿using Kasyno.Views;
-using Kasyno.Views.Games;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +9,10 @@ using System.Windows.Input;
 
 namespace Kasyno.ViewModels.Commands.MainMenuCommands
 {
-    public class BlackJackCommand : ICommand
+    public class StatsCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
-        public BlackJackCommand()
+        public StatsCommand()
         {
         }
 
@@ -24,8 +23,8 @@ namespace Kasyno.ViewModels.Commands.MainMenuCommands
 
         public void Execute(object? parameter)
         {
-            var blackjackWindow = new Blackjack();
-            blackjackWindow.Show();
+            var statsWindow = new StatsView();
+            statsWindow.Show();
 
             // Zamknięcie aktualnego okna (menu głównego)
             foreach (Window window in Application.Current.Windows)

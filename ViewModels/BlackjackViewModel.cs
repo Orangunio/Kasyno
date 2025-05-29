@@ -20,7 +20,8 @@ namespace Kasyno.ViewModels
         public ObservableCollection<Card> DealerCards { get; } = new();
         private Deck deck;
         public User User => App.User;
-
+        private GameSession? currentSession;
+        public string desc = "Blackjack";
         private string result = string.Empty;
         public string Result
         {
@@ -56,6 +57,7 @@ namespace Kasyno.ViewModels
                 OnPropertyChanged(nameof(DoubleDownVisible));
             }
         }
+        public int piniondz;
         private bool isDealerTurnOver = false;
         public bool IsDealerTurnOver
         {
@@ -99,7 +101,7 @@ namespace Kasyno.ViewModels
             DoubleDownCommand = new DoubleDownCommand(this);
             doubleDownVisible = Visibility.Collapsed;
         }
-        public void NewGame()
+        public async void NewGame()
         {
             IsDealerTurnOver = false;
             User.Balance -= BetAmount;
@@ -114,21 +116,35 @@ namespace Kasyno.ViewModels
             DoubleDownVisibility();
             OnPropertyChanged(nameof(PlayerValue));
             OnPropertyChanged(nameof(DealerValue));
+            currentSession = new GameSession(User.Id, DateTime.Now, DateTime.Now);
+            await DataHelper.InsertAsync(currentSession);
             if (PlayerValue == 21)
             {
                 Stand();
             }
         }
-        public void Hit()
+        public async void Hit()
         {
             PlayerCards.Add(deck.DrawCard());
             OnPropertyChanged(nameof(PlayerValue));
             DoubleDownVisibility();
             if (PlayerValue > 21)
             {
-                Result = "Przegrana";
-                BetAmount = 0;
+                piniondz = 0;
                 DataHelper.UpdateAsync(User);
+                Result = "Przegrana";
+                if (currentSession != null)
+                {
+                    currentSession.EndTime = DateTime.Now;
+                    await DataHelper.UpdateAsync(currentSession);
+
+                    var resultEntry = new Result(Result, piniondz);
+                    await DataHelper.InsertAsync(resultEntry);
+
+                    var betEntry = new Bet(currentSession.Id, BetAmount, resultEntry.Id, desc);
+                    await DataHelper.InsertAsync(betEntry);
+                }
+                BetAmount = 0;
                 OnPropertyChanged(nameof(BetAmount));
                 NewGameCommand.RaiseCanExecuteChanged();
             }
@@ -137,7 +153,7 @@ namespace Kasyno.ViewModels
                 Stand();
             }
         }
-        public void Stand()
+        public async void Stand()
         {
             DoubleDownVisibility();
             IsDealerTurnOver = true;
@@ -152,7 +168,23 @@ namespace Kasyno.ViewModels
                           : "Przegrana";
             if (Result == "Wygrana")
             {
+                piniondz = BetAmount;
                 User.Balance += BetAmount * 2;
+            }
+            else
+            {
+                piniondz = 0;
+            }
+            if (currentSession != null)
+            {
+                currentSession.EndTime = DateTime.Now;
+                await DataHelper.UpdateAsync(currentSession);
+
+                var resultEntry = new Result(Result, piniondz);
+                await DataHelper.InsertAsync(resultEntry);
+
+                var betEntry = new Bet(currentSession.Id, BetAmount, resultEntry.Id, desc);
+                await DataHelper.InsertAsync(betEntry);
             }
             BetAmount = 0;
             OnPropertyChanged(nameof(BetAmount));
@@ -161,6 +193,7 @@ namespace Kasyno.ViewModels
         }
         public void DoubleDown()
         {
+            desc = "Blackjack - Double Down";
             User.Balance -= BetAmount;
             BetAmount *= 2;
             Hit();

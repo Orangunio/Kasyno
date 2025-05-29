@@ -14,14 +14,12 @@ namespace Kasyno.Models
         [Indexed]
         public int UserId { get; set; }
         [Indexed]
-        public int GameTypeId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public GameSession() { }
-        public GameSession(int playerId, int gameTypeId, DateTime start, DateTime end)
+        public GameSession(int playerId, DateTime start, DateTime end)
         {
             UserId = playerId;
-            GameTypeId = gameTypeId;
             StartTime = start;
             EndTime = end;
         }

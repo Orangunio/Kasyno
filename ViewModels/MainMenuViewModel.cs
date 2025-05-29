@@ -20,9 +20,11 @@ namespace Kasyno.ViewModels
         }
         public User User => App.User;
         public BlackJackCommand BlackjackCommand { get;}
+        public StatsCommand StatsCommand { get; set; }
         public MainMenuViewModel()
         {
-            BlackjackCommand = new BlackJackCommand(this);
+            BlackjackCommand = new BlackJackCommand();
+            StatsCommand = new StatsCommand();
         }
 
     }

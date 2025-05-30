@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kasyno.Views"
         xmlns:sv="clr-namespace:Kasyno.ViewModels"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="StatsView" Height="450" Width="800">
@@ -17,7 +18,16 @@
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
+        <lvc:PieChart Series="{Binding PieSeries}"
+                      Grid.Row="1"
+                      LegendLocation="Bottom"
+                      InnerRadius="60"
+                      Margin="10"/>
         <!-- Historia gier -->
         <DataGrid Grid.Column="0"
                   ItemsSource="{Binding Bets}"
@@ -45,12 +55,13 @@
             <TextBlock Text="{Binding TotalLost, StringFormat=Przegrane pieniądze: {0} zł}" Margin="0,0,0,5"/>
             <TextBlock Text="{Binding User.Balance, StringFormat=Stan konta: {0} zł}" Margin="0,0,0,5"/>
         </StackPanel>
-        <Button Grid.ColumnSpan="2"
-                Content="Powrót"
-                Style="{StaticResource CasinoActionButton}"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="0,0,10,10"
-                Command="{Binding ExitCommand}"/>
+        <Button Grid.ColumnSpan="2" Grid.Row="1"
+                    Content="Powrót"
+                    Style="{StaticResource CasinoActionButton}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Margin="0,0,10,10"
+                    Command="{Binding ExitCommand}"/>
+        
     </Grid>
 </Window>

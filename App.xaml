@@ -28,7 +28,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!-- Styl globalny Button --> 
+        <!-- Styl globalny Button -->
         <Style x:Key="CasinoActionButton" TargetType="Button">
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="Background" Value="#FFD700"/>
@@ -71,6 +71,69 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="CasinoComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Foreground" Value="Gold"/>
+            <Setter Property="Background" Value="#222"/>
+            <Setter Property="BorderBrush" Value="Gold"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="MinWidth" Value="140"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Name="ToggleButton"
+                                  Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  Foreground="{TemplateBinding Foreground}"
+                                  FontWeight="{TemplateBinding FontWeight}"
+                                  FontSize="{TemplateBinding FontSize}"
+                                  Cursor="Hand"
+                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                  Focusable="False"
+                                  ClickMode="Press">
+                                <Grid>
+                                    <ContentPresenter Margin="10,0,25,0"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding SelectionBoxItem}"/>
+                                    <TextBlock Text="▼"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Foreground="Gold"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,0"/>
+                                </Grid>
+                            </ToggleButton>
 
+                            <Popup Name="Popup"
+                           Placement="Bottom"
+                           IsOpen="{TemplateBinding IsDropDownOpen}"
+                           AllowsTransparency="True"
+                           Focusable="False"
+                           PopupAnimation="Slide">
+                                <Border Background="#222"
+                                BorderBrush="Gold"
+                                BorderThickness="2"
+                                CornerRadius="4">
+                                    <ScrollViewer MaxHeight="200"
+                                          SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True"
+                                            KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>

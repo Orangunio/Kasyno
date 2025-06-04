@@ -1,4 +1,5 @@
-﻿using Kasyno.Models;
+﻿using Kasyno.Helpers;
+using Kasyno.Models;
 using Kasyno.ViewModels.Commands.MainMenuCommands;
 using Kasyno.Views.Games;
 using System;
@@ -17,6 +18,15 @@ namespace Kasyno.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
+        }
+        public string SelectedLanguage
+        {
+            get => Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
+            set
+            {
+                if (value != null)
+                    LocalizationManager.ChangeLanguage(value);
+            }
         }
         public User User => App.User;
         public BlackJackCommand BlackjackCommand { get;}

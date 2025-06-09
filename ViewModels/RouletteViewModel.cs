@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -18,9 +20,29 @@ namespace Kasyno.ViewModels
         public double Y { get; set; }
         public Brush Color { get; set; }
     }
-    public class RouletteViewModel
+    public class RouletteViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public int moneyToBet { get; set; } = 5;
+
+        private int _currentBet;
+        public int currentBet
+        {
+            get => _currentBet;
+            set
+            {
+                if (_currentBet != value)
+                {
+                    _currentBet = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
         public double CanvasSize => 300;
+        public int userBalance => App.User.Balance;
         public ICommand SpinCommand => new SpinCommand(_ => Spin(2));
         public ObservableCollection<RouletteFieldDisplay> DisplayFields { get; set; } = new();
 
@@ -71,50 +93,41 @@ namespace Kasyno.ViewModels
                 });
             }
         }
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void IncreaseBet()
+        {
+            int increaseBetValue = userBalance * moneyToBet / 100;
+            if (currentBet + increaseBetValue <= userBalance)
+            {
+                currentBet += increaseBetValue;
+            }
+            else
+            {
+                currentBet = userBalance;
+            }
+        }
+
+        public void ReduceBet()
+        {
+            int reydecBetValue = userBalance * moneyToBet / 100;
+            if (currentBet - reydecBetValue >= 0)
+            {
+                currentBet -= reydecBetValue;
+            }
+            else
+            {
+                currentBet = 0;
+            }
+        }
 
         public void Spin(int strength)
         {
-            getBetFields();
-
-            reducePlayerCash();
-
             int spinPower = SpinPower(strength);
-
-            RouletteField winningField = getResult(spinPower);
-
-            calculateProfit(winningField);
-
-            updateUserCash();
         }
-
-        public void getBetFields()
-        {
-
-        }
-
-        public void reducePlayerCash()
-        {
-            int cash = 0;
-            foreach(var betField in betFields)
-            {
-                cash += betField.bet;
-            }
-
-            //Tu logika pomniejszenia gotowki gracza
-        }
-
-        //AnimationFast:
-        //1 - 2 razy wolniej
-        //2 - normalnie
-        //3 - 2 razy szybciej
-        //4 - display wynik
-
-
-        //Strength
-        //1 - 20-40
-        //2 - 35-55
-        //3 - 50-80
-        //4 - 70-100
 
         public int SpinPower(int strength = 1)
         {
@@ -142,30 +155,6 @@ namespace Kasyno.ViewModels
                         throw new Exception("Invalid Variable");
                     }
             }
-        }
-
-        public RouletteField getResult(int spinPower)
-        {
-            int winingIndex = spinPower % roulette.roulleteFields.Count();
-            return roulette.roulleteFields[winingIndex];
-        }
-
-        public int calculateProfit(RouletteField winningField)
-        {
-            int profit = 0;
-            foreach(var betField in betFields)
-            {
-                if(betField.checkWin(winningField))
-                {
-                    profit += betField.potentialWin();
-                }
-            }
-            return profit;
-        }
-
-        public void updateUserCash()
-        {
-
         }
     }
 }

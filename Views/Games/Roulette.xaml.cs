@@ -24,6 +24,15 @@ namespace Kasyno.Views.Games
         public Roulette()
         {
             InitializeComponent();
+            LoadMoney();
+            this.Closing += Roulette_Closing;
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void LoadMoney()
+        {
             try
             {
                 UserMoney.Text = App.User.Balance.ToString("C2");
@@ -33,17 +42,28 @@ namespace Kasyno.Views.Games
                 MessageBox.Show("Błąd podczas ładowania danych użytkownika: " + ex.Message);
                 this.Close();
             }
-            this.Closing += Roulette_Closing;
+        }
+        private void IncreaseBet(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).IncreaseBet();
+            MoneyValue.Text = ((RouletteViewModel)this.DataContext).currentBet.ToString();
+        }
+
+        private void ReduceBet(object render, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).ReduceBet();
+            MoneyValue.Text = ((RouletteViewModel)this.DataContext).currentBet.ToString();
+        }
+
+        private void ChangeMoneyToBet(object render, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).moneyToBet = (int)MoneyBetPerClick.Value;
         }
 
         private void Roulette_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             var mainMenu = new MainMenuView();
             mainMenu.Show();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
         }
 
         private void SpinAnimation()
@@ -88,5 +108,4 @@ namespace Kasyno.Views.Games
             SpinAnimation(); // animacja
         }
     }
-
 }

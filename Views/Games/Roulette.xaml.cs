@@ -24,11 +24,26 @@ namespace Kasyno.Views.Games
         public Roulette()
         {
             InitializeComponent();
+            try
+            {
+                UserMoney.Text = App.User.Balance.ToString("C2");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Błąd podczas ładowania danych użytkownika: " + ex.Message);
+                this.Close();
+            }
+            this.Closing += Roulette_Closing;
+        }
+
+        private void Roulette_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var mainMenu = new MainMenuView();
+            mainMenu.Show();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Bind command, or hook into SpinCommand if needed
         }
 
         private void SpinAnimation()

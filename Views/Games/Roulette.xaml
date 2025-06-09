@@ -7,9 +7,10 @@
         xmlns:vm="clr-namespace:Kasyno.ViewModels"
         xmlns:models="clr-namespace:Kasyno.Models"
         mc:Ignorable="d"
-        Title="Roulette" Height="450" Width="800"
+        Title="Roulette" Height="600" Width="1000"
         Background="#0F3B21"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
 
     <Window.DataContext>
         <vm:RouletteViewModel />
@@ -22,13 +23,65 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Ruletka -->
+        <!-- 1 Kolumna -->
         <Grid Grid.Column="0" Name="RouletteGrid">
-            <Viewbox Stretch="Uniform">
+            <!-- Twoje Dane i Obstawianie -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="1.5*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Background="LightBlue">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" FontSize="20" VerticalAlignment="Center">Twoje Pieniądze:
+                    </TextBlock>
+                    <TextBlock Grid.Column="1" FontSize="20" VerticalAlignment="Center"
+                               Name="UserMoney"></TextBlock>
+                </Grid>
+
+                <Grid Grid.Row="1" Background="LightBlue">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="15">Grasz o:</TextBlock>
+                    <TextBox Grid.Column="1" FontSize="20" Width="Auto" Margin="10,0,0,0" 
+                             Name="MoneyValue" VerticalAlignment="Center"/>
+                </Grid>
+
+                <StackPanel Grid.Row="2" Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Background="Azure" FontSize="20" VerticalAlignment="Top" MinHeight="30" MinWidth="70"
+                        MaxHeight="50" MaxWidth="150" Name="IncreaseMoney" Margin="0,0,10,0"
+                        VerticalContentAlignment="Top"
+                        Padding="0,2,0,0">+</Button>
+                    <Button Background="Azure" FontSize="20" VerticalAlignment="Top" MinHeight="30" MinWidth="70"
+                        MaxHeight="50" MaxWidth="150" Name="ReduceMoney"
+                        VerticalContentAlignment="Top"
+                        Padding="0,2,0,0">-</Button>
+                </StackPanel>
+            </Grid>
+
+            <!-- Ruletka -->
+            <Viewbox Stretch="Uniform" VerticalAlignment="Bottom" Grid.Row="1">
                 <Grid Width="400" Height="400">
                     <!-- Tło koła -->
                     <Ellipse Stroke="Gold" StrokeThickness="5" Fill="DarkGreen" />
 
+                    <Polygon Points="190,10 210,10 200,30" Fill="Red" />
+                    
                     <!-- Obrotowe koło -->
                     <Canvas Width="{Binding CanvasSize}" Height="{Binding CanvasSize}"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -69,46 +122,88 @@
             </Viewbox>
         </Grid>
 
-        <!-- Panel sterowania -->
-        <StackPanel Grid.Column="1" VerticalAlignment="Center" 
-                    HorizontalAlignment="Center">
-            <Button Content="Zakręć ruletką" Name="ButtonSpinner"
-                    Width="150" Height="40"
-                    FontWeight="Bold"
-                    Background="DarkRed"
-                    Foreground="White"
-                    Click="SpinButton_Click"/>
-            <TextBlock Text="Ustaw Moc Zakręcenia"
-               FontSize="12"
-               FontWeight="Bold"
-               Foreground="Gold"
-               TextAlignment="Center"
-               HorizontalAlignment="Center"
-               Margin="0,20, 0, 0"
-               TextWrapping="Wrap"
-               Effect="{DynamicResource DropShadowEffect}">
-            </TextBlock>
+        <!-- Środkowa Część Stołu -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-            <Slider Margin="0,10" Background="DarkRed"
-            TickFrequency="1" Minimum="1" Maximum="4"
-            Name="SpinPowerSlider" IsSnapToTickEnabled="True"
-            TickPlacement="BottomRight"></Slider>
+            <ListBox Grid.Row="0" MinHeight="100"
+             VerticalAlignment="Stretch" />
 
-            <TextBlock Text="Ustaw Czas Animacji"
-               FontSize="12"
-               FontWeight="Bold"
-               Foreground="Gold"
-               TextAlignment="Center"
-               HorizontalAlignment="Center"
-               TextWrapping="Wrap"
-               Effect="{DynamicResource DropShadowEffect}">
-            </TextBlock>
+            <Grid Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <Slider Margin="0,10" Background="DarkRed"
-            TickFrequency="1" Minimum="0" Maximum="6"
-            Name="AnimationLengthSlider" IsSnapToTickEnabled="True"
-            TickPlacement="BottomRight"></Slider>
-        </StackPanel>
+                <Button Margin="10,0,10,0" Background="Red" Grid.Column="0"
+                    BorderBrush="Black" Foreground="White" MaxHeight="70" MaxWidth="200"
+                        Name="DeleteBet">Usuń Zakład
+                </Button>
+
+                <Button Margin="10,0,10,0" Background="Black" Grid.Column="1"
+                    BorderBrush="Black" Foreground="White" MaxHeight="70" MaxWidth="200"
+                        Name="RestartBets">Resetuj Zakłady
+                </Button>
+            </Grid>
+
+            <Button Grid.Row="2" Content="Zakręć ruletką" Name="ButtonSpinner"
+                FontWeight="Bold" Margin="0,10,0,0"
+                 MaxHeight="90" MaxWidth="250"
+                Background="DarkRed"
+                Foreground="White"
+                Click="SpinButton_Click"/>
+
+            <Border Grid.Row="3" BorderBrush="Black" BorderThickness="2"
+            CornerRadius="5" Padding="10" Background="Gray" Margin="10">
+                <StackPanel>
+                    <TextBlock FontSize="18" TextAlignment="Center"
+                       FontWeight="Bold" Margin="0,0,0,10">
+                Ustawienia
+                    </TextBlock>
+
+                    <TextBlock Text="Ustaw Moc Zakręcenia"
+                       FontSize="12"
+                       FontWeight="Bold"
+                       Foreground="Gold"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"/>
+                    <Slider Margin="0,10" Background="DarkRed"
+                    TickFrequency="1" Minimum="1" Maximum="4"
+                    Name="SpinPowerSlider" IsSnapToTickEnabled="True"
+                    TickPlacement="BottomRight"/>
+
+                    <TextBlock Text="Ustaw Czas Animacji"
+                       FontSize="12"
+                       FontWeight="Bold"
+                       Foreground="Gold"
+                       TextAlignment="Center"
+                       Margin="0,10,0,0"
+                       TextWrapping="Wrap"/>
+                    <Slider Margin="0,10" Background="DarkRed"
+                    TickFrequency="1" Minimum="0" Maximum="6"
+                    Name="AnimationLengthSlider" IsSnapToTickEnabled="True"
+                    TickPlacement="BottomRight"/>
+
+                    <TextBlock Text="Ustaw Pieniądze za Kliknięcie"
+                       FontSize="12"
+                       FontWeight="Bold"
+                       Foreground="Gold"
+                       TextAlignment="Center"
+                       Margin="0,10,0,0"
+                       TextWrapping="Wrap"/>
+                    
+                    <Slider Margin="0,10" Background="DarkRed"
+                    TickFrequency="5" Minimum="5" Maximum="100"
+                    Name="MoneyBetPerClick" IsSnapToTickEnabled="True"
+                    TickPlacement="BottomRight"/>
+                </StackPanel>
+            </Border>
+        </Grid>
 
         <!-- Obstawianie -->
         <Grid Grid.Column="2">

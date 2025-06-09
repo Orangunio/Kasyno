@@ -41,7 +41,7 @@
             </StackPanel>
             
 
-            <Button Content="{DynamicResource Roulette}" Style="{StaticResource CasinoActionButton}"/>
+            <Button Content="{DynamicResource Roulette}" Style="{StaticResource CasinoActionButton}" Click="RouletteButtonClick"/>
             <Button Content="{DynamicResource Machines}" Style="{StaticResource CasinoActionButton}"/>
             <Button Content="Blackjack" Style="{StaticResource CasinoActionButton}"
                     Command="{Binding BlackjackCommand}"/>

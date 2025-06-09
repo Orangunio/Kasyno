@@ -29,6 +29,14 @@ namespace Kasyno.Views
         {
             Close();
         }
+
+        private void RouletteButtonClick(object sender, RoutedEventArgs e)
+        {
+            var rouletteView = new Views.Games.Roulette();
+            rouletteView.Show();
+            Close();
+        }
+
         private void LanguageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox combo && combo.SelectedItem is ComboBoxItem item && item.Tag is string lang)

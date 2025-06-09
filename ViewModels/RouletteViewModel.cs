@@ -21,7 +21,7 @@ namespace Kasyno.ViewModels
     public class RouletteViewModel
     {
         public double CanvasSize => 300;
-        public ICommand SpinCommand => new SpinCommand(_ => Spin(2, 2));
+        public ICommand SpinCommand => new SpinCommand(_ => Spin(2));
         public ObservableCollection<RouletteFieldDisplay> DisplayFields { get; set; } = new();
 
         public Roulette roulette = new Roulette();
@@ -72,13 +72,13 @@ namespace Kasyno.ViewModels
             }
         }
 
-        public void Spin(int strength, int animationType)
+        public void Spin(int strength)
         {
             getBetFields();
 
             reducePlayerCash();
 
-            int spinPower = SpinPower(strength, animationType);
+            int spinPower = SpinPower(strength);
 
             RouletteField winningField = getResult(spinPower);
 
@@ -116,26 +116,26 @@ namespace Kasyno.ViewModels
         //3 - 50-80
         //4 - 70-100
 
-        public int SpinPower(int strength, int animationType)
+        public int SpinPower(int strength = 1)
         {
             Random rnd = new Random();
             switch(strength)
             {
                 case 1:
                     {
-                        return rnd.Next(20, 40);
+                        return rnd.Next(10, 20);
                     }
                 case 2:
                     {
-                        return rnd.Next(35, 55);
+                        return rnd.Next(25, 30);
                     }
                 case 3:
                     {
-                        return rnd.Next(50, 80);
+                        return rnd.Next(30, 40);
                     }
                 case 4:
                     {
-                        return rnd.Next(70, 100);
+                        return rnd.Next(50, 70);
                     }
                 default:
                     {

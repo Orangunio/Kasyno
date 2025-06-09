@@ -33,13 +33,34 @@ namespace Kasyno.Views.Games
 
         private void SpinAnimation()
         {
+            ButtonSpinner.IsEnabled = false;
+            var viewModel = (RouletteViewModel)this.DataContext;
+            int power = viewModel.SpinPower((int)SpinPowerSlider.Value);
+            int randomAngle = new Random().Next(70, 90);
+            int animationTime = (int)AnimationLengthSlider.Value;
+            if (animationTime <= 0)
+            {
+                ButtonSpinner.IsEnabled = true;
+            }
             var rotateTransform = WheelRotation;
             var animation = new DoubleAnimation
             {
                 From = 0,
-                To = 360 * 5, // obrót 5 razy
-                Duration = new Duration(TimeSpan.FromSeconds(3)),
+                To = randomAngle * power,
+                Duration = new Duration(TimeSpan.FromSeconds(animationTime)),
                 EasingFunction = new CircleEase { EasingMode = EasingMode.EaseOut }
+            };
+
+            animation.Completed += (s, e) =>
+            {
+                try
+                {
+                    ButtonSpinner.IsEnabled = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Błąd: " + ex.Message);
+                }
             };
 
             rotateTransform.BeginAnimation(RotateTransform.AngleProperty, animation);
@@ -48,7 +69,7 @@ namespace Kasyno.Views.Games
         private void SpinButton_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = (RouletteViewModel)this.DataContext;
-            viewModel.Spin(2, 2); // uruchamia logikę
+            viewModel.Spin(2); // uruchamia logikę
             SpinAnimation(); // animacja
         }
     }

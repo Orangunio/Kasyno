@@ -70,13 +70,325 @@
         </Grid>
 
         <!-- Panel sterowania -->
-        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button Content="Zakręć ruletką"
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" 
+                    HorizontalAlignment="Center">
+            <Button Content="Zakręć ruletką" Name="ButtonSpinner"
                     Width="150" Height="40"
                     FontWeight="Bold"
                     Background="DarkRed"
                     Foreground="White"
                     Click="SpinButton_Click"/>
+            <TextBlock Text="Ustaw Moc Zakręcenia"
+               FontSize="12"
+               FontWeight="Bold"
+               Foreground="Gold"
+               TextAlignment="Center"
+               HorizontalAlignment="Center"
+               Margin="0,20, 0, 0"
+               TextWrapping="Wrap"
+               Effect="{DynamicResource DropShadowEffect}">
+            </TextBlock>
+
+            <Slider Margin="0,10" Background="DarkRed"
+            TickFrequency="1" Minimum="1" Maximum="4"
+            Name="SpinPowerSlider" IsSnapToTickEnabled="True"
+            TickPlacement="BottomRight"></Slider>
+
+            <TextBlock Text="Ustaw Czas Animacji"
+               FontSize="12"
+               FontWeight="Bold"
+               Foreground="Gold"
+               TextAlignment="Center"
+               HorizontalAlignment="Center"
+               TextWrapping="Wrap"
+               Effect="{DynamicResource DropShadowEffect}">
+            </TextBlock>
+
+            <Slider Margin="0,10" Background="DarkRed"
+            TickFrequency="1" Minimum="0" Maximum="6"
+            Name="AnimationLengthSlider" IsSnapToTickEnabled="True"
+            TickPlacement="BottomRight"></Slider>
         </StackPanel>
+
+        <!-- Obstawianie -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Zielone -->
+            <Button Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="1"
+                Background="Green" Name ="GreenZero" BorderBrush="Black"
+                FontSize="20" FontWeight="DemiBold">0
+            </Button>
+            <Button Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="3"
+                Background="Green" Name ="GreenZeroZero" BorderBrush="Black"
+                FontSize="20" FontWeight="DemiBold">00
+            </Button>
+
+            <!-- 2 Kolumna -->
+            <Button Grid.Row="1" Grid.RowSpan="4" Grid.Column="1"
+                Background="Gray" Name ="FirstTwelve" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold">1st 12
+            </Button>
+
+            <Button Grid.Row="5" Grid.RowSpan="4" Grid.Column="1"
+                Background="Gray" Name ="SecondTwelve" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold">2nd 12
+            </Button>
+
+            <Button Grid.Row="9" Grid.RowSpan="4" Grid.Column="1"
+                Background="Gray" Name ="ThirdTwelve" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold">3rd 12
+            </Button>
+
+            <!-- 1 Kolumna -->
+            <Button Grid.Row="1" Grid.RowSpan="2" Grid.Column="0"
+                Background="LightCyan" Name ="FirstHalf" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold">1 to 18
+            </Button>
+
+            <Button Grid.Row="3" Grid.RowSpan="2" Grid.Column="0"
+                Background="LightCyan" Name ="Even" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold">Even
+            </Button>
+
+            <Button Grid.Row="5" Grid.RowSpan="2" Grid.Column="0"
+                Background="Red" Name ="Red" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">Red
+            </Button>
+
+            <Button Grid.Row="7" Grid.RowSpan="2" Grid.Column="0"
+                Background="Black" Name ="Black" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">Black
+            </Button>
+
+            <Button Grid.Row="9" Grid.RowSpan="2" Grid.Column="0"
+                Background="LightCyan" Name ="Odd" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold">Odd
+            </Button>
+
+            <Button Grid.Row="11" Grid.RowSpan="2" Grid.Column="0"
+                Background="LightCyan" Name ="SecondHalf" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold">19to36
+            </Button>
+
+            <!-- Ostatni Wiersz -->
+            <Button Grid.Row="13" Grid.RowSpan="2" Grid.Column="2"
+                Background="LightCyan" Name ="FirstColumn" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold">2 To 1
+            </Button>
+            
+            <Button Grid.Row="13" Grid.RowSpan="2" Grid.Column="3"
+                Background="LightCyan" Name ="SecondColumn" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold">2 To 1
+            </Button>
+
+            <Button Grid.Row="13" Grid.RowSpan="2" Grid.Column="4"
+                Background="LightCyan" Name ="ThirdColumn" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold">2 To 1
+            </Button>
+
+            <!-- Pojedyncze Przyciski -->
+            <Button Grid.Row="1" Grid.Column="2"
+                Background="Red" Name ="One" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">1
+            </Button>
+
+            <Button Grid.Row="1" Grid.Column="3"
+                Background="Black" Name ="Two" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">2
+            </Button>
+
+            <Button Grid.Row="1" Grid.Column="4"
+                Background="Red" Name ="Three" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">3
+            </Button>
+
+            <Button Grid.Row="2" Grid.Column="2"
+                Background="Black" Name ="Four" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">4
+            </Button>
+
+            <Button Grid.Row="2" Grid.Column="3"
+                Background="Red" Name ="Five" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">5
+            </Button>
+
+            <Button Grid.Row="2" Grid.Column="4"
+                Background="Black" Name ="Six" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">6
+            </Button>
+
+            <Button Grid.Row="3" Grid.Column="2"
+                Background="Red" Name ="Seven" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">7
+            </Button>
+
+            <Button Grid.Row="3" Grid.Column="3"
+                Background="Black" Name ="Eight" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">8
+            </Button>
+
+            <Button Grid.Row="3" Grid.Column="4"
+                Background="Red" Name ="Nine" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">9
+            </Button>
+
+            <Button Grid.Row="4" Grid.Column="2"
+                Background="Black" Name ="Ten" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">10
+            </Button>
+
+            <Button Grid.Row="4" Grid.Column="3"
+                Background="Red" Name ="Eleven" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">11
+            </Button>
+
+            <Button Grid.Row="4" Grid.Column="4"
+                Background="Black" Name ="Twelve" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">12
+            </Button>
+
+            <Button Grid.Row="5" Grid.Column="2"
+                Background="Red" Name ="Thirteen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">13
+            </Button>
+
+            <Button Grid.Row="5" Grid.Column="3"
+                Background="Black" Name ="Fourteen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">14
+            </Button>
+
+            <Button Grid.Row="5" Grid.Column="4"
+                Background="Red" Name ="Fifteen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">15
+            </Button>
+
+            <Button Grid.Row="6" Grid.Column="2"
+                Background="Black" Name ="Sixteen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">16
+            </Button>
+
+            <Button Grid.Row="6" Grid.Column="3"
+                Background="Red" Name ="Seventeen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">17
+            </Button>
+
+            <Button Grid.Row="6" Grid.Column="4"
+                Background="Black" Name ="Eighteen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">18
+            </Button>
+
+            <Button Grid.Row="7" Grid.Column="2"
+                Background="Red" Name ="Nineteen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">19
+            </Button>
+
+            <Button Grid.Row="7" Grid.Column="3"
+                Background="Black" Name ="Twenty" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">20
+            </Button>
+
+            <Button Grid.Row="7" Grid.Column="4"
+                Background="Red" Name ="TwentyOne" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">21
+            </Button>
+
+            <Button Grid.Row="8" Grid.Column="2"
+                Background="Black" Name ="TwentyTwo" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">22
+            </Button>
+
+            <Button Grid.Row="8" Grid.Column="3"
+                Background="Red" Name ="TwentyThree" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">23
+            </Button>
+
+            <Button Grid.Row="8" Grid.Column="4"
+                Background="Black" Name ="TwentyFour" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">24
+            </Button>
+
+            <Button Grid.Row="9" Grid.Column="2"
+                Background="Red" Name ="TwentyFive" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">25
+            </Button>
+
+            <Button Grid.Row="9" Grid.Column="3"
+                Background="Black" Name ="TwentySix" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">26
+            </Button>
+
+            <Button Grid.Row="9" Grid.Column="4"
+                Background="Red" Name ="TwentySeven" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">27
+            </Button>
+
+            <Button Grid.Row="10" Grid.Column="2"
+                Background="Black" Name ="TwentyEight" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">28
+            </Button>
+
+            <Button Grid.Row="10" Grid.Column="3"
+                Background="Red" Name ="TwentyNine" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">29
+            </Button>
+
+            <Button Grid.Row="10" Grid.Column="4"
+                Background="Black" Name ="Thirty" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">30
+            </Button>
+
+            <Button Grid.Row="11" Grid.Column="2"
+                Background="Red" Name ="ThirtyOne" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">31
+            </Button>
+
+            <Button Grid.Row="11" Grid.Column="3"
+                Background="Black" Name ="ThirtyTwo" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">32
+            </Button>
+
+            <Button Grid.Row="11" Grid.Column="4"
+                Background="Red" Name ="ThirtyThree" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">33
+            </Button>
+
+            <Button Grid.Row="12" Grid.Column="2"
+                Background="Black" Name ="ThirtyFour" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">34
+            </Button>
+
+            <Button Grid.Row="12" Grid.Column="3"
+                Background="Red" Name ="ThirtyFive" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">35
+            </Button>
+
+            <Button Grid.Row="12" Grid.Column="4"
+                Background="Black" Name ="ThirtySix" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White">36
+            </Button>
+        </Grid>
     </Grid>
 </Window>

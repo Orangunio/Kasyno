@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Kasyno.Models
 {
@@ -63,6 +64,11 @@ namespace Kasyno.Models
         {
             return this.bet * 3;
         }
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return  "1st12 Grasz za: " + bet + " Potencjalna Wygrana: " + potentialWin;
+        }
     }
 
     public class SecondTwelve : IRouletteBetFields
@@ -84,6 +90,12 @@ namespace Kasyno.Models
         {
             return this.bet * 3;
         }
+
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return "2nd12 Grasz za: " + bet + " Potencjalna Wygrana: " + potentialWin;
+        }
     }
 
     public class ThirdTwelve : IRouletteBetFields
@@ -104,6 +116,12 @@ namespace Kasyno.Models
         public int potentialWin()
         {
             return this.bet * 3;
+        }
+
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return "3rd12 Grasz za: " + bet + " Potencjalna Wygrana: " + potentialWin;
         }
     }
 
@@ -127,6 +145,12 @@ namespace Kasyno.Models
         {
             return this.bet * 2;
         }
+
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return "FirstHalf Grasz za: " + bet + " Potencjalna Wygrana: " + potentialWin;
+        }
     }
 
     public class SecondHalf : IRouletteBetFields
@@ -148,6 +172,12 @@ namespace Kasyno.Models
         public int potentialWin()
         {
             return this.bet * 2;
+        }
+
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return "SecondHalf Grasz za: " + bet + " Potencjalna Wygrana: " + potentialWin;
         }
     }
 
@@ -171,6 +201,12 @@ namespace Kasyno.Models
         {
             return this.bet * 2;
         }
+
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return "Even Grasz za: " + bet + " Potencjalna Wygrana: " + potentialWin;
+        }
     }
 
     public class Odd : IRouletteBetFields
@@ -189,6 +225,12 @@ namespace Kasyno.Models
         public int potentialWin()
         {
             return this.bet * 2;
+        }
+
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return "Odd Grasz za: " + bet + " Potencjalna Wygrana: " + potentialWin;
         }
     }
 
@@ -209,6 +251,12 @@ namespace Kasyno.Models
         {
             return this.bet * 2;
         }
+
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return "Czerwone: " + bet + " Potencjalna Wygrana: " + potentialWin;
+        }
     }
 
     public class Black : IRouletteBetFields
@@ -228,6 +276,12 @@ namespace Kasyno.Models
         {
             return this.bet * 2;
         }
+
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return "Czarne: " + bet + " Potencjalna Wygrana: " + potentialWin;
+        }
     }
 
     public class FirstColumn : IRouletteBetFields
@@ -245,6 +299,12 @@ namespace Kasyno.Models
         public int potentialWin()
         {
             return this.bet * 3;
+        }
+
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return "FirstColumn: " + bet + " Potencjalna Wygrana: " + potentialWin;
         }
     }
 
@@ -264,6 +324,12 @@ namespace Kasyno.Models
         {
             return this.bet * 3;
         }
+
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return "SecondColumn: " + bet + " Potencjalna Wygrana: " + potentialWin;
+        }
     }
 
     public class ThirdColumn : IRouletteBetFields
@@ -281,6 +347,12 @@ namespace Kasyno.Models
         public int potentialWin()
         {
             return this.bet * 3;
+        }
+
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return "ThirdColumn: " + bet + " Potencjalna Wygrana: " + potentialWin;
         }
     }
 }

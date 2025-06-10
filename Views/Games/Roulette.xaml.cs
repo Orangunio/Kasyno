@@ -117,5 +117,65 @@ namespace Kasyno.Views.Games
 
             ((RouletteViewModel)this.DataContext).CreateBetOnNumber(color, number);
         }
+
+        private void CreateBetOnFirstTwelve(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).CreateBetOnFirstTwelve();
+        }
+
+        private void CreateBetOnSecondTwelve(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).CreateBetOnSecondTwelve();
+        }
+
+        private void CreateBetOnThirdTwelve(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).CreateBetOnThirdTwelve();
+        }
+
+        private void CreateBetOnFirstHalf(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).CreateBetOnFirstHalf();
+        }
+
+        private void CreateBetOnSecondHalf(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).CreateBetOnSecondHalf();
+        }
+
+        private void CreateBetOnEven(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).CreateBetOnEven();
+        }
+
+        private void CreateBetOnOdd(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).CreateBetOnOdd();
+        }
+
+        private void CreateBetOnRed(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).CreateBetOnRed();
+        }
+
+        private void CreateBetOnBlack(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).CreateBetOnBlack();
+        }
+
+        private void CreateBetOnFirstColumn(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).CreateBetOnFirstColumn();
+        }
+
+        private void CreateBetOnSecondColumn(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).CreateBetOnSecondColumn();
+        }
+
+        private void CreateBetOnThirdColumn(object sender, RoutedEventArgs e)
+        {
+            ((RouletteViewModel)this.DataContext).CreateBetOnThirdColumn();
+        }
     }
 }

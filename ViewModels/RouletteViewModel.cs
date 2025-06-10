@@ -179,5 +179,137 @@ namespace Kasyno.ViewModels
             else if (Equals(colorCode, "#FF008000")) { return "Zielone"; }
             return "????????";
         }
+
+        public void CreateBetOnFirstTwelve()
+        {
+            if (currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+            FirstTwelve bet = new FirstTwelve(currentBet);
+            betFields.Add(bet);
+        }
+
+        public void CreateBetOnSecondTwelve()
+        {
+            if (currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+            SecondTwelve bet = new SecondTwelve(currentBet);
+            betFields.Add(bet);
+        }
+
+        public void CreateBetOnThirdTwelve()
+        {
+            if (currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+            ThirdTwelve bet = new ThirdTwelve(currentBet);
+            betFields.Add(bet);
+        }
+
+        public void CreateBetOnFirstHalf()
+        {
+            if (currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+            FirstHalf bet = new FirstHalf(currentBet);
+            betFields.Add(bet);
+        }
+
+        public void CreateBetOnSecondHalf()
+        {
+            if (currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+            SecondHalf bet = new SecondHalf(currentBet);
+            betFields.Add(bet);
+        }
+
+        public void CreateBetOnEven()
+        {
+            if (currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+            Even bet = new Even(currentBet);
+            betFields.Add(bet);
+        }
+
+        public void CreateBetOnOdd()
+        {
+            if (currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+            Odd bet = new Odd(currentBet);
+            betFields.Add(bet);
+        }
+
+        public void CreateBetOnRed()
+        {
+            if (currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+            Red bet = new Red(currentBet);
+            betFields.Add(bet);
+        }
+
+        public void CreateBetOnBlack()
+        {
+            if (currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+            Black bet = new Black(currentBet);
+            betFields.Add(bet);
+        }
+
+        public void CreateBetOnFirstColumn()
+        {
+            if (currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+            FirstColumn bet = new FirstColumn(currentBet);
+            betFields.Add(bet);
+        }
+
+        public void CreateBetOnSecondColumn()
+        {
+            if (currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+            SecondColumn bet = new SecondColumn(currentBet);
+            betFields.Add(bet);
+        }
+
+        public void CreateBetOnThirdColumn()
+        {
+            if (currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+            ThirdColumn bet = new ThirdColumn(currentBet);
+            betFields.Add(bet);
+        }
     }
 }

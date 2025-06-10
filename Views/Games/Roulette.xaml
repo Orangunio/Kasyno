@@ -131,8 +131,9 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <ListBox Grid.Row="0" MinHeight="100"
-             VerticalAlignment="Stretch" />
+            <ListBox Grid.Row="0" MinHeight="100" Name="Bets"
+             VerticalAlignment="Stretch" 
+             ItemsSource="{Binding betFields}"/>
 
             <Grid Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
@@ -234,11 +235,13 @@
             <!-- Zielone -->
             <Button Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="1"
                 Background="Green" Name ="GreenZero" BorderBrush="Black"
-                FontSize="20" FontWeight="DemiBold">0
+                FontSize="20" FontWeight="DemiBold"
+                Click="CreateBetOnNumber">0
             </Button>
             <Button Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="3"
                 Background="Green" Name ="GreenZeroZero" BorderBrush="Black"
-                FontSize="20" FontWeight="DemiBold">00
+                FontSize="20" FontWeight="DemiBold"
+                Click="CreateBetOnNumber">00
             </Button>
 
             <!-- 2 Kolumna -->
@@ -307,182 +310,218 @@
             <!-- Pojedyncze Przyciski -->
             <Button Grid.Row="1" Grid.Column="2"
                 Background="Red" Name ="One" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">1
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">1
             </Button>
 
             <Button Grid.Row="1" Grid.Column="3"
                 Background="Black" Name ="Two" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">2
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">2
             </Button>
 
             <Button Grid.Row="1" Grid.Column="4"
                 Background="Red" Name ="Three" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">3
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">3
             </Button>
 
             <Button Grid.Row="2" Grid.Column="2"
                 Background="Black" Name ="Four" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">4
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">4
             </Button>
 
             <Button Grid.Row="2" Grid.Column="3"
                 Background="Red" Name ="Five" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">5
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">5
             </Button>
 
             <Button Grid.Row="2" Grid.Column="4"
                 Background="Black" Name ="Six" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">6
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">6
             </Button>
 
             <Button Grid.Row="3" Grid.Column="2"
                 Background="Red" Name ="Seven" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">7
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">7
             </Button>
 
             <Button Grid.Row="3" Grid.Column="3"
                 Background="Black" Name ="Eight" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">8
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">8
             </Button>
 
             <Button Grid.Row="3" Grid.Column="4"
                 Background="Red" Name ="Nine" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">9
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">9
             </Button>
 
             <Button Grid.Row="4" Grid.Column="2"
                 Background="Black" Name ="Ten" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">10
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">10
             </Button>
 
             <Button Grid.Row="4" Grid.Column="3"
                 Background="Red" Name ="Eleven" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">11
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">11
             </Button>
 
             <Button Grid.Row="4" Grid.Column="4"
                 Background="Black" Name ="Twelve" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">12
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">12
             </Button>
 
             <Button Grid.Row="5" Grid.Column="2"
                 Background="Red" Name ="Thirteen" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">13
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">13
             </Button>
 
             <Button Grid.Row="5" Grid.Column="3"
                 Background="Black" Name ="Fourteen" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">14
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">14
             </Button>
 
             <Button Grid.Row="5" Grid.Column="4"
                 Background="Red" Name ="Fifteen" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">15
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">15
             </Button>
 
             <Button Grid.Row="6" Grid.Column="2"
                 Background="Black" Name ="Sixteen" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">16
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">16
             </Button>
 
             <Button Grid.Row="6" Grid.Column="3"
                 Background="Red" Name ="Seventeen" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">17
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">17
             </Button>
 
             <Button Grid.Row="6" Grid.Column="4"
                 Background="Black" Name ="Eighteen" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">18
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">18
             </Button>
 
             <Button Grid.Row="7" Grid.Column="2"
                 Background="Red" Name ="Nineteen" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">19
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">19
             </Button>
 
             <Button Grid.Row="7" Grid.Column="3"
                 Background="Black" Name ="Twenty" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">20
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">20
             </Button>
 
             <Button Grid.Row="7" Grid.Column="4"
                 Background="Red" Name ="TwentyOne" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">21
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">21
             </Button>
 
             <Button Grid.Row="8" Grid.Column="2"
                 Background="Black" Name ="TwentyTwo" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">22
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">22
             </Button>
 
             <Button Grid.Row="8" Grid.Column="3"
                 Background="Red" Name ="TwentyThree" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">23
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">23
             </Button>
 
             <Button Grid.Row="8" Grid.Column="4"
                 Background="Black" Name ="TwentyFour" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">24
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">24
             </Button>
 
             <Button Grid.Row="9" Grid.Column="2"
                 Background="Red" Name ="TwentyFive" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">25
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">25
             </Button>
 
             <Button Grid.Row="9" Grid.Column="3"
                 Background="Black" Name ="TwentySix" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">26
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">26
             </Button>
 
             <Button Grid.Row="9" Grid.Column="4"
                 Background="Red" Name ="TwentySeven" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">27
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">27
             </Button>
 
             <Button Grid.Row="10" Grid.Column="2"
                 Background="Black" Name ="TwentyEight" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">28
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">28
             </Button>
 
             <Button Grid.Row="10" Grid.Column="3"
                 Background="Red" Name ="TwentyNine" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">29
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">29
             </Button>
 
             <Button Grid.Row="10" Grid.Column="4"
                 Background="Black" Name ="Thirty" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">30
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">30
             </Button>
 
             <Button Grid.Row="11" Grid.Column="2"
                 Background="Red" Name ="ThirtyOne" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">31
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">31
             </Button>
 
             <Button Grid.Row="11" Grid.Column="3"
                 Background="Black" Name ="ThirtyTwo" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">32
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">32
             </Button>
 
             <Button Grid.Row="11" Grid.Column="4"
                 Background="Red" Name ="ThirtyThree" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">33
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">33
             </Button>
 
             <Button Grid.Row="12" Grid.Column="2"
                 Background="Black" Name ="ThirtyFour" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">34
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">34
             </Button>
 
             <Button Grid.Row="12" Grid.Column="3"
                 Background="Red" Name ="ThirtyFive" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">35
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">35
             </Button>
 
             <Button Grid.Row="12" Grid.Column="4"
                 Background="Black" Name ="ThirtySix" BorderBrush="Black"
-                FontSize="13" FontWeight="DemiBold" Foreground="White">36
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">36
             </Button>
         </Grid>
     </Grid>

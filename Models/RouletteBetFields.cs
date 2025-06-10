@@ -22,6 +22,7 @@ namespace Kasyno.Models
         {
             this.bet = bet; this.number = number; this.color = color;
         }
+
         public bool checkWin(RouletteField winningField) 
         { 
             if(winningField.number == this.number && Equals(winningField.color,this.color))
@@ -30,9 +31,16 @@ namespace Kasyno.Models
             }
             return false;
         }
+
         public int potentialWin()
         {
             return this.bet * 36;
+        }
+
+        public override string ToString()
+        {
+            string potentialWin = this.potentialWin().ToString();
+            return color+" "+number+" Grasz za: "+bet+" Potencjalna Wygrana: "+potentialWin;
         }
     }
 

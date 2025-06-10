@@ -104,8 +104,18 @@ namespace Kasyno.Views.Games
         private void SpinButton_Click(object sender, RoutedEventArgs e)
         {
             var viewModel = (RouletteViewModel)this.DataContext;
-            viewModel.Spin(2); // uruchamia logikę
-            SpinAnimation(); // animacja
+            viewModel.Spin(2);
+            SpinAnimation();
+        }
+
+        private void CreateBetOnNumber(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+
+            string color = button.Background.ToString();
+            int number = int.Parse(button.Content.ToString());
+
+            ((RouletteViewModel)this.DataContext).CreateBetOnNumber(color, number);
         }
     }
 }

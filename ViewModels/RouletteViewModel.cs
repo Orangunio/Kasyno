@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Kasyno.Models;
@@ -48,7 +49,7 @@ namespace Kasyno.ViewModels
 
         public Roulette roulette = new Roulette();
 
-        public ObservableCollection<IRouletteBetFields> betFields = new ObservableCollection<IRouletteBetFields>();
+        public ObservableCollection<IRouletteBetFields> betFields { get; set; } = new ObservableCollection<IRouletteBetFields>();
 
         public RouletteViewModel() { GenerateDisplayFields(); }
         public void GenerateDisplayFields()
@@ -155,6 +156,28 @@ namespace Kasyno.ViewModels
                         throw new Exception("Invalid Variable");
                     }
             }
+        }
+
+        public void CreateBetOnNumber(string color, int number)
+        {
+            if(currentBet == 0)
+            {
+                MessageBox.Show("Nie możesz zagrać za 0");
+                return;
+            }
+
+            string convertedColor = ConvertColorCodeOnColor(color);
+
+            NumberBet bet = new NumberBet(currentBet, number, convertedColor);
+            betFields.Add(bet);
+        }
+
+        public string ConvertColorCodeOnColor(string colorCode)
+        {
+            if (Equals(colorCode, "#FFFF0000")) { return "Czerwone"; }
+            else if (Equals(colorCode, "#FF000000")) { return "Czarne"; }
+            else if (Equals(colorCode, "#FF008000")) { return "Zielone"; }
+            return "????????";
         }
     }
 }

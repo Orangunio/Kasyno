@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Kasyno.ViewModels"
+        xmlns:res="clr-namespace:System;assembly=mscorlib"
         xmlns:models="clr-namespace:Kasyno.Models"
         mc:Ignorable="d"
         Title="Menu Główne" Height="600" Width="900"
@@ -24,19 +25,28 @@
         <StackPanel Grid.Column="0"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
-            <TextBlock Text="🎰 Zagrajmy"
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="🎰"
                        FontSize="48"
                        FontWeight="Bold"
                        Foreground="Gold"
                        TextAlignment="Center"
                        Margin="0,0,0,30"/>
+                <TextBlock Text="{DynamicResource Hello}"
+                           FontSize="48"
+                            FontWeight="Bold"
+                            Foreground="Gold"
+                            TextAlignment="Center"
+                            Margin="0,0,0,30"/>
+            </StackPanel>
+            
 
-            <Button Content="Ruletka" Style="{StaticResource CasinoActionButton}"/>
-            <Button Content="Automaty" Style="{StaticResource CasinoActionButton}"/>
+            <Button Content="{DynamicResource Roulette}" Style="{StaticResource CasinoActionButton}" Click="RouletteButtonClick"/>
+            <Button Content="{DynamicResource Machines}" Style="{StaticResource CasinoActionButton}"/>
             <Button Content="Blackjack" Style="{StaticResource CasinoActionButton}"
                     Command="{Binding BlackjackCommand}"/>
-            <Button Content="Wojna" Style="{StaticResource CasinoActionButton}"/>
-            <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}" Click="Button_Click"/>
+            <Button Content="{DynamicResource War}" Style="{StaticResource CasinoActionButton}"/>
+            <Button Content="{DynamicResource Exit}" Style="{StaticResource CasinoActionButton}" Click="Button_Click"/>
         </StackPanel>
         <!-- Informacje o graczu -->
         <Grid Grid.Column="1">
@@ -55,12 +65,31 @@
                         Width="180"
                         Height="50"
                         Command="{Binding StatsCommand}"/>
-                <TextBlock Text="{Binding User.Balance, StringFormat=Stan konta: {0} zł}"
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="{DynamicResource Balance}"
                            FontSize="24"
-                           HorizontalAlignment="Center"
-                           Margin="0,10,0,0"
-                           Foreground="White"/>
+                           Foreground="White"
+                           VerticalAlignment="Center"/>
+                    <TextBlock Text=": "
+                               FontSize="24"
+                               Foreground="White"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding User.Balance, StringFormat={}{0}}"
+                               FontSize="24"
+                               Foreground="White"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+
             </StackPanel>
+            <ComboBox Width="140" Height="30" x:Name="LanguageSelector" Style="{StaticResource CasinoComboBoxStyle}"
+                      HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
+                      SelectionChanged="LanguageSelector_SelectionChanged"
+                      SelectedValuePath="Tag"
+                      SelectedValue="{Binding SelectedLanguage, Mode=TwoWay}">
+                <ComboBoxItem Content="🇵🇱 Polski" Tag="pl"/>
+                <ComboBoxItem Content="🇬🇧 English" Tag="en"/>
+            </ComboBox>
         </Grid>
     </Grid>
 </Window>

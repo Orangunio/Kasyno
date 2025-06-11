@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kasyno.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,23 @@ namespace Kasyno.Views
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void RouletteButtonClick(object sender, RoutedEventArgs e)
+        {
+            var rouletteView = new Views.Games.Roulette();
+            rouletteView.Show();
+            Close();
+        }
+
+        private void LanguageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox combo && combo.SelectedItem is ComboBoxItem item && item.Tag is string lang)
+            {
+                Properties.Settings.Default.AppCulture = lang;
+                Properties.Settings.Default.Save();
+                LocalizationManager.ChangeLanguage(lang);
+            }
         }
     }
 }

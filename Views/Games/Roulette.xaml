@@ -1,0 +1,568 @@
+﻿<Window x:Class="Kasyno.Views.Games.Roulette"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kasyno.Views.Games"
+        xmlns:vm="clr-namespace:Kasyno.ViewModels"
+        xmlns:models="clr-namespace:Kasyno.Models"
+        mc:Ignorable="d"
+        Title="Roulette" Height="600" Width="1000"
+        Background="#0F3B21"
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.DataContext>
+        <vm:RouletteViewModel />
+    </Window.DataContext>
+
+    <Grid Margin="10" Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- 1 Kolumna -->
+        <Grid Grid.Column="0" Name="RouletteGrid">
+            <!-- Twoje Dane i Obstawianie -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="1.5*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Background="LightBlue">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" FontSize="20" VerticalAlignment="Center">Twoje Pieniądze:
+                    </TextBlock>
+                    <TextBlock Grid.Column="1" FontSize="20" VerticalAlignment="Center"
+                               Name="UserMoney"></TextBlock>
+                </Grid>
+
+                <Grid Grid.Row="1" Background="LightBlue">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="15">Grasz o:</TextBlock>
+                    <TextBox Grid.Column="1" FontSize="20" Width="Auto" Margin="10,0,0,0" 
+                             Name="MoneyValue" VerticalAlignment="Center"/>
+                </Grid>
+
+                <StackPanel Grid.Row="2" Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Background="Azure" FontSize="20" VerticalAlignment="Top" MinHeight="30" MinWidth="70"
+                        MaxHeight="50" MaxWidth="150" Name="IncreaseMoney" Margin="0,0,10,0"
+                        VerticalContentAlignment="Top"
+                        Padding="0,2,0,0" Click="IncreaseBet">+</Button>
+                    <Button Background="Azure" FontSize="20" VerticalAlignment="Top" MinHeight="30" MinWidth="70"
+                        MaxHeight="50" MaxWidth="150" Name="ReduceMoney"
+                        VerticalContentAlignment="Top"
+                        Padding="0,2,0,0" Click="ReduceBet">-</Button>
+                </StackPanel>
+
+                <Grid Grid.Row="3" Margin="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Background="White" Margin="0,10,0,10">
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontSize="30">OSTATNIE WYGRANE</TextBlock>
+                    </Grid>
+                    <Grid Grid.Row="1" Name="LastWinsGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <!-- Ruletka -->
+            <Viewbox Stretch="Uniform" VerticalAlignment="Bottom" Grid.Row="1">
+                <Grid Width="400" Height="400">
+                    <!-- Tło koła -->
+                    <Ellipse Stroke="Gold" StrokeThickness="5" Fill="DarkGreen" />
+
+                    <!-- Obrotowe koło -->
+                    <Canvas Width="{Binding CanvasSize}" Height="{Binding CanvasSize}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        RenderTransformOrigin="0.5,0.5"
+                        x:Name="WheelCanvas">
+                                    <Canvas.RenderTransform>
+                                        <RotateTransform x:Name="WheelRotation"/>
+                                    </Canvas.RenderTransform>
+
+                                    <!-- Wstawiamy pola ruletki jako elementy Canvas -->
+                        <ItemsControl ItemsSource="{Binding DisplayFields}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="30" Height="30" Background="{Binding Color}" CornerRadius="5">
+                                        <TextBlock Text="{Binding Label}" 
+                                            HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center" 
+                                            Foreground="White"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                            <ItemsControl.ItemContainerStyle>
+                                <Style TargetType="ContentPresenter">
+                                    <Setter Property="Canvas.Left" Value="{Binding X}" />
+                                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                                </Style>
+                            </ItemsControl.ItemContainerStyle>
+                        </ItemsControl>
+                    </Canvas>
+
+                    <Polygon Points="400,184 400,196 384,188" Fill="Blue" Panel.ZIndex="10"/>
+                </Grid>
+            </Viewbox>
+        </Grid>
+
+        <!-- Środkowa Część Stołu -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <ListBox Grid.Row="0" MinHeight="100" Name="Bets"
+             VerticalAlignment="Stretch" Margin="5,0,5,0"
+             ItemsSource="{Binding betFields}"/>
+
+            <Grid Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Margin="10,0,10,0" Background="Red" Grid.Column="0"
+                    BorderBrush="Black" Foreground="White" MaxHeight="70" MaxWidth="200"
+                        Name="DeleteBet" Click="DeleteBet_Click">Usuń Zakład
+                </Button>
+
+                <TextBlock Grid.Column="1" FontSize="14" VerticalAlignment="Center" 
+                        TextAlignment="Center" Background="White" Name="MoneyForBet">KOSZT ZAKŁADU
+                </TextBlock>
+
+                <Button Margin="10,0,10,0" Background="Black" Grid.Column="2"
+                    BorderBrush="Black" Foreground="White" MaxHeight="70" MaxWidth="200"
+                        Name="RestartBets" Click="ResetBets">Resetuj Zakłady
+                </Button>
+            </Grid>
+
+            <Button Grid.Row="2" Content="Zakręć ruletką" Name="ButtonSpinner"
+                FontWeight="Bold" Margin="0,10,0,0"
+                 MaxHeight="90" MaxWidth="250"
+                Background="DarkRed"
+                Foreground="White"
+                Click="SpinButton_Click"/>
+
+            <Border Grid.Row="3" BorderBrush="Black" BorderThickness="2"
+            CornerRadius="5" Padding="10" Background="Gray" Margin="10">
+                <StackPanel>
+                    <TextBlock FontSize="18" TextAlignment="Center"
+                       FontWeight="Bold" Margin="0,0,0,10">
+                Ustawienia
+                    </TextBlock>
+
+                    <TextBlock Text="Ustaw Moc Zakręcenia"
+                       FontSize="12"
+                       FontWeight="Bold"
+                       Foreground="Gold"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"/>
+                    <Slider Margin="0,10" Background="DarkRed"
+                    TickFrequency="1" Minimum="1" Maximum="4"
+                    Name="SpinPowerSlider" IsSnapToTickEnabled="True"
+                    TickPlacement="BottomRight"/>
+
+                    <TextBlock Text="Ustaw Czas Animacji"
+                       FontSize="12"
+                       FontWeight="Bold"
+                       Foreground="Gold"
+                       TextAlignment="Center"
+                       Margin="0,10,0,0"
+                       TextWrapping="Wrap"/>
+                    <Slider Margin="0,10" Background="DarkRed"
+                    TickFrequency="1" Minimum="0" Maximum="6"
+                    Name="AnimationLengthSlider" IsSnapToTickEnabled="True"
+                    TickPlacement="BottomRight"/>
+
+                    <TextBlock Text="Ustaw Pieniądze za Kliknięcie"
+                       FontSize="12"
+                       FontWeight="Bold"
+                       Foreground="Gold"
+                       TextAlignment="Center"
+                       Margin="0,10,0,0"
+                       TextWrapping="Wrap"/>
+                    
+                    <Slider Margin="0,10" Background="DarkRed"
+                    TickFrequency="5" Minimum="5" Maximum="100"
+                    Name="MoneyBetPerClick" IsSnapToTickEnabled="True"
+                    TickPlacement="BottomRight" ValueChanged="ChangeMoneyToBet"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Obstawianie -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Zielone -->
+            <Button Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="1"
+                Background="Green" Name ="GreenZero" BorderBrush="Black"
+                FontSize="20" FontWeight="DemiBold"
+                Click="CreateBetOnNumber">0
+            </Button>
+            <Button Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="3"
+                Background="Green" Name ="GreenZeroZero" BorderBrush="Black"
+                FontSize="20" FontWeight="DemiBold"
+                Click="CreateBetOnNumber">00
+            </Button>
+
+            <!-- 2 Kolumna -->
+            <Button Grid.Row="1" Grid.RowSpan="4" Grid.Column="1"
+                Background="Gray" Name ="FirstTwelve" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold"
+                Click="CreateBetOnFirstTwelve">1st 12
+            </Button>
+
+            <Button Grid.Row="5" Grid.RowSpan="4" Grid.Column="1"
+                Background="Gray" Name ="SecondTwelve" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold"
+                Click="CreateBetOnSecondTwelve">2nd 12
+            </Button>
+
+            <Button Grid.Row="9" Grid.RowSpan="4" Grid.Column="1"
+                Background="Gray" Name ="ThirdTwelve" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold"
+                Click="CreateBetOnThirdTwelve">3rd 12
+            </Button>
+
+            <!-- 1 Kolumna -->
+            <Button Grid.Row="1" Grid.RowSpan="2" Grid.Column="0"
+                Background="LightCyan" Name ="FirstHalf" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold"
+                Click="CreateBetOnFirstHalf">1 to 18
+            </Button>
+
+            <Button Grid.Row="3" Grid.RowSpan="2" Grid.Column="0"
+                Background="LightCyan" Name ="Even" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold"
+                Click="CreateBetOnEven">Even
+            </Button>
+
+            <Button Grid.Row="5" Grid.RowSpan="2" Grid.Column="0"
+                Background="Red" Name ="Red" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnRed">Red
+            </Button>
+
+            <Button Grid.Row="7" Grid.RowSpan="2" Grid.Column="0"
+                Background="Black" Name ="Black" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnBlack">Black
+            </Button>
+
+            <Button Grid.Row="9" Grid.RowSpan="2" Grid.Column="0"
+                Background="LightCyan" Name ="Odd" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold"
+                Click="CreateBetOnOdd">Odd
+            </Button>
+
+            <Button Grid.Row="11" Grid.RowSpan="2" Grid.Column="0"
+                Background="LightCyan" Name ="SecondHalf" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold"
+                Click="CreateBetOnSecondHalf">19to36
+            </Button>
+
+            <!-- Ostatni Wiersz -->
+            <Button Grid.Row="13" Grid.RowSpan="2" Grid.Column="2"
+                Background="LightCyan" Name ="FirstColumn" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold"
+                Click="CreateBetOnFirstColumn">2 To 1
+            </Button>
+            
+            <Button Grid.Row="13" Grid.RowSpan="2" Grid.Column="3"
+                Background="LightCyan" Name ="SecondColumn" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold"
+                Click="CreateBetOnSecondColumn">2 To 1
+            </Button>
+
+            <Button Grid.Row="13" Grid.RowSpan="2" Grid.Column="4"
+                Background="LightCyan" Name ="ThirdColumn" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold"
+                Click="CreateBetOnThirdColumn">2 To 1
+            </Button>
+
+            <!-- Pojedyncze Przyciski -->
+            <Button Grid.Row="1" Grid.Column="2"
+                Background="Red" Name ="One" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">1
+            </Button>
+
+            <Button Grid.Row="1" Grid.Column="3"
+                Background="Black" Name ="Two" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">2
+            </Button>
+
+            <Button Grid.Row="1" Grid.Column="4"
+                Background="Red" Name ="Three" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">3
+            </Button>
+
+            <Button Grid.Row="2" Grid.Column="2"
+                Background="Black" Name ="Four" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">4
+            </Button>
+
+            <Button Grid.Row="2" Grid.Column="3"
+                Background="Red" Name ="Five" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">5
+            </Button>
+
+            <Button Grid.Row="2" Grid.Column="4"
+                Background="Black" Name ="Six" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">6
+            </Button>
+
+            <Button Grid.Row="3" Grid.Column="2"
+                Background="Red" Name ="Seven" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">7
+            </Button>
+
+            <Button Grid.Row="3" Grid.Column="3"
+                Background="Black" Name ="Eight" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">8
+            </Button>
+
+            <Button Grid.Row="3" Grid.Column="4"
+                Background="Red" Name ="Nine" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">9
+            </Button>
+
+            <Button Grid.Row="4" Grid.Column="2"
+                Background="Black" Name ="Ten" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">10
+            </Button>
+
+            <Button Grid.Row="4" Grid.Column="3"
+                Background="Red" Name ="Eleven" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">11
+            </Button>
+
+            <Button Grid.Row="4" Grid.Column="4"
+                Background="Black" Name ="Twelve" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">12
+            </Button>
+
+            <Button Grid.Row="5" Grid.Column="2"
+                Background="Red" Name ="Thirteen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">13
+            </Button>
+
+            <Button Grid.Row="5" Grid.Column="3"
+                Background="Black" Name ="Fourteen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">14
+            </Button>
+
+            <Button Grid.Row="5" Grid.Column="4"
+                Background="Red" Name ="Fifteen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">15
+            </Button>
+
+            <Button Grid.Row="6" Grid.Column="2"
+                Background="Black" Name ="Sixteen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">16
+            </Button>
+
+            <Button Grid.Row="6" Grid.Column="3"
+                Background="Red" Name ="Seventeen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">17
+            </Button>
+
+            <Button Grid.Row="6" Grid.Column="4"
+                Background="Black" Name ="Eighteen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">18
+            </Button>
+
+            <Button Grid.Row="7" Grid.Column="2"
+                Background="Red" Name ="Nineteen" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">19
+            </Button>
+
+            <Button Grid.Row="7" Grid.Column="3"
+                Background="Black" Name ="Twenty" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">20
+            </Button>
+
+            <Button Grid.Row="7" Grid.Column="4"
+                Background="Red" Name ="TwentyOne" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">21
+            </Button>
+
+            <Button Grid.Row="8" Grid.Column="2"
+                Background="Black" Name ="TwentyTwo" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">22
+            </Button>
+
+            <Button Grid.Row="8" Grid.Column="3"
+                Background="Red" Name ="TwentyThree" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">23
+            </Button>
+
+            <Button Grid.Row="8" Grid.Column="4"
+                Background="Black" Name ="TwentyFour" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">24
+            </Button>
+
+            <Button Grid.Row="9" Grid.Column="2"
+                Background="Red" Name ="TwentyFive" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">25
+            </Button>
+
+            <Button Grid.Row="9" Grid.Column="3"
+                Background="Black" Name ="TwentySix" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">26
+            </Button>
+
+            <Button Grid.Row="9" Grid.Column="4"
+                Background="Red" Name ="TwentySeven" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">27
+            </Button>
+
+            <Button Grid.Row="10" Grid.Column="2"
+                Background="Black" Name ="TwentyEight" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">28
+            </Button>
+
+            <Button Grid.Row="10" Grid.Column="3"
+                Background="Red" Name ="TwentyNine" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">29
+            </Button>
+
+            <Button Grid.Row="10" Grid.Column="4"
+                Background="Black" Name ="Thirty" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">30
+            </Button>
+
+            <Button Grid.Row="11" Grid.Column="2"
+                Background="Red" Name ="ThirtyOne" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">31
+            </Button>
+
+            <Button Grid.Row="11" Grid.Column="3"
+                Background="Black" Name ="ThirtyTwo" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">32
+            </Button>
+
+            <Button Grid.Row="11" Grid.Column="4"
+                Background="Red" Name ="ThirtyThree" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">33
+            </Button>
+
+            <Button Grid.Row="12" Grid.Column="2"
+                Background="Black" Name ="ThirtyFour" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">34
+            </Button>
+
+            <Button Grid.Row="12" Grid.Column="3"
+                Background="Red" Name ="ThirtyFive" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">35
+            </Button>
+
+            <Button Grid.Row="12" Grid.Column="4"
+                Background="Black" Name ="ThirtySix" BorderBrush="Black"
+                FontSize="13" FontWeight="DemiBold" Foreground="White"
+                Click="CreateBetOnNumber">36
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

@@ -72,6 +72,29 @@
                         VerticalContentAlignment="Top"
                         Padding="0,2,0,0" Click="ReduceBet">-</Button>
                 </StackPanel>
+
+                <Grid Grid.Row="3" Margin="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Background="White" Margin="0,10,0,10">
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontSize="30">OSTATNIE WYGRANE</TextBlock>
+                    </Grid>
+                    <Grid Grid.Row="1" Name="LastWinsGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </Grid>
             </Grid>
 
             <!-- Ruletka -->
@@ -80,8 +103,6 @@
                     <!-- Tło koła -->
                     <Ellipse Stroke="Gold" StrokeThickness="5" Fill="DarkGreen" />
 
-                    <Polygon Points="190,10 210,10 200,30" Fill="Red" />
-                    
                     <!-- Obrotowe koło -->
                     <Canvas Width="{Binding CanvasSize}" Height="{Binding CanvasSize}"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -118,6 +139,8 @@
                             </ItemsControl.ItemContainerStyle>
                         </ItemsControl>
                     </Canvas>
+
+                    <Polygon Points="400,184 400,196 384,188" Fill="Blue" Panel.ZIndex="10"/>
                 </Grid>
             </Viewbox>
         </Grid>
@@ -132,23 +155,28 @@
             </Grid.RowDefinitions>
 
             <ListBox Grid.Row="0" MinHeight="100" Name="Bets"
-             VerticalAlignment="Stretch" 
+             VerticalAlignment="Stretch" Margin="5,0,5,0"
              ItemsSource="{Binding betFields}"/>
 
             <Grid Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Button Margin="10,0,10,0" Background="Red" Grid.Column="0"
                     BorderBrush="Black" Foreground="White" MaxHeight="70" MaxWidth="200"
-                        Name="DeleteBet">Usuń Zakład
+                        Name="DeleteBet" Click="DeleteBet_Click">Usuń Zakład
                 </Button>
 
-                <Button Margin="10,0,10,0" Background="Black" Grid.Column="1"
+                <TextBlock Grid.Column="1" FontSize="14" VerticalAlignment="Center" 
+                        TextAlignment="Center" Background="White" Name="MoneyForBet">KOSZT ZAKŁADU
+                </TextBlock>
+
+                <Button Margin="10,0,10,0" Background="Black" Grid.Column="2"
                     BorderBrush="Black" Foreground="White" MaxHeight="70" MaxWidth="200"
-                        Name="RestartBets">Resetuj Zakłady
+                        Name="RestartBets" Click="ResetBets">Resetuj Zakłady
                 </Button>
             </Grid>
 

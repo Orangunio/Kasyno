@@ -241,7 +241,7 @@ namespace Kasyno.Models
 
         public bool checkWin(RouletteField winningField)
         {
-            if (Equals(winningField.color, "red"))
+            if (Equals(winningField.color, "Czerwone"))
             {
                 return true;
             }
@@ -266,7 +266,7 @@ namespace Kasyno.Models
 
         public bool checkWin(RouletteField winningField)
         {
-            if (Equals(winningField.color, "black"))
+            if (Equals(winningField.color, "Czarne"))
             {
                 return true;
             }

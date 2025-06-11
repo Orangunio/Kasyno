@@ -20,11 +20,11 @@ namespace Kasyno.Models
         {
             if(number == -1)
             {
-                return "00 " + color;
+                return "00 ";
             }
             else
             {
-                return number.ToString() + " " + color;
+                return number.ToString();
             }
         }
     }

@@ -41,11 +41,25 @@ namespace Kasyno.ViewModels
             }
         }
 
+        private int _moneyForBet = 0;
+        public int moneyForBet 
+        { 
+            get => _moneyForBet; 
+            set
+            {
+                if (_moneyForBet != value)
+                {
+                    _moneyForBet = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public double CanvasSize => 300;
         public int userBalance => App.User.Balance;
-        public ICommand SpinCommand => new SpinCommand(_ => Spin(2));
+        public ICommand SpinCommand => new SpinCommand(_ => Spin());
         public ObservableCollection<RouletteFieldDisplay> DisplayFields { get; set; } = new();
+        public ObservableCollection<RouletteField> WinningFields { get; set; } = new();
 
         public Roulette roulette = new Roulette();
 
@@ -125,9 +139,15 @@ namespace Kasyno.ViewModels
             }
         }
 
-        public void Spin(int strength)
+        public bool Spin()
         {
-            int spinPower = SpinPower(strength);
+            if(moneyForBet > App.User.Balance || moneyForBet == 0)
+            {
+                MessageBox.Show("Nie możesz stworzyć takiego zakładu");
+                return false;
+            }
+            App.User.Balance -= moneyForBet;
+            return true;
         }
 
         public int SpinPower(int strength = 1)
@@ -158,6 +178,57 @@ namespace Kasyno.ViewModels
             }
         }
 
+        public void WinningField(int finalAngle)
+        {
+            int displayFieldsCount = DisplayFields.Count;
+
+            double anglePerField = 360.0 / displayFieldsCount;
+            double normalizedAngle = finalAngle % 360;
+
+            int index = (int)(((360 - normalizedAngle) % 360) / anglePerField) % displayFieldsCount;
+
+            RouletteFieldDisplay display = DisplayFields[index];
+            UpdateWinningFieldHistory(display);
+        }
+
+        public void UpdateWinningFieldHistory(RouletteFieldDisplay display)
+        {
+            int number;
+            if (Equals(display.Label, "00"))
+            {
+                number = -1;
+            }
+            else
+            {
+                number = int.Parse(display.Label);
+            }
+            RouletteField field = new RouletteField(number, display.Color.ToString());
+            WinningFields.Add(field);
+            if (WinningFields.Count > 7)
+            {
+                WinningFields.RemoveAt(0);
+            }
+            CheckWinPrice(field);
+        }
+
+        public void CheckWinPrice(RouletteField winningField)
+        {
+            string convertedColor = ConvertColorCodeOnColor(winningField.color);
+            winningField.color = convertedColor;
+            int moneyWon = 0 - moneyForBet;
+            foreach(var bet in betFields)
+            {
+                if (bet.checkWin(winningField))
+                {
+                    App.User.Balance += bet.potentialWin();
+                    moneyWon += bet.potentialWin();
+                }
+            }
+            string convertedColorOnCode = ConvertColorOnColorCode(winningField.color);
+            winningField.color = convertedColorOnCode;
+            //MessageBox.Show("Twój Bilans: " + moneyWon.ToString());
+        }
+
         public void CreateBetOnNumber(string color, int number)
         {
             if(currentBet == 0)
@@ -166,6 +237,7 @@ namespace Kasyno.ViewModels
                 return;
             }
 
+            moneyForBet += currentBet;
             string convertedColor = ConvertColorCodeOnColor(color);
 
             NumberBet bet = new NumberBet(currentBet, number, convertedColor);
@@ -180,6 +252,14 @@ namespace Kasyno.ViewModels
             return "????????";
         }
 
+        public string ConvertColorOnColorCode(string color)
+        {
+            if (Equals(color, "Czerwone")) { return "#FFFF0000"; }
+            else if (Equals(color, "Czarne")) { return "#FF000000"; }
+            else if (Equals(color, "Zielone")) { return "#FF008000"; }
+            return "????????";
+        }
+
         public void CreateBetOnFirstTwelve()
         {
             if (currentBet == 0)
@@ -187,6 +267,7 @@ namespace Kasyno.ViewModels
                 MessageBox.Show("Nie możesz zagrać za 0");
                 return;
             }
+            moneyForBet += currentBet;
             FirstTwelve bet = new FirstTwelve(currentBet);
             betFields.Add(bet);
         }
@@ -198,6 +279,7 @@ namespace Kasyno.ViewModels
                 MessageBox.Show("Nie możesz zagrać za 0");
                 return;
             }
+            moneyForBet += currentBet;
             SecondTwelve bet = new SecondTwelve(currentBet);
             betFields.Add(bet);
         }
@@ -209,6 +291,7 @@ namespace Kasyno.ViewModels
                 MessageBox.Show("Nie możesz zagrać za 0");
                 return;
             }
+            moneyForBet += currentBet;
             ThirdTwelve bet = new ThirdTwelve(currentBet);
             betFields.Add(bet);
         }
@@ -220,6 +303,7 @@ namespace Kasyno.ViewModels
                 MessageBox.Show("Nie możesz zagrać za 0");
                 return;
             }
+            moneyForBet += currentBet;
             FirstHalf bet = new FirstHalf(currentBet);
             betFields.Add(bet);
         }
@@ -231,6 +315,7 @@ namespace Kasyno.ViewModels
                 MessageBox.Show("Nie możesz zagrać za 0");
                 return;
             }
+            moneyForBet += currentBet;
             SecondHalf bet = new SecondHalf(currentBet);
             betFields.Add(bet);
         }
@@ -242,6 +327,7 @@ namespace Kasyno.ViewModels
                 MessageBox.Show("Nie możesz zagrać za 0");
                 return;
             }
+            moneyForBet += currentBet;
             Even bet = new Even(currentBet);
             betFields.Add(bet);
         }
@@ -253,6 +339,7 @@ namespace Kasyno.ViewModels
                 MessageBox.Show("Nie możesz zagrać za 0");
                 return;
             }
+            moneyForBet += currentBet;
             Odd bet = new Odd(currentBet);
             betFields.Add(bet);
         }
@@ -264,6 +351,7 @@ namespace Kasyno.ViewModels
                 MessageBox.Show("Nie możesz zagrać za 0");
                 return;
             }
+            moneyForBet += currentBet;
             Red bet = new Red(currentBet);
             betFields.Add(bet);
         }
@@ -275,6 +363,7 @@ namespace Kasyno.ViewModels
                 MessageBox.Show("Nie możesz zagrać za 0");
                 return;
             }
+            moneyForBet += currentBet;
             Black bet = new Black(currentBet);
             betFields.Add(bet);
         }
@@ -286,6 +375,7 @@ namespace Kasyno.ViewModels
                 MessageBox.Show("Nie możesz zagrać za 0");
                 return;
             }
+            moneyForBet += currentBet;
             FirstColumn bet = new FirstColumn(currentBet);
             betFields.Add(bet);
         }
@@ -297,6 +387,7 @@ namespace Kasyno.ViewModels
                 MessageBox.Show("Nie możesz zagrać za 0");
                 return;
             }
+            moneyForBet += currentBet;
             SecondColumn bet = new SecondColumn(currentBet);
             betFields.Add(bet);
         }
@@ -308,8 +399,24 @@ namespace Kasyno.ViewModels
                 MessageBox.Show("Nie możesz zagrać za 0");
                 return;
             }
+            moneyForBet += currentBet;
             ThirdColumn bet = new ThirdColumn(currentBet);
             betFields.Add(bet);
+        }
+
+        public void DeleteBet(IRouletteBetFields selectedBet)
+        {
+            moneyForBet -= selectedBet.bet;
+            betFields.Remove(selectedBet);
+        }
+
+        public void ResetBets()
+        {
+            foreach(var bet in betFields.ToList())
+            {
+                betFields.Remove(bet);
+            }
+            moneyForBet = 0;
         }
     }
 }

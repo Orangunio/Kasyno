@@ -11,9 +11,11 @@ namespace Kasyno.ViewModels.Commands.StatsCommands
 {
     public class ExitCommand : ICommand
     {
+        private StatsViewModel ViewModels;
         public event EventHandler? CanExecuteChanged;
-        public ExitCommand()
+        public ExitCommand(StatsViewModel vm)
         {
+            ViewModels = vm;
         }
 
         public bool CanExecute(object? parameter)
@@ -23,17 +25,10 @@ namespace Kasyno.ViewModels.Commands.StatsCommands
 
         public void Execute(object? parameter)
         {
-            var mainMenu = new MainMenuView();
-            mainMenu.Show();
-
-            // Zamknięcie aktualnego okna (menu głównego)
-            foreach (Window window in Application.Current.Windows)
+            if (parameter is Window window && window.DataContext is StatsViewModel vm)
             {
-                if (window is StatsView)
-                {
-                    window.Close();
-                    break;
-                }
+                vm.OnWindowClosing();
+                window.Close();
             }
         }
     }

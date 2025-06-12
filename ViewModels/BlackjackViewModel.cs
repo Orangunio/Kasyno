@@ -1,6 +1,7 @@
 ﻿using Kasyno.Helpers;
 using Kasyno.Models;
 using Kasyno.ViewModels.Commands;
+using Kasyno.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,6 +24,23 @@ namespace Kasyno.ViewModels
         private GameSession? currentSession;
         public string desc = "Blackjack";
         private string result = string.Empty;
+        public string ResultText
+        {
+            get
+            {
+                string? key = Result switch
+                {
+                    "W" => "Win",
+                    "L" => "Loss",
+                    _ => null
+                };
+
+                return key != null && Application.Current.Resources.Contains(key)
+                    ? Application.Current.Resources[key] as string ?? string.Empty
+                    : string.Empty;
+            }
+        }
+
         public string Result
         {
             get => result;
@@ -32,6 +50,7 @@ namespace Kasyno.ViewModels
                 OnPropertyChanged(nameof(Result));
                 HitCommand.RaiseCanExecuteChanged();
                 StandCommand.RaiseCanExecuteChanged();
+                OnPropertyChanged(nameof(ResultText));
             }
         }
         private int betAmount = 0;
@@ -86,6 +105,23 @@ namespace Kasyno.ViewModels
                 return CalculateValue(cards);
             }
         }
+        private bool isClosingHandled = false;
+
+        public void OnWindowClosing()
+        {
+            if (isClosingHandled) return;
+            isClosingHandled = true;
+
+            bool isMainMenuOpen = Application.Current.Windows
+                .OfType<MainMenuView>()
+                .Any(w => w.IsVisible);
+
+            if (!isMainMenuOpen)
+            {
+                var mainMenu = new MainMenuView();
+                mainMenu.Show();
+            }
+        }
 
         public HitCommand HitCommand { get; }
         public StandCommand StandCommand { get; }
@@ -97,7 +133,7 @@ namespace Kasyno.ViewModels
             HitCommand = new HitCommand(this);
             StandCommand = new StandCommand(this);
             NewGameCommand = new NewGameCommand(this);
-            ExitGameCommand = new ExitGameCommand();
+            ExitGameCommand = new ExitGameCommand(this);
             DoubleDownCommand = new DoubleDownCommand(this);
             doubleDownVisible = Visibility.Collapsed;
         }
@@ -132,7 +168,7 @@ namespace Kasyno.ViewModels
             {
                 piniondz = 0;
                 DataHelper.UpdateAsync(User);
-                Result = "Przegrana";
+                Result = "L";
                 if (currentSession != null)
                 {
                     currentSession.EndTime = DateTime.Now;
@@ -162,11 +198,11 @@ namespace Kasyno.ViewModels
                 DealerCards.Add(deck.DrawCard());
                 OnPropertyChanged(nameof(DealerValue));
             }
-            Result = PlayerValue > 21 ? "Przegrana"
-                          : DealerValue > 21 ? "Wygrana"
-                          : PlayerValue > DealerValue ? "Wygrana"
-                          : "Przegrana";
-            if (Result == "Wygrana")
+            Result = PlayerValue > 21 ? "L"
+                          : DealerValue > 21 ? "W"
+                          : PlayerValue > DealerValue ? "W"
+                          : "L";
+            if (Result == "W")
             {
                 piniondz = BetAmount;
                 User.Balance += BetAmount * 2;

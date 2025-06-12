@@ -29,6 +29,11 @@ namespace Kasyno.Views
         {
             if (int.TryParse(BetTextBox.Text, out int bet) && bet >= 10)
             {
+                if (bet > App.User.Balance)
+                {
+                    ErrorDialog.ShowDialog("Nie masz wystarczających środków na koncie.", "Błąd");
+                    return;
+                }
                 EnteredBetAmount = bet;
                 DialogResult = true;
                 Close();

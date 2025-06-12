@@ -1,6 +1,7 @@
 ﻿using Kasyno.Helpers;
 using Kasyno.Models;
 using Kasyno.ViewModels.Commands.StatsCommands;
+using Kasyno.Views;
 using LiveCharts;
 using LiveCharts.Wpf;
 using System;
@@ -10,6 +11,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Kasyno.ViewModels
@@ -19,29 +21,46 @@ namespace Kasyno.ViewModels
         public ObservableCollection<StatsHelper> Bets { get; set; } = new();
         public User User => App.User;
         public int TotalGames => Bets.Count;
-        public int Wins => Bets.Count(b => b.Outcome == "Wygrana");
-        public int Losses => Bets.Count(b => b.Outcome == "Przegrana");
-        public int TotalWon => Bets.Where(b => b.Outcome == "Wygrana").Sum(b => b.ResultAmount);
-        public int TotalLost => Bets.Where(b => b.Outcome == "Przegrana").Sum(b => b.Amount);
+        public int Wins => Bets.Count(b => b.Outcome == "W");
+        public int Losses => Bets.Count(b => b.Outcome == "L");
+        public int TotalWon => Bets.Where(b => b.Outcome == "W").Sum(b => b.ResultAmount);
+        public int TotalLost => Bets.Where(b => b.Outcome == "L").Sum(b => b.Amount);
         public SeriesCollection PieSeries { get; set; }
         public ExitCommand ExitCommand { get; }
+        private bool isClosingHandled = false;
+
+        public void OnWindowClosing()
+        {
+            if (isClosingHandled) return;
+            isClosingHandled = true;
+
+            bool isMainMenuOpen = Application.Current.Windows
+                .OfType<MainMenuView>()
+                .Any(w => w.IsVisible);
+
+            if (!isMainMenuOpen)
+            {
+                var mainMenu = new MainMenuView();
+                mainMenu.Show();
+            }
+        }
         public StatsViewModel()
         {
-            ExitCommand = new ExitCommand();
+            ExitCommand = new ExitCommand(this);
             _ = LoadHistoryAsync();
             PieSeries = new SeriesCollection
         {
             new PieSeries
             {
-                Title = "Wygrane",
-                Values = new ChartValues<int> { 12 },
+                Title = "W",
+                Values = new ChartValues<int> { Wins },
                 DataLabels = true,
                 Fill = Brushes.Green
             },
             new PieSeries
             {
-                Title = "Przegrane",
-                Values = new ChartValues<int> { 8 },
+                Title = "L",
+                Values = new ChartValues<int> { Losses },
                 DataLabels = true,
                 Fill = Brushes.Red
             }
@@ -81,6 +100,8 @@ namespace Kasyno.ViewModels
             OnPropertyChanged(nameof(Losses));
             OnPropertyChanged(nameof(TotalWon));
             OnPropertyChanged(nameof(TotalLost));
+            PieSeries[0].Values = new ChartValues<int> { Wins };
+            PieSeries[1].Values = new ChartValues<int> { Losses };
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

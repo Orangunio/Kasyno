@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Kasyno.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +24,15 @@ namespace Kasyno.Views
         public StatsView()
         {
             InitializeComponent();
+            this.Closing += Stats_Closing;
+        }
+
+        private void Stats_Closing(object? sender, CancelEventArgs e)
+        {
+            if (DataContext is StatsViewModel vm)
+            {
+                vm.OnWindowClosing();
+            }
         }
     }
 }

@@ -11,9 +11,11 @@ namespace Kasyno.ViewModels.Commands
 {
     public class ExitGameCommand : ICommand
     {
+        private BlackjackViewModel ViewModel;
         public event EventHandler? CanExecuteChanged;
-        public ExitGameCommand()
+        public ExitGameCommand(BlackjackViewModel vm)
         {
+            ViewModel = vm;
         }
 
         public bool CanExecute(object? parameter)
@@ -23,15 +25,10 @@ namespace Kasyno.ViewModels.Commands
 
         public void Execute(object? parameter)
         {
-            var mainMenuWindow = new MainMenuView();
-            mainMenuWindow.Show();
-            foreach (Window window in Application.Current.Windows)
+            if (parameter is Window window && window.DataContext is BlackjackViewModel vm)
             {
-                if (window is Views.Games.Blackjack)
-                {
-                    window.Close();
-                    break;
-                }
+                vm.OnWindowClosing();
+                window.Close(); 
             }
 
         }

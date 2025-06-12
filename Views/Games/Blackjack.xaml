@@ -5,10 +5,10 @@
         xmlns:models="clr-namespace:Kasyno.Models"
         xmlns:con="clr-namespace:Kasyno.Helpers"
         xmlns:cto="clr-namespace:Kasyno.Helpers"
+        xmlns:res="clr-namespace:System;assembly=mscorlib"
         Title="Blackjack"
         Width="1000" Height="650"
         ResizeMode="NoResize"
-        Topmost="True"
         WindowStartupLocation="CenterScreen"
         Background="#0F3B21"
         FontFamily="Segoe UI">
@@ -57,18 +57,22 @@
         <!-- ===== KRUPIER ===== -->
         <StackPanel Grid.Row="0" Orientation="Vertical"
             HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
-            <TextBlock Text="KRUPIER"
+            <TextBlock Text="{DynamicResource Dealer}"
                Foreground="White"
                FontSize="20"
                FontWeight="Bold"
                HorizontalAlignment="Center"/>
 
-            <TextBlock Text="{Binding DealerValue, StringFormat=Wartość: {0}}"
-               Foreground="Gold"
-               FontSize="16"
-               HorizontalAlignment="Center"
-               Margin="0,5"/>
-
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="{DynamicResource Value}"
+                           Foreground="Gold"
+                           FontSize="16"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding DealerValue, StringFormat=:{0}}"
+                           Foreground="Wheat"
+                           FontSize="16"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
             <ItemsControl ItemsSource="{Binding DealerCards}" Margin="0,10" AlternationCount="10">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -112,7 +116,7 @@
         <!-- ===== GRACZ ===== -->
         <StackPanel Grid.Row="1" Orientation="Vertical"
             HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
-            <TextBlock Text="GRACZ"
+            <TextBlock Text="{DynamicResource Player}"
                Foreground="White"
                FontSize="20"
                FontWeight="Bold"
@@ -126,25 +130,32 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
 
-            <TextBlock Text="{Binding PlayerValue, StringFormat=Wartość: {0}}"
-               Foreground="Gold"
-               FontSize="16"
-               HorizontalAlignment="Center"
-               Margin="0,5"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="{DynamicResource Value}"
+                   Foreground="Gold"
+                   FontSize="16"
+                   HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding PlayerValue, StringFormat=:{0}}"
+                   Foreground="Wheat"
+                   FontSize="16"
+                   HorizontalAlignment="Center"/>
+            </StackPanel>
+            
         </StackPanel>
 
 
         <!-- ===== PRZYCISKI ===== -->
         <StackPanel Grid.Row="3" Orientation="Horizontal"
                     HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
-            <Button Content="Dobierz" Style="{StaticResource CasinoActionButton}"
+            <Button Content="{DynamicResource Hit}" Style="{StaticResource CasinoActionButton}"
                     Command="{Binding HitCommand}"/>
-            <Button Content="Stój" Style="{StaticResource CasinoActionButton}"
+            <Button Content="{DynamicResource Stand}" Style="{StaticResource CasinoActionButton}"
                     Command="{Binding StandCommand}"/>
-            <Button Content="Nowa Gra" Style="{StaticResource CasinoActionButton}"
+            <Button Content="{DynamicResource New_Game}" Style="{StaticResource CasinoActionButton}"
                     Command="{Binding NewGameCommand}"/>
-            <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}"
-                    Command="{Binding ExitGameCommand}"/>
+            <Button Content="{DynamicResource Exit}" Style="{StaticResource CasinoActionButton}"
+                    Command="{Binding ExitGameCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
         </StackPanel>
         <StackPanel Grid.Row="3"
                     HorizontalAlignment="Right"
@@ -154,7 +165,7 @@
                    HorizontalAlignment="Center"
                    Foreground="White"
                    FontSize="16"
-                   Text="Saldo:"/>
+                   Text="{DynamicResource Balance }"/>
             <TextBlock Text="{Binding User.Balance}"
                        Foreground="Wheat"
                        FontSize="16"/>
@@ -162,7 +173,7 @@
         <Button Grid.Row="2" 
                 Style="{StaticResource CasinoActionButton}" 
                 HorizontalAlignment="Center"
-                Content="DoubleDown" 
+                Content="{DynamicResource DoubleDown}" 
                 Command="{Binding DoubleDownCommand}"
                 Visibility="{Binding Path=DoubleDownVisible}"
                 VerticalAlignment="Bottom">
@@ -170,7 +181,7 @@
         </Button>
         <!-- ===== WYNIK ===== -->
         <TextBlock Grid.Row="2"
-                   Text="{Binding Result}"
+                   Text="{Binding ResultText}"
                    Foreground="Gold"
                    FontSize="20"
                    FontWeight="Bold"

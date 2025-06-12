@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Kasyno.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +24,14 @@ namespace Kasyno.Views.Games
         public Blackjack()
         {
             InitializeComponent();
+            this.Closing += Blackjack_Closing;
+        }
+        private void Blackjack_Closing(object? sender, CancelEventArgs e)
+        {
+            if (DataContext is BlackjackViewModel vm)
+            {
+                vm.OnWindowClosing();
+            }
         }
     }
 }

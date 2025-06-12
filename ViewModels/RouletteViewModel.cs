@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Kasyno.Models;
+using Kasyno.ViewModels.Commands.RouletteCommands;
+using Kasyno.Views;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,8 +12,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Kasyno.Models;
-using Kasyno.ViewModels.Commands.RouletteCommands;
 
 namespace Kasyno.ViewModels
 {
@@ -54,7 +55,23 @@ namespace Kasyno.ViewModels
                 }
             }
         }
+        private bool isClosingHandled = false;
 
+        public void OnWindowClosing()
+        {
+            if (isClosingHandled) return;
+            isClosingHandled = true;
+
+            bool isMainMenuOpen = Application.Current.Windows
+                .OfType<MainMenuView>()
+                .Any(w => w.IsVisible);
+
+            if (!isMainMenuOpen)
+            {
+                var mainMenu = new MainMenuView();
+                mainMenu.Show();
+            }
+        }
         public double CanvasSize => 300;
         public int userBalance => App.User.Balance;
         public ICommand SpinCommand => new SpinCommand(_ => Spin());

@@ -6,20 +6,23 @@
         xmlns:local="clr-namespace:Kasyno.Views"
         xmlns:sv="clr-namespace:Kasyno.ViewModels"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-        WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="StatsView" Height="450" Width="800">
+        Title="StatsView" Height="500" Width="850"
+        WindowStartupLocation="CenterScreen"
+        Background="#1A1A1A"
+        ResizeMode="NoResize">
 
     <Window.DataContext>
         <sv:StatsViewModel/>
     </Window.DataContext>
+
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -27,41 +30,110 @@
                       Grid.Row="1"
                       LegendLocation="Bottom"
                       InnerRadius="60"
-                      Margin="10"/>
-        <!-- Historia gier -->
-        <DataGrid Grid.Column="0"
-                  ItemsSource="{Binding Bets}"
-                  AutoGenerateColumns="False"
-                  CanUserSortColumns="True"
-                  IsReadOnly="True"
-                  Margin="0,0,10,0">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Data" Binding="{Binding GameDate, StringFormat=\{0:yyyy-MM-dd HH:mm\}}" Width="*" />
-                <DataGridTextColumn Header="Zakład" Binding="{Binding Amount}" Width="*" />
-                <DataGridTextColumn Header="Opis" Binding="{Binding Description}" Width="*" />
-                <DataGridTextColumn Header="Wynik" Binding="{Binding Outcome}" Width="*" />
-                <DataGridTextColumn Header="Kwota" Binding="{Binding ResultAmount}" Width="*" />
-            </DataGrid.Columns>
+                      Margin="10"
+                      Foreground="Gold"
+                      Background="#1A1A1A"/>
 
-        </DataGrid>
+        <!-- Historia gier -->
+        <ScrollViewer Grid.Row="0"
+                      Grid.Column="0"
+                      VerticalScrollBarVisibility="Auto"
+                      Margin="0,0,10,0">
+            <DataGrid ItemsSource="{Binding Bets}"
+                      AutoGenerateColumns="False"
+                      AlternationCount="2"
+                      CanUserSortColumns="True"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      Background="#222"
+                      Foreground="Gold"
+                      BorderBrush="Gold"
+                      GridLinesVisibility="Horizontal"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <DataGrid.Resources>
+                    <!-- Styl komórek -->
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Background" Value="#222" />
+                        <Setter Property="Foreground" Value="Gold" />
+                        <Setter Property="BorderBrush" Value="Gold"/>
+                    </Style>
+
+                    <!-- Styl nagłówków kolumn -->
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#333" />
+                        <Setter Property="Foreground" Value="Gold" />
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+
+                    <!-- Styl wierszy -->
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="#222" />
+                        <Setter Property="Foreground" Value="Gold" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#444" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource Date}" Binding="{Binding GameDate, StringFormat=\{0:yyyy-MM-dd HH:mm\}}" Width="*" />
+                    <DataGridTextColumn Header="{DynamicResource Bet}" Binding="{Binding Amount}" Width="Auto" />
+                    <DataGridTextColumn Header="{DynamicResource Description}" Binding="{Binding Description}" Width="Auto" />
+                    <DataGridTextColumn Header="{DynamicResource Result}" Binding="{Binding Outcome}" Width="Auto" />
+                    <DataGridTextColumn Header="{DynamicResource Value}" Binding="{Binding ResultAmount}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
 
         <!-- Statystyki -->
         <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Top">
-            <TextBlock Text="Statystyki" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
-            <TextBlock Text="{Binding TotalGames, StringFormat=Łączna liczba gier: {0}}" Margin="0,0,0,5"/>
-            <TextBlock Text="{Binding Wins, StringFormat=Wygrane: {0}}" Margin="0,0,0,5"/>
-            <TextBlock Text="{Binding Losses, StringFormat=Przegrane: {0}}" Margin="0,0,0,5"/>
-            <TextBlock Text="{Binding TotalWon, StringFormat=Wygrane pieniądze: {0} zł}" Margin="0,0,0,5"/>
-            <TextBlock Text="{Binding TotalLost, StringFormat=Przegrane pieniądze: {0} zł}" Margin="0,0,0,5"/>
-            <TextBlock Text="{Binding User.Balance, StringFormat=Stan konta: {0} zł}" Margin="0,0,0,5"/>
+            <TextBlock Text="{DynamicResource Statistics}" FontWeight="Bold" FontSize="16" Margin="0,0,0,10" Foreground="Gold"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="{DynamicResource Games_played}" Foreground="White"/>
+                <TextBlock Text="{Binding TotalGames}" Foreground="Gold"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="{DynamicResource Win}" Foreground="White"/>
+                <TextBlock Text=": " Foreground="White"/>
+                <TextBlock Text="{Binding Wins}" Foreground="Gold"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="{DynamicResource Loss}" Foreground="White"/>
+                <TextBlock Text=": " Foreground="White"/>
+                <TextBlock Text="{Binding Losses}" Foreground="Gold"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="{DynamicResource Income}" Foreground="White"/>
+                <TextBlock Text="{Binding TotalWon, StringFormat={}{0}}" Foreground="Lime"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="{DynamicResource Lost_money}" Foreground="White"/>
+                <TextBlock Text="{Binding TotalLost, StringFormat={}{0}}" Foreground="Red"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="{DynamicResource Balance}" Foreground="White"/>
+                <TextBlock Text=": " Foreground="White"/>
+                <TextBlock Text="{Binding User.Balance, StringFormat={}{0}}" Foreground="Gold"/>
+            </StackPanel>
         </StackPanel>
+
         <Button Grid.ColumnSpan="2" Grid.Row="1"
-                    Content="Powrót"
-                    Style="{StaticResource CasinoActionButton}"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Margin="0,0,10,10"
-                    Command="{Binding ExitCommand}"/>
-        
+                Content="{DynamicResource Back}"
+                Style="{StaticResource CasinoActionButton}"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0,0,10,10"
+                Command="{Binding ExitCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
     </Grid>
 </Window>

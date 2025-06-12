@@ -64,8 +64,10 @@ namespace Kasyno.Views.Games
 
         private void Roulette_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var mainMenu = new MainMenuView();
-            mainMenu.Show();
+            if (DataContext is RouletteViewModel vm)
+            {
+                vm.OnWindowClosing();
+            }
         }
 
         private void SpinAnimation()

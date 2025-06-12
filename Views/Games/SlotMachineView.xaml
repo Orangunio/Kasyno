@@ -68,7 +68,7 @@
              HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
             <Button Content="Nowa Gra" Style="{StaticResource CasinoActionButton}"
              Command="{Binding NewGameCommand}" Margin="0,0,20,0"/>
-            <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}"/>
+            <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}" Command="{Binding ExitCommand}" />
         </StackPanel>
 
         <!-- Obudowa automatu -->

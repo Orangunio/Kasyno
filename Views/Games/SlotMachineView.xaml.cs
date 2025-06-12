@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kasyno.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,7 @@ namespace Kasyno.Views.Games
         public SlotMachineView()
         {
             InitializeComponent();
+            DataContext = new SlotMachineViewModel();
         }
     }
 }

@@ -6,83 +6,138 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kasyno.Views.Games"
         mc:Ignorable="d"
-        Title="Automaty" Height="450" Width="800">
-    <Grid Background="#1A1A1A">
+        Title="Automaty" Height="450" Width="800"
+        Background="#1A1A1A">
+
+    <Window.Resources>
+        <Storyboard x:Key="BouncingIcons" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="Icon1"
+                         Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
+                         From="0" To="-5" Duration="0:0:0.6"
+                         AutoReverse="True" />
+            <DoubleAnimation Storyboard.TargetName="Icon2"
+                         Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
+                         From="0" To="5" Duration="0:0:0.6"
+                         AutoReverse="True" BeginTime="0:0:0.2" />
+            <DoubleAnimation Storyboard.TargetName="Icon3"
+                         Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
+                         From="0" To="-5" Duration="0:0:0.6"
+                         AutoReverse="True" BeginTime="0:0:0.4" />
+        </Storyboard>
+
+        <Storyboard x:Key="NeonPulse" RepeatBehavior="Forever" AutoReverse="True">
+            <ColorAnimation Storyboard.TargetName="NeonLabel"
+                            Storyboard.TargetProperty="(Label.Foreground).(LinearGradientBrush.GradientStops)[0].Color"
+                            From="#FFD700" To="#FF4500" Duration="0:0:1" />
+            <ColorAnimation Storyboard.TargetName="NeonLabel"
+                            Storyboard.TargetProperty="(Label.Foreground).(LinearGradientBrush.GradientStops)[2].Color"
+                            From="#FF0000" To="#FFD700" Duration="0:0:1" />
+        </Storyboard>
+
+        <LinearGradientBrush x:Key="SlotBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#222" Offset="0.0" />
+            <GradientStop Color="#444" Offset="1.0" />
+        </LinearGradientBrush>
+
+        <DropShadowEffect x:Key="SlotMachineGlow"
+                      BlurRadius="20"
+                      Color="Tomato"
+                      ShadowDepth="0"
+                      Opacity="0.6"/>
+
+        <DropShadowEffect x:Key="IconGlow" Color="Gold" BlurRadius="10" ShadowDepth="0" Opacity="0.7"/>
+
+    </Window.Resources>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource BouncingIcons}" />
+            <BeginStoryboard Storyboard="{StaticResource NeonPulse}" />
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="94*">
-
-
-            </RowDefinition>
-            <RowDefinition Height="248*">
-
-            </RowDefinition>
-            <RowDefinition Height="94*">
-
-            </RowDefinition>
-
+            <RowDefinition Height="94*"/>
+            <RowDefinition Height="248*"/>
+            <RowDefinition Height="94*"/>
         </Grid.RowDefinitions>
-        <Rectangle Grid.RowSpan="3" Grid.ColumnSpan="3"
-           VerticalAlignment="Top" Height="150"
-           IsHitTestVisible="False">
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="0,1">
-                    <GradientStop Color="DarkGoldenrod"  Offset="0"/>
-                    <GradientStop Color="Transparent" Offset="1"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal"
+        <!-- Przyciski na dole -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal"
              HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
             <Button Content="Nowa Gra" Style="{StaticResource CasinoActionButton}"
-             Command="{Binding NewGameCommand}"/>
-            <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}"
-             Command="{Binding ExitGameCommand}"/>
+             Command="{Binding NewGameCommand}" Margin="0,0,20,0"/>
+            <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}"/>
         </StackPanel>
-        <Border BorderBrush="DarkRed" BorderThickness="4" Width="610" Height="160" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
 
-                <Rectangle Grid.Column="1" Width="2" Fill="DarkRed" HorizontalAlignment="Left" />
-                <Rectangle Grid.Column="2" Width="2" Fill="DarkRed" HorizontalAlignment="Left" />
+        <!-- Obudowa automatu -->
+        <Border Grid.Row="1"
+                CornerRadius="30" BorderThickness="8" BorderBrush="#FFD700" Background="#330000"
+                Padding="12" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Width="620" Height="200"
+                Effect="{StaticResource SlotMachineGlow}">
 
-                <fa:ImageAwesome x:Name="Icon1"
-                 Icon="QuestionCircle" Width="64" Height="64"
-                 Foreground="RosyBrown" Grid.Column="0"
-                 Margin="69,46,68,46">
-                    <fa:ImageAwesome.RenderTransform>
-                        <TranslateTransform />
-                    </fa:ImageAwesome.RenderTransform>
-                </fa:ImageAwesome>
+            <Border CornerRadius="22" BorderThickness="4" BorderBrush="#FFB14E" Background="#550000" Padding="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                <fa:ImageAwesome x:Name="Icon2"
-                 Icon="QuestionCircle" Width="64" Height="64"
-                 Foreground="RosyBrown" Grid.Column="1"
-                 Margin="69,46,68,46">
-                    <fa:ImageAwesome.RenderTransform>
-                        <TranslateTransform />
-                    </fa:ImageAwesome.RenderTransform>
-                </fa:ImageAwesome>
+                    <!-- Linie dzielące kolumny -->
+                    <Rectangle Grid.Column="1" Width="3" Fill="#FFB14E" HorizontalAlignment="Left" Opacity="0.7"/>
+                    <Rectangle Grid.Column="2" Width="3" Fill="#FFB14E" HorizontalAlignment="Left" Opacity="0.7"/>
 
-                <fa:ImageAwesome x:Name="Icon3"
-                 Icon="QuestionCircle" Width="64" Height="64"
-                 Foreground="RosyBrown" Grid.Column="2"
-                 Margin="69,46,68,46">
-                    <fa:ImageAwesome.RenderTransform>
-                        <TranslateTransform />
-                    </fa:ImageAwesome.RenderTransform>
-                </fa:ImageAwesome>
-
-
-            </Grid>
+                    <!-- Ramki i ikonki -->
+                    <Border Grid.Column="0" BorderBrush="#FFD700" BorderThickness="2" CornerRadius="15" Margin="10" Background="#22000000" >
+                        <fa:ImageAwesome x:Name="Icon1" Icon="QuestionCircle" Width="64" Height="64" Foreground="RosyBrown" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:ImageAwesome.RenderTransform>
+                                <TranslateTransform/>
+                            </fa:ImageAwesome.RenderTransform>
+                            <fa:ImageAwesome.Effect>
+                                <StaticResource ResourceKey="IconGlow"/>
+                            </fa:ImageAwesome.Effect>
+                        </fa:ImageAwesome>
+                    </Border>
+                    <Border Grid.Column="1" BorderBrush="#FFD700" BorderThickness="2" CornerRadius="15" Margin="10" Background="#22000000" >
+                        <fa:ImageAwesome x:Name="Icon2" Icon="QuestionCircle" Width="64" Height="64" Foreground="RosyBrown" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:ImageAwesome.RenderTransform>
+                                <TranslateTransform/>
+                            </fa:ImageAwesome.RenderTransform>
+                            <fa:ImageAwesome.Effect>
+                                <StaticResource ResourceKey="IconGlow"/>
+                            </fa:ImageAwesome.Effect>
+                        </fa:ImageAwesome>
+                    </Border>
+                    <Border Grid.Column="2" BorderBrush="#FFD700" BorderThickness="2" CornerRadius="15" Margin="10" Background="#22000000" >
+                        <fa:ImageAwesome x:Name="Icon3" Icon="QuestionCircle" Width="64" Height="64" Foreground="RosyBrown" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:ImageAwesome.RenderTransform>
+                                <TranslateTransform/>
+                            </fa:ImageAwesome.RenderTransform>
+                            <fa:ImageAwesome.Effect>
+                                <StaticResource ResourceKey="IconGlow"/>
+                            </fa:ImageAwesome.Effect>
+                        </fa:ImageAwesome>
+                    </Border>
+                </Grid>
+            </Border>
         </Border>
-        <Label Content="TRY YOUR LUCK!" HorizontalAlignment="Center" Margin="0,27,0,0" VerticalAlignment="Top" FontSize="40" FontWeight="DemiBold" Foreground="DarkRed"/>
 
-
-
+        <!-- Neonowy napis -->
+        <Label x:Name="NeonLabel" Content="TRY YOUR LUCK!" HorizontalAlignment="Center" Margin="0,27,0,0" VerticalAlignment="Top"
+               FontSize="48" FontWeight="Bold" FontFamily="Segoe UI Black">
+            <Label.Foreground>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FFD700" Offset="0" />
+                    <GradientStop Color="#FF4500" Offset="0.5" />
+                    <GradientStop Color="#FF0000" Offset="1" />
+                </LinearGradientBrush>
+            </Label.Foreground>
+            <Label.Effect>
+                <DropShadowEffect Color="OrangeRed" BlurRadius="15" ShadowDepth="0" Opacity="0.9"/>
+            </Label.Effect>
+        </Label>
     </Grid>
 </Window>

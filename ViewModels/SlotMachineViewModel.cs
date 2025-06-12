@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Kasyno.ViewModels
 {
     internal class SlotMachineViewModel
-    {
+    { 
+
     }
 }

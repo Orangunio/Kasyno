@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace Kasyno.Views.Games
 {
-    /// <summary>
-    /// Logika interakcji dla klasy SlotMachineView.xaml
-    /// </summary>
     public partial class SlotMachineView : Window
     {
         public SlotMachineView()

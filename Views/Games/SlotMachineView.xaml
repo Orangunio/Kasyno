@@ -1,12 +1,88 @@
 ﻿<Window x:Class="Kasyno.Views.Games.SlotMachineView"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kasyno.Views.Games"
         mc:Ignorable="d"
-        Title="SlotMachineView" Height="450" Width="800">
-    <Grid>
-        
+        Title="Automaty" Height="450" Width="800">
+    <Grid Background="#1A1A1A">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="94*">
+
+
+            </RowDefinition>
+            <RowDefinition Height="248*">
+
+            </RowDefinition>
+            <RowDefinition Height="94*">
+
+            </RowDefinition>
+
+        </Grid.RowDefinitions>
+        <Rectangle Grid.RowSpan="3" Grid.ColumnSpan="3"
+           VerticalAlignment="Top" Height="150"
+           IsHitTestVisible="False">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Color="DarkGoldenrod"  Offset="0"/>
+                    <GradientStop Color="Transparent" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal"
+             HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
+            <Button Content="Nowa Gra" Style="{StaticResource CasinoActionButton}"
+             Command="{Binding NewGameCommand}"/>
+            <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}"
+             Command="{Binding ExitGameCommand}"/>
+        </StackPanel>
+        <Border BorderBrush="DarkRed" BorderThickness="4" Width="610" Height="160" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Rectangle Grid.Column="1" Width="2" Fill="DarkRed" HorizontalAlignment="Left" />
+                <Rectangle Grid.Column="2" Width="2" Fill="DarkRed" HorizontalAlignment="Left" />
+
+                <fa:ImageAwesome x:Name="Icon1"
+                 Icon="QuestionCircle" Width="64" Height="64"
+                 Foreground="RosyBrown" Grid.Column="0"
+                 Margin="69,46,68,46">
+                    <fa:ImageAwesome.RenderTransform>
+                        <TranslateTransform />
+                    </fa:ImageAwesome.RenderTransform>
+                </fa:ImageAwesome>
+
+                <fa:ImageAwesome x:Name="Icon2"
+                 Icon="QuestionCircle" Width="64" Height="64"
+                 Foreground="RosyBrown" Grid.Column="1"
+                 Margin="69,46,68,46">
+                    <fa:ImageAwesome.RenderTransform>
+                        <TranslateTransform />
+                    </fa:ImageAwesome.RenderTransform>
+                </fa:ImageAwesome>
+
+                <fa:ImageAwesome x:Name="Icon3"
+                 Icon="QuestionCircle" Width="64" Height="64"
+                 Foreground="RosyBrown" Grid.Column="2"
+                 Margin="69,46,68,46">
+                    <fa:ImageAwesome.RenderTransform>
+                        <TranslateTransform />
+                    </fa:ImageAwesome.RenderTransform>
+                </fa:ImageAwesome>
+
+
+            </Grid>
+        </Border>
+        <Label Content="TRY YOUR LUCK!" HorizontalAlignment="Center" Margin="0,27,0,0" VerticalAlignment="Top" FontSize="40" FontWeight="DemiBold" Foreground="DarkRed"/>
+
+
+
     </Grid>
 </Window>

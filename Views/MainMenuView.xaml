@@ -42,7 +42,7 @@
             
 
             <Button Content="{DynamicResource Roulette}" Style="{StaticResource CasinoActionButton}" Click="RouletteButtonClick"/>
-            <Button Content="{DynamicResource Machines}" Style="{StaticResource CasinoActionButton}"/>
+            <Button Content="{DynamicResource Machines}" Style="{StaticResource CasinoActionButton}" Click="MachinesButton_Click"/>
             <Button Content="Blackjack" Style="{StaticResource CasinoActionButton}"
                     Command="{Binding BlackjackCommand}"/>
             <Button Content="{DynamicResource War}" Style="{StaticResource CasinoActionButton}"/>

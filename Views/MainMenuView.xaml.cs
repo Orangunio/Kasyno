@@ -1,4 +1,5 @@
 ﻿using Kasyno.Helpers;
+using Kasyno.Views.Games;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,13 @@ namespace Kasyno.Views
         {
             var rouletteView = new Views.Games.Roulette();
             rouletteView.Show();
+            Close();
+        }
+
+        private void MachinesButton_Click(object sender, RoutedEventArgs e)
+        {
+            var slotMachineView = new SlotMachineView();
+            slotMachineView.Show();
             Close();
         }
 

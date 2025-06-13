@@ -23,6 +23,23 @@ namespace Kasyno.ViewModels
         public User User => App.User;
         private GameSession? currentSession;
         public string desc = "Blackjack";
+        private bool isAnimating = false;
+        public bool IsAnimating
+        {
+            get => isAnimating;
+            set
+            {
+                if (isAnimating != value)
+                {
+                    isAnimating = value;
+                    OnPropertyChanged(nameof(IsAnimating));
+                    HitCommand.RaiseCanExecuteChanged();
+                    StandCommand.RaiseCanExecuteChanged();
+                    NewGameCommand.RaiseCanExecuteChanged();
+                    DoubleDownCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
         private string result = string.Empty;
         public string ResultText
         {
@@ -137,32 +154,52 @@ namespace Kasyno.ViewModels
             DoubleDownCommand = new DoubleDownCommand(this);
             doubleDownVisible = Visibility.Collapsed;
         }
-        public async void NewGame()
+        public async Task NewGame()
         {
+            IsAnimating = true; // blokada przycisków
+
             IsDealerTurnOver = false;
             User.Balance -= BetAmount;
             deck = new Deck();
             PlayerCards.Clear();
             DealerCards.Clear();
             Result = string.Empty;
+
             PlayerCards.Add(deck.DrawCard());
-            DealerCards.Add(deck.DrawCard());
-            PlayerCards.Add(deck.DrawCard());
-            DealerCards.Add(deck.DrawCard());
-            DoubleDownVisibility();
             OnPropertyChanged(nameof(PlayerValue));
+            await Task.Delay(500);
+
+            DealerCards.Add(deck.DrawCard());
             OnPropertyChanged(nameof(DealerValue));
+            await Task.Delay(500);
+
+            PlayerCards.Add(deck.DrawCard());
+            OnPropertyChanged(nameof(PlayerValue));
+            await Task.Delay(500);
+
+            DealerCards.Add(deck.DrawCard());
+            OnPropertyChanged(nameof(DealerValue));
+            await Task.Delay(500);
+
+            DoubleDownVisibility();
+
             currentSession = new GameSession(User.Id, DateTime.Now, DateTime.Now);
             await DataHelper.InsertAsync(currentSession);
+
             if (PlayerValue == 21)
             {
                 Stand();
             }
+
+            IsAnimating = false; // odblokowanie przycisków
         }
+
+
         public async void Hit()
         {
             PlayerCards.Add(deck.DrawCard());
             OnPropertyChanged(nameof(PlayerValue));
+            await Task.Delay(500);
             DoubleDownVisibility();
             if (PlayerValue > 21)
             {
@@ -197,6 +234,7 @@ namespace Kasyno.ViewModels
             {
                 DealerCards.Add(deck.DrawCard());
                 OnPropertyChanged(nameof(DealerValue));
+                await Task.Delay(500); // opóźnienie na animację
             }
             Result = PlayerValue > 21 ? "L"
                           : DealerValue > 21 ? "W"

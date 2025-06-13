@@ -32,7 +32,7 @@
             <RowDefinition Height="Auto"/>
             <!-- Przyciski -->
         </Grid.RowDefinitions>
-        <Grid VerticalAlignment="Center" HorizontalAlignment="Right" Height="100" Width="100" Margin="0,0,30,0">
+        <Grid x:Name="DeckPile" VerticalAlignment="Center" HorizontalAlignment="Right" Height="100" Width="100" Margin="0,0,30,0">
             <Rectangle Fill="Black" RadiusX="10" RadiusY="10"/>
             <TextBlock Text="Stos kart"
                Foreground="White"

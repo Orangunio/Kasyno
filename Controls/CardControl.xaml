@@ -7,7 +7,10 @@
     <UserControl.Resources>
         <helpers:SuitToColorConverter x:Key="SuitToColorConverter"/>
     </UserControl.Resources>
-    <Border Background="White" CornerRadius="6" Margin="4" BorderBrush="Black" BorderThickness="1">
+    <Border RenderTransformOrigin="0,0" Background="White" CornerRadius="6" Margin="4" BorderBrush="Black" BorderThickness="1">
+        <Border.RenderTransform>
+            <TranslateTransform x:Name="translateTransform" />
+        </Border.RenderTransform>
         <Grid>
             <!-- Lewy górny róg - symbol koloru -->
             <TextBlock Text="{Binding Card.Suit, ElementName=CardUC}"

@@ -22,7 +22,7 @@ namespace Kasyno.ViewModels.Commands
 
         public bool CanExecute(object? parameter)
         {
-            if(ViewModel.BetAmount == 0)
+            if(ViewModel.BetAmount == 0 && !ViewModel.IsAnimating)
                 return true;
             return false;
         }

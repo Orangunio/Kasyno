@@ -1,6 +1,7 @@
 ﻿using FontAwesome.WPF;
 using Kasyno.Helpers;
-using Kasyno.Views;  // namespace z BetDialog
+using Kasyno.Views;
+using Kasyno.Views.Games;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,10 @@ namespace Kasyno.ViewModels
         private string _icon1;
         private string _icon2;
         private string _icon3;
+
+        private readonly Random _random = new();
+        private readonly SlotMachineView _view;
+        private int _lastBetAmount = 0;
 
         public string Icon1
         {
@@ -42,41 +47,47 @@ namespace Kasyno.ViewModels
             "Heart", "Star", "Bomb", "Globe", "Bug", "Key", "Plane", "UserSecret", "Rocket", "Hourglass", "Dollar"
         };
 
-        public SlotMachineViewModel()
+        public SlotMachineViewModel(SlotMachineView view)
         {
+            _view = view;
+
+            Icon1 = Icon2 = Icon3 = "Question";
+
             NewGameCommand = new RelayCommand(NewGame);
             ExitCommand = new RelayCommand(() => Application.Current.Shutdown());
-
-            // Startowe ikony - możesz zmienić na np. "Question"
-            Icon1 = Icon2 = Icon3 = "Question";
         }
 
         private void NewGame()
         {
-            // Otwórz dialog wpisania stawki
-            BetDialog betDialog = new BetDialog();
-            bool? dialogResult = betDialog.ShowDialog();
+            var betDialog = new BetDialog();
+            bool? result = betDialog.ShowDialog();
 
-            if (dialogResult == true)
+            if (result == true)
             {
-                int betAmount = betDialog.EnteredBetAmount; // poprawiona właściwość
+                _lastBetAmount = betDialog.EnteredBetAmount;
 
-                // Tutaj możesz dodać dodatkową walidację, jeśli chcesz
+                // Uruchom animację losowania w widoku
+                _view.StartSpin();
+            }
+        }
 
-                var random = new Random();
-                Icon1 = AvailableIcons[random.Next(AvailableIcons.Count)];
-                Icon2 = AvailableIcons[random.Next(AvailableIcons.Count)];
-                Icon3 = AvailableIcons[random.Next(AvailableIcons.Count)];
-
-                if (Icon1 == Icon2 && Icon2 == Icon3)
-                {
-                    MessageBox.Show($"Wygrałeś! Stawka: {betAmount}", "Gratulacje!", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
+        public void ResolveGame()
+        {
+            if (Icon1 == Icon2 && Icon2 == Icon3)
+            {
+                int winAmount = _lastBetAmount * 25;
+                MessageBox.Show($"🎉 Wygrałeś {winAmount} żetonów! 🎉", "Gratulacje!", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                // Anulowano dialog - ikony pozostają bez zmian
+                MessageBox.Show("Brak wygranej. Spróbuj ponownie!", "Powodzenia następnym razem!", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+
+        public string GetRandomIcon()
+        {
+            int index = _random.Next(AvailableIcons.Count);
+            return AvailableIcons[index];
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

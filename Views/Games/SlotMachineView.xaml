@@ -49,6 +49,19 @@
 
         <DropShadowEffect x:Key="IconGlow" Color="Gold" BlurRadius="10" ShadowDepth="0" Opacity="0.7"/>
 
+        <!-- NOWY STORYBOARD: Pulsowanie ikon po zatrzymaniu -->
+        <Storyboard x:Key="IconFlashStoryboard" Duration="0:0:1">
+            <DoubleAnimation Storyboard.TargetName="Icon1"
+                             Storyboard.TargetProperty="Effect.Opacity"
+                             From="0.3" To="1" Duration="0:0:0.3" AutoReverse="True" RepeatBehavior="2x"/>
+            <DoubleAnimation Storyboard.TargetName="Icon2"
+                             Storyboard.TargetProperty="Effect.Opacity"
+                             From="0.3" To="1" Duration="0:0:0.3" AutoReverse="True" RepeatBehavior="2x" BeginTime="0:0:0.1"/>
+            <DoubleAnimation Storyboard.TargetName="Icon3"
+                             Storyboard.TargetProperty="Effect.Opacity"
+                             From="0.3" To="1" Duration="0:0:0.3" AutoReverse="True" RepeatBehavior="2x" BeginTime="0:0:0.2"/>
+        </Storyboard>
+
     </Window.Resources>
 
     <Window.Triggers>
@@ -69,7 +82,6 @@
         <StackPanel Grid.Row="2" Orientation="Horizontal"
              HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
             <Button  Content="Nowa gra" Style="{StaticResource CasinoActionButton}" Command="{Binding NewGameCommand}" />
-
             <Button Content="Wyjście" Style="{StaticResource CasinoActionButton}" Command="{Binding ExitCommand}" />
         </StackPanel>
 

@@ -14,7 +14,7 @@ namespace Kasyno.Models
         [Indexed]
         public int GameSessionId { get; set; }
         public int Amount { get; set; }
-        public string Description { get; set; } // Np. róletka to było by wpisane że na czerwony czy coś takiego
+        public string Description { get; set; } // Np. ruletka to było by wpisane że na czerwony czy coś takiego
         [Indexed]
         public int ResultId { get; set; }
         public Bet() { }

@@ -1,5 +1,6 @@
 ﻿using FontAwesome.WPF;
 using Kasyno.Helpers;
+using Kasyno.Views;  // namespace z BetDialog
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -45,26 +46,41 @@ namespace Kasyno.ViewModels
         {
             NewGameCommand = new RelayCommand(NewGame);
             ExitCommand = new RelayCommand(() => Application.Current.Shutdown());
-            Icon1 = Icon2 = Icon3 = "Question"; // startowe ikony
+
+            // Startowe ikony - możesz zmienić na np. "Question"
+            Icon1 = Icon2 = Icon3 = "Question";
         }
 
         private void NewGame()
         {
-            var random = new Random();
-            Icon1 = AvailableIcons[random.Next(AvailableIcons.Count)];
-            Icon2 = AvailableIcons[random.Next(AvailableIcons.Count)];
-            Icon3 = AvailableIcons[random.Next(AvailableIcons.Count)];
+            // Otwórz dialog wpisania stawki
+            BetDialog betDialog = new BetDialog();
+            bool? dialogResult = betDialog.ShowDialog();
 
-            if (Icon1 == Icon2 && Icon2 == Icon3)
+            if (dialogResult == true)
             {
-                MessageBox.Show("Wygrałeś!", "Gratulacje!", MessageBoxButton.OK, MessageBoxImage.Information);
+                int betAmount = betDialog.EnteredBetAmount; // poprawiona właściwość
+
+                // Tutaj możesz dodać dodatkową walidację, jeśli chcesz
+
+                var random = new Random();
+                Icon1 = AvailableIcons[random.Next(AvailableIcons.Count)];
+                Icon2 = AvailableIcons[random.Next(AvailableIcons.Count)];
+                Icon3 = AvailableIcons[random.Next(AvailableIcons.Count)];
+
+                if (Icon1 == Icon2 && Icon2 == Icon3)
+                {
+                    MessageBox.Show($"Wygrałeś! Stawka: {betAmount}", "Gratulacje!", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            else
+            {
+                // Anulowano dialog - ikony pozostają bez zmian
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

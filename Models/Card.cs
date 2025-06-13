@@ -12,8 +12,8 @@ namespace Kasyno.Models
         public string Rank { get; set; } // e.g., "2", "3", ..., "10", "Jack", "Queen", "King", "Ace"
         public int Value => Rank switch
         {
-            "Ace" => 11,
-            "King" or "Queen" or "Jack" => 10,
+            "A" => 11,
+            "K" or "Q" or "J" => 10,
             _ => int.Parse(Rank)
         };
         public Card(string suit, string rank)

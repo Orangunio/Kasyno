@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Kasyno.ViewModels"
         xmlns:models="clr-namespace:Kasyno.Models"
-        xmlns:con="clr-namespace:Kasyno.Helpers"
         xmlns:cto="clr-namespace:Kasyno.Helpers"
         xmlns:res="clr-namespace:System;assembly=mscorlib"
+        xmlns:controls="clr-namespace:Kasyno.Controls"
         Title="Blackjack"
         Width="1000" Height="650"
         ResizeMode="NoResize"
@@ -18,20 +18,7 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <con:SuitToColorConverter x:Key="SuitToColorConverter"/>
         <cto:CardVisibilityConverter x:Key="CardVisibilityConverter"/>
-
-        <!-- Styl kart -->
-        <DataTemplate DataType="{x:Type models:Card}">
-            <Border Width="70" Height="100" Background="White" CornerRadius="6" Margin="4">
-                <TextBlock Text="{Binding Rank}"
-                           FontWeight="Bold"
-                           FontSize="24"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Foreground="{Binding Suit, Converter={StaticResource SuitToColorConverter}}"/>
-            </Border>
-        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -81,32 +68,10 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Width="70" Height="100" Background="White" CornerRadius="6" Margin="4">
-                            <TextBlock x:Name="CardText"
-                                       FontWeight="Bold"
-                                       FontSize="24"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Text" Value="{Binding Rank}"/>
-                                        <Setter Property="Foreground" Value="{Binding Suit, Converter={StaticResource SuitToColorConverter}}"/>
-                                        <Style.Triggers>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <!-- Sprawdź, czy to druga karta (index 1) -->
-                                                    <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}, Path=(ItemsControl.AlternationIndex)}" Value="1"/>
-                                                    <!-- I czy nadal tura gracza -->
-                                                    <Condition Binding="{Binding DataContext.IsDealerTurnOver, RelativeSource={RelativeSource AncestorType=Window}}" Value="False"/>
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="Text" Value="🂠"/>
-                                                <Setter Property="Foreground" Value="Black"/>
-                                            </MultiDataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Border>
+                        <controls:CardControl 
+                            Card="{Binding}"
+                            CardIndex="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentPresenter}, Path=(ItemsControl.AlternationIndex)}"
+                            IsDealerTurnOver="{Binding DataContext.IsDealerTurnOver, RelativeSource={RelativeSource AncestorType=Window}}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
@@ -128,7 +93,15 @@
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:CardControl 
+                            Card="{Binding}"
+                            IsDealerTurnOver="True"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
             </ItemsControl>
+
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="{DynamicResource Value}"

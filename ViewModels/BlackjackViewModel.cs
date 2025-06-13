@@ -249,7 +249,7 @@ namespace Kasyno.ViewModels
         private int CalculateValue(ObservableCollection<Card> cards)
         {
             int sum = cards.Sum(c => c.Value);
-            int aceCount = cards.Count(c => c.Rank == "Ace");
+            int aceCount = cards.Count(c => c.Rank == "A");
 
             while (sum > 21 && aceCount-- > 0)
                 sum -= 10;

@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="Kasyno.Controls.CardControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helpers="clr-namespace:Kasyno.Helpers"
+             x:Name="CardUC"
+             Width="70" Height="100">
+    <UserControl.Resources>
+        <helpers:SuitToColorConverter x:Key="SuitToColorConverter"/>
+    </UserControl.Resources>
+    <Border Background="White" CornerRadius="6" Margin="4" BorderBrush="Black" BorderThickness="1">
+        <Grid>
+            <!-- Lewy górny róg - symbol koloru -->
+            <TextBlock Text="{Binding Card.Suit, ElementName=CardUC}"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Margin="4"
+                       Foreground="{Binding Card.Suit, ElementName=CardUC, Converter={StaticResource SuitToColorConverter}}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding CardIndex, ElementName=CardUC}" Value="1"/>
+                                    <Condition Binding="{Binding IsDealerTurnOver, ElementName=CardUC}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <!-- Środkowa wartość karty -->
+            <TextBlock FontWeight="Bold"
+                       FontSize="24"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <!-- DOMYŚLNE wartości -->
+                        <Setter Property="Text" Value="{Binding Card.Rank, ElementName=CardUC}"/>
+                        <Setter Property="Foreground" Value="{Binding Card.Suit, ElementName=CardUC, Converter={StaticResource SuitToColorConverter}}"/>
+
+                        <!-- Ukrycie drugiej karty dealera -->
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding CardIndex, ElementName=CardUC}" Value="1"/>
+                                    <Condition Binding="{Binding IsDealerTurnOver, ElementName=CardUC}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Text" Value="🂠"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
+    </Border>
+</UserControl>

@@ -1,25 +1,19 @@
-﻿using Kasyno.Helpers;
+﻿using FontAwesome.WPF;
+using Kasyno.Helpers;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace Kasyno.ViewModels
 {
-    internal class SlotMachineViewModel : INotifyPropertyChanged
+    public class SlotMachineViewModel : INotifyPropertyChanged
     {
-        private static readonly string[] _availableIcons =
-        {
-            "Heart", "Star", "WebAwesome", "Bomb", "Ghost", "Lemon", "Snowflake", "Fish", "UserSecret"
-        };
-
-        private readonly Random _random = new();
-
-        private string _icon1 = "QuestionCircle";
-        private string _icon2 = "QuestionCircle";
-        private string _icon3 = "QuestionCircle";
+        private string _icon1;
+        private string _icon2;
+        private string _icon3;
 
         public string Icon1
         {
@@ -42,53 +36,35 @@ namespace Kasyno.ViewModels
         public ICommand NewGameCommand { get; }
         public ICommand ExitCommand { get; }
 
+        public List<string> AvailableIcons { get; } = new()
+        {
+            "Heart", "Star", "Bomb", "Globe", "Bug", "Key", "Plane", "UserSecret", "Rocket", "Hourglass", "Dollar"
+        };
+
         public SlotMachineViewModel()
         {
-            NewGameCommand = new RelayCommand(_ => StartNewGame());
-            ExitCommand = new RelayCommand(ExecuteExit);
+            NewGameCommand = new RelayCommand(NewGame);
+            ExitCommand = new RelayCommand(() => Application.Current.Shutdown());
+            Icon1 = Icon2 = Icon3 = "Question"; // startowe ikony
         }
 
-        private async void StartNewGame()
+        private void NewGame()
         {
-            // Na początek ustaw znaki zapytania
-            Icon1 = "QuestionCircle";
-            Icon2 = "QuestionCircle";
-            Icon3 = "QuestionCircle";
+            var random = new Random();
+            Icon1 = AvailableIcons[random.Next(AvailableIcons.Count)];
+            Icon2 = AvailableIcons[random.Next(AvailableIcons.Count)];
+            Icon3 = AvailableIcons[random.Next(AvailableIcons.Count)];
 
-            // Małe opóźnienie, aby UI się odświeżył przed losowaniem
-            await Task.Delay(300);
-
-            Icon1 = GetRandomIcon();
-            await Task.Delay(400);
-
-            Icon2 = GetRandomIcon();
-            await Task.Delay(400);
-
-            Icon3 = GetRandomIcon();
-        }
-
-        private string GetRandomIcon()
-        {
-            int index = _random.Next(_availableIcons.Length);
-            return _availableIcons[index];
-        }
-
-        private void ExecuteExit(object? obj)
-        {
-            foreach (Window window in Application.Current.Windows)
+            if (Icon1 == Icon2 && Icon2 == Icon3)
             {
-                if (window is Window current && current.Title == "Automaty")
-                {
-                    var mainMenu = new Views.MainMenuView();
-                    mainMenu.Show();
-                    current.Close();
-                    break;
-                }
+                MessageBox.Show("Wygrałeś!", "Gratulacje!", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string? name = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 }

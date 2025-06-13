@@ -50,7 +50,7 @@
                FontWeight="Bold"
                HorizontalAlignment="Center"/>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" ToolTip="Wartość kart krupiera">
                 <TextBlock Text="{DynamicResource Value}"
                            Foreground="Gold"
                            FontSize="16"
@@ -60,7 +60,7 @@
                            FontSize="16"
                            HorizontalAlignment="Center"/>
             </StackPanel>
-            <ItemsControl ItemsSource="{Binding DealerCards}" Margin="0,10" AlternationCount="10">
+            <ItemsControl ItemsSource="{Binding DealerCards}" Margin="0,10" AlternationCount="10" ToolTip="Karty dealera">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
@@ -87,7 +87,7 @@
                FontWeight="Bold"
                HorizontalAlignment="Center"/>
 
-            <ItemsControl ItemsSource="{Binding PlayerCards}" Margin="0,10">
+            <ItemsControl ItemsSource="{Binding PlayerCards}" Margin="0,10" ToolTip="Twoje karty">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
@@ -103,7 +103,7 @@
             </ItemsControl>
 
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" ToolTip="Wartosc twoich kart">
                 <TextBlock Text="{DynamicResource Value}"
                    Foreground="Gold"
                    FontSize="16"
@@ -121,13 +121,13 @@
         <StackPanel Grid.Row="3" Orientation="Horizontal"
                     HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
             <Button Content="{DynamicResource Hit}" Style="{StaticResource CasinoActionButton}"
-                    Command="{Binding HitCommand}"/>
+                    Command="{Binding HitCommand}" ToolTip="Dobierz kartę"/>
             <Button Content="{DynamicResource Stand}" Style="{StaticResource CasinoActionButton}"
-                    Command="{Binding StandCommand}"/>
+                    Command="{Binding StandCommand}" ToolTip="Zakończ pobieranie kart"/>
             <Button Content="{DynamicResource New_Game}" Style="{StaticResource CasinoActionButton}"
-                    Command="{Binding NewGameCommand}"/>
+                    Command="{Binding NewGameCommand}" ToolTip="Nowa gra"/>
             <Button Content="{DynamicResource Exit}" Style="{StaticResource CasinoActionButton}"
-                    Command="{Binding ExitGameCommand}"
+                    Command="{Binding ExitGameCommand}" ToolTip="Wyjście do menu"
                     CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
         </StackPanel>
         <StackPanel Grid.Row="3"

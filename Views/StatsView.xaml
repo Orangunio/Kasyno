@@ -81,7 +81,7 @@
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="{DynamicResource Date}" Binding="{Binding GameDate, StringFormat=\{0:yyyy-MM-dd HH:mm\}}" Width="*" />
-                    <DataGridTextColumn Header="{DynamicResource Bet}" Binding="{Binding Amount}" Width="Auto" />
+                    <DataGridTextColumn Header="{DynamicResource Bet}" Binding="{Binding Amount}" Width="Auto"  />
                     <DataGridTextColumn Header="{DynamicResource Description}" Binding="{Binding Description}" Width="Auto" />
                     <DataGridTextColumn Header="{DynamicResource Result}" Binding="{Binding Outcome}" Width="Auto" />
                     <DataGridTextColumn Header="{DynamicResource Value}" Binding="{Binding ResultAmount}" Width="*" />
@@ -93,18 +93,18 @@
         <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Top">
             <TextBlock Text="{DynamicResource Statistics}" FontWeight="Bold" FontSize="16" Margin="0,0,0,10" Foreground="Gold"/>
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5" ToolTip="Rozegrane hry">
                 <TextBlock Text="{DynamicResource Games_played}" Foreground="White"/>
                 <TextBlock Text="{Binding TotalGames}" Foreground="Gold"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5" ToolTip="Wygrane gry">
                 <TextBlock Text="{DynamicResource Win}" Foreground="White"/>
                 <TextBlock Text=": " Foreground="White"/>
                 <TextBlock Text="{Binding Wins}" Foreground="Gold"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5" ToolTip="Przegrane gry">
                 <TextBlock Text="{DynamicResource Loss}" Foreground="White"/>
                 <TextBlock Text=": " Foreground="White"/>
                 <TextBlock Text="{Binding Losses}" Foreground="Gold"/>
@@ -127,7 +127,7 @@
             </StackPanel>
         </StackPanel>
 
-        <Button Grid.ColumnSpan="2" Grid.Row="1"
+        <Button Grid.ColumnSpan="2" Grid.Row="1" ToolTip="Powrót do menu"
                 Content="{DynamicResource Back}"
                 Style="{StaticResource CasinoActionButton}"
                 HorizontalAlignment="Right"

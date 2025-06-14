@@ -1,6 +1,7 @@
 ﻿using FontAwesome.WPF;
 using Kasyno.Helpers;
 using Kasyno.Views;
+using Kasyno.Views.Dialogs;
 using Kasyno.Views.Games;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,7 @@ namespace Kasyno.ViewModels
         {
             _view = view;
 
+            // Ustawienie domyślnych ikon
             Icon1 = Icon2 = Icon3 = "Question";
 
             NewGameCommand = new RelayCommand(NewGame);
@@ -62,12 +64,16 @@ namespace Kasyno.ViewModels
             var betDialog = new BetDialog();
             bool? result = betDialog.ShowDialog();
 
-            if (result == true)
+            if (result == true && betDialog.EnteredBetAmount >= 10)
             {
                 _lastBetAmount = betDialog.EnteredBetAmount;
 
-                // Uruchom animację losowania w widoku
+                // Rozpoczęcie animacji losowania
                 _view.StartSpin();
+            }
+            else
+            {
+                MessageBox.Show("Wprowadź poprawną stawkę (min. 10).", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -76,11 +82,13 @@ namespace Kasyno.ViewModels
             if (Icon1 == Icon2 && Icon2 == Icon3)
             {
                 int winAmount = _lastBetAmount * 25;
-                MessageBox.Show($"🎉 Wygrałeś {winAmount} żetonów! 🎉", "Gratulacje!", MessageBoxButton.OK, MessageBoxImage.Information);
+                var winDialog = new WinDialog($"🎉 Wygrałeś {winAmount} żetonów! 🎉");
+                winDialog.ShowDialog();
             }
             else
             {
-                MessageBox.Show("Brak wygranej. Spróbuj ponownie!", "Powodzenia następnym razem!", MessageBoxButton.OK, MessageBoxImage.Information);
+                var loseDialog = new LoseDialog();
+                loseDialog.ShowDialog();
             }
         }
 

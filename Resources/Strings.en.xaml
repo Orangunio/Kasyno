@@ -39,4 +39,5 @@
     <sys:String x:Key="War">War</sys:String>
     <sys:String x:Key="Welcome">Wellcome to Casino!</sys:String>
     <sys:String x:Key="Win">Win</sys:String>
+    <sys:String x:Key="Money_Add">Add Money</sys:String>
 </ResourceDictionary>

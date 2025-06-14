@@ -40,4 +40,5 @@
     <sys:String x:Key="War">Wojna</sys:String>
     <sys:String x:Key="Welcome">Witaj w Kasynie!</sys:String>
     <sys:String x:Key="Win">Wygrana</sys:String>
+    <sys:String x:Key="Money_Add">Dodaj pieniądze</sys:String>
 </ResourceDictionary>

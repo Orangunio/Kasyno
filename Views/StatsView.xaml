@@ -127,13 +127,18 @@
             </StackPanel>
         </StackPanel>
 
-        <Button Grid.ColumnSpan="2" Grid.Row="1" ToolTip="Powrót do menu"
-                Content="{DynamicResource Back}"
-                Style="{StaticResource CasinoActionButton}"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="0,0,10,10"
-                Command="{Binding ExitCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button ToolTip="Dodaj pieniądze do konta"
+                    Content="{DynamicResource Money_Add}"
+                    Style="{StaticResource CasinoActionButton}"
+                    Margin="0,0,10,10"
+                    Command="{Binding AddMoneyCommand}"/>
+            <Button ToolTip="Powrót do menu"
+                    Content="{DynamicResource Back}"
+                    Style="{StaticResource CasinoActionButton}"
+                    Margin="0,0,10,10"
+                    Command="{Binding ExitCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+        </StackPanel>
     </Grid>
 </Window>

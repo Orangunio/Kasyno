@@ -27,6 +27,7 @@ namespace Kasyno.ViewModels
         public int TotalLost => Bets.Where(b => b.Outcome == "L").Sum(b => b.Amount);
         public SeriesCollection PieSeries { get; set; }
         public ExitCommand ExitCommand { get; }
+        public AddMoneyCommand AddMoneyCommand { get; }
         private bool isClosingHandled = false;
 
         public void OnWindowClosing()
@@ -47,24 +48,31 @@ namespace Kasyno.ViewModels
         public StatsViewModel()
         {
             ExitCommand = new ExitCommand(this);
+            AddMoneyCommand = new AddMoneyCommand(this);
             _ = LoadHistoryAsync();
             PieSeries = new SeriesCollection
+            {
+                new PieSeries
+                {
+                    Title = "W",
+                    Values = new ChartValues<int> { Wins },
+                    DataLabels = true,
+                    Fill = Brushes.Green
+                },
+                new PieSeries
+                {
+                    Title = "L",
+                    Values = new ChartValues<int> { Losses },
+                    DataLabels = true,
+                    Fill = Brushes.Red
+                }
+            };
+        }
+        public void AddMoney(int amount)
         {
-            new PieSeries
-            {
-                Title = "W",
-                Values = new ChartValues<int> { Wins },
-                DataLabels = true,
-                Fill = Brushes.Green
-            },
-            new PieSeries
-            {
-                Title = "L",
-                Values = new ChartValues<int> { Losses },
-                DataLabels = true,
-                Fill = Brushes.Red
-            }
-        };
+            User.Balance += amount;
+            DataHelper.UpdateAsync(User);
+            OnPropertyChanged(nameof(User));
         }
 
         private async Task LoadHistoryAsync()

@@ -84,15 +84,9 @@ namespace Kasyno.ViewModels
 
                     _view.StartSpin(); 
                 }
-                else
-                {
-                    MessageBox.Show("Masz za mało środków!", "Brak środków", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                
             }
-            else
-            {
-                MessageBox.Show("Wprowadź poprawną stawkę (min. 10).", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            
         }
 
         public async void ResolveGame()

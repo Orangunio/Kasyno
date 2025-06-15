@@ -51,5 +51,20 @@ namespace Kasyno.Helpers
             await asyncConnection.CreateTableAsync<T>();
             return await asyncConnection.Table<T>().ToListAsync();
         }
+        public static bool Insert<T>(T item) where T : class, new()
+        {
+            using var connection = new SQLiteConnection(databasePath);
+            connection.CreateTable<T>();
+            int rows = connection.Insert(item);
+            return rows > 0;
+        }
+
+        public static bool Update<T>(T item) where T : class, new()
+        {
+            using var connection = new SQLiteConnection(databasePath);
+            connection.CreateTable<T>();
+            int rows = connection.Update(item);
+            return rows > 0;
+        }
     }
 }

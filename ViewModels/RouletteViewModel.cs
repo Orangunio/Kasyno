@@ -1,4 +1,5 @@
-﻿using Kasyno.Models;
+﻿using Kasyno.Helpers;
+using Kasyno.Models;
 using Kasyno.ViewModels.Commands.RouletteCommands;
 using Kasyno.Views;
 using System;
@@ -25,7 +26,7 @@ namespace Kasyno.ViewModels
     public class RouletteViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
+        private GameSession? currentSession;
         public int moneyToBet { get; set; } = 5;
 
         private int _currentBet;
@@ -233,13 +234,32 @@ namespace Kasyno.ViewModels
             string convertedColor = ConvertColorCodeOnColor(winningField.color);
             winningField.color = convertedColor;
             int moneyWon = 0 - moneyForBet;
-            foreach(var bet in betFields)
+            currentSession = new GameSession(App.User.Id, DateTime.Now, DateTime.Now);
+            DataHelper.Insert(currentSession);
+            foreach (var bet in betFields)
             {
-                if (bet.checkWin(winningField))
+                bool isWin = bet.checkWin(winningField);
+                int winAmount = isWin ? bet.potentialWin() : 0;
+                string outcome = isWin ? "W" : "L";
+                var resultentry = new Result(outcome, winAmount);
+                DataHelper.Insert(resultentry);
+                if (isWin)
                 {
-                    App.User.Balance += bet.potentialWin();
-                    moneyWon += bet.potentialWin();
+                    App.User.Balance += winAmount;
+                    moneyWon += winAmount;
                 }
+                string desc;
+                if (bet is NumberBet numberBet)
+                {
+                    desc = $"Numer: {numberBet.number}, Kolor: {numberBet.color}";
+                }
+                else
+                {
+                    desc = bet.GetType().Name;
+                }
+                var betEntry = new Bet(currentSession.Id, bet.bet, resultentry.Id, desc);
+                DataHelper.Insert(betEntry);
+                DataHelper.Update(App.User);
             }
             string convertedColorOnCode = ConvertColorOnColorCode(winningField.color);
             winningField.color = convertedColorOnCode;

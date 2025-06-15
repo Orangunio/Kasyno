@@ -18,11 +18,11 @@ namespace Kasyno.Helpers
         }
 
         // Konstruktor dla akcji z parametrem
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+       /* public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
         {
             _executeWithParam = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecuteWithParam = canExecute;
-        }
+        }*/
 
         public bool CanExecute(object parameter)
         {

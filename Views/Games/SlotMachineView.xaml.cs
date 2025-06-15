@@ -17,7 +17,7 @@ namespace Kasyno.Views.Games
         public SlotMachineView()
         {
             InitializeComponent();
-            DataContext = new SlotMachineViewModel(this); // Przekazujemy referencję do widoku
+            DataContext = new SlotMachineViewModel(this);
 
             _spinTimer = new DispatcherTimer
             {
@@ -36,7 +36,6 @@ namespace Kasyno.Views.Games
         {
             _spinTicks++;
 
-            // Symuluje obracające się bębny
             ViewModel.Icon1 = ViewModel.GetRandomIcon();
             ViewModel.Icon2 = ViewModel.GetRandomIcon();
             ViewModel.Icon3 = ViewModel.GetRandomIcon();
@@ -45,19 +44,19 @@ namespace Kasyno.Views.Games
             {
                 _spinTimer.Stop();
 
-                // Ustaw finalne losowanie
                 ViewModel.Icon1 = ViewModel.GetRandomIcon();
+                await Task.Delay(150);
+
                 ViewModel.Icon2 = ViewModel.GetRandomIcon();
+                await Task.Delay(150);
+
                 ViewModel.Icon3 = ViewModel.GetRandomIcon();
 
-                // Odpal animację świecenia ikon
                 var glowStoryboard = (Storyboard)FindResource("IconFlashStoryboard");
                 glowStoryboard.Begin();
 
-                // Odczekaj chwilę zanim pokażesz wynik
                 await Task.Delay(700);
 
-                // Sprawdź wynik
                 ViewModel.ResolveGame();
             }
         }

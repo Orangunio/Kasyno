@@ -1,5 +1,6 @@
 ﻿using FontAwesome.WPF;
 using Kasyno.Helpers;
+using Kasyno.Models;
 using Kasyno.Views;
 using Kasyno.Views.Dialogs;
 using Kasyno.Views.Games;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -21,6 +23,12 @@ namespace Kasyno.ViewModels
         private readonly Random _random = new();
         private readonly SlotMachineView _view;
         private int _lastBetAmount = 0;
+
+        private GameSession? currentSession;
+        private string desc = "Slot Machine";
+        private int piniondz;
+
+        public User User => App.User;
 
         public string Icon1
         {
@@ -52,24 +60,34 @@ namespace Kasyno.ViewModels
         {
             _view = view;
 
-            // Ustawienie domyślnych ikon
             Icon1 = Icon2 = Icon3 = "Question";
 
-            NewGameCommand = new RelayCommand(NewGame);
+            NewGameCommand = new RelayCommand(async () => await NewGame());
             ExitCommand = new RelayCommand(() => Application.Current.Shutdown());
         }
 
-        private void NewGame()
+        private async Task NewGame()
         {
             var betDialog = new BetDialog();
             bool? result = betDialog.ShowDialog();
 
             if (result == true && betDialog.EnteredBetAmount >= 10)
             {
-                _lastBetAmount = betDialog.EnteredBetAmount;
+                if (User.Balance >= betDialog.EnteredBetAmount)
+                {
+                    _lastBetAmount = betDialog.EnteredBetAmount;
+                    User.Balance -= _lastBetAmount;
+                    await DataHelper.UpdateAsync(User);
 
-                // Rozpoczęcie animacji losowania
-                _view.StartSpin();
+                    currentSession = new GameSession(User.Id, DateTime.Now, DateTime.Now);
+                    await DataHelper.InsertAsync(currentSession);
+
+                    _view.StartSpin(); 
+                }
+                else
+                {
+                    MessageBox.Show("Masz za mało środków!", "Brak środków", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             else
             {
@@ -77,19 +95,38 @@ namespace Kasyno.ViewModels
             }
         }
 
-        public void ResolveGame()
+        public async void ResolveGame()
         {
             if (Icon1 == Icon2 && Icon2 == Icon3)
             {
                 int winAmount = _lastBetAmount * 25;
+                User.Balance += winAmount;
+                piniondz = winAmount;
+
                 var winDialog = new WinDialog($"🎉 Wygrałeś {winAmount} żetonów! 🎉");
                 winDialog.ShowDialog();
             }
             else
             {
+                piniondz = 0;
+
                 var loseDialog = new LoseDialog();
                 loseDialog.ShowDialog();
             }
+
+            if (currentSession != null)
+            {
+                currentSession.EndTime = DateTime.Now;
+                await DataHelper.UpdateAsync(currentSession);
+
+                var resultEntry = new Result(piniondz > 0 ? "W" : "L", piniondz);
+                await DataHelper.InsertAsync(resultEntry);
+
+                var betEntry = new Bet(currentSession.Id, _lastBetAmount, resultEntry.Id, desc);
+                await DataHelper.InsertAsync(betEntry);
+            }
+
+            await DataHelper.UpdateAsync(User);
         }
 
         public string GetRandomIcon()

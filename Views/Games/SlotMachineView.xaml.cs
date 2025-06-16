@@ -70,7 +70,7 @@ namespace Kasyno.Views.Games
                     glowStoryboard.Begin();
                 }
 
-                await Task.Delay(700);
+                await Task.Delay(150);
 
                 ViewModel.ResolveGame();
             }

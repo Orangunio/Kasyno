@@ -1,5 +1,4 @@
-﻿using Kasyno.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,14 +8,13 @@ using System.Windows.Input;
 
 namespace Kasyno.ViewModels.Commands
 {
-    public class ExitGameCommand : ICommand
+    public class ExitWarCommand : ICommand
     {
-        private BlackjackViewModel ViewModel;
-
         public event EventHandler? CanExecuteChanged;
-        public ExitGameCommand(BlackjackViewModel vm)
+        private WarViewModel viewModel;
+        public ExitWarCommand(WarViewModel vm)
         {
-            ViewModel = vm;
+            viewModel = vm;
         }
         public bool CanExecute(object? parameter)
         {
@@ -25,12 +23,11 @@ namespace Kasyno.ViewModels.Commands
 
         public void Execute(object? parameter)
         {
-            if (parameter is Window window && window.DataContext is BlackjackViewModel vm)
+            if (parameter is Window window && window.DataContext is WarViewModel vm)
             {
                 vm.OnWindowClosing();
-                window.Close(); 
+                window.Close();
             }
-
         }
     }
 }

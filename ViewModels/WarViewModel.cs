@@ -15,6 +15,27 @@ namespace Kasyno.ViewModels
     public class WarViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
+        private int _playerDeckCount;
+        public int PlayerDeckCount
+        {
+            get => _playerDeckCount;
+            set
+            {
+                _playerDeckCount = value;
+                OnPropertyChanged(nameof(PlayerDeckCount));
+            }
+        }
+
+        private int _dealerDeckCount;
+        public int DealerDeckCount
+        {
+            get => _dealerDeckCount;
+            set
+            {
+                _dealerDeckCount = value;
+                OnPropertyChanged(nameof(DealerDeckCount));
+            }
+        }
 
         private Deck deck;
         public User User => App.User;
@@ -22,7 +43,7 @@ namespace Kasyno.ViewModels
         public Card PlayerCard { get; set; }
         public Card DealerCard { get; set; }
 
-        private int betAmount;
+        private int betAmount = 0;
         public int BetAmount
         {
             get => betAmount;
@@ -69,10 +90,23 @@ namespace Kasyno.ViewModels
             }
         }
 
-        public bool IsAnimating { get; internal set; }
+        private bool isAnimating = false;
+        public bool IsAnimating
+        {
+            get => isAnimating;
+            set
+            {
+                if (isAnimating != value)
+                {
+                    isAnimating = value;
+                    OnPropertyChanged(nameof(IsAnimating));
+                    NewGameCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         // Komendy
-        public ExitGameCommand ExitGameCommand { get; }
+        public ExitWarCommand ExitGameCommand { get; }
         public WarNewGameCommand NewGameCommand { get; }
         public WarPlayCommand PlayCommand { get; }
         public bool CanPlay { get; internal set; }
@@ -81,17 +115,28 @@ namespace Kasyno.ViewModels
 
         public WarViewModel()
         {
-            ExitGameCommand = new ExitGameCommand(this);
+            ExitGameCommand = new ExitWarCommand(this);
             NewGameCommand = new WarNewGameCommand(this);
             PlayCommand = new WarPlayCommand(this);
         }
 
         public async Task PlayRound()
         {
+            IsAnimating = true;
+            if (User.Balance < BetAmount)
+            {
+                MessageBox.Show("Nie masz wystarczających środków!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Odejmujemy stawkę raz na początku
+            User.Balance -= BetAmount;
+            await DataHelper.UpdateAsync(User);
+
             deck = new Deck();
             deck.Shuffle();
 
-            // Podzial talii
+            // Podział talii
             var playerDeck = new Queue<Card>();
             var dealerDeck = new Queue<Card>();
 
@@ -106,7 +151,7 @@ namespace Kasyno.ViewModels
 
             int roundCounter = 0;
 
-            while (playerDeck.Count > 0 && dealerDeck.Count > 0 && User.Balance >= BetAmount)
+            while (playerDeck.Count > 0 && dealerDeck.Count > 0)
             {
                 roundCounter++;
                 await Task.Delay(500);
@@ -124,21 +169,13 @@ namespace Kasyno.ViewModels
 
                 if (playerCard.Value > dealerCard.Value)
                 {
-                    //playerDeck.EnqueueRange(winnings);
                     foreach (var card in winnings)
-                    {
                         playerDeck.Enqueue(card);
-                    }
-                    Result = "W";
-                    User.Balance += BetAmount;
                 }
                 else if (dealerCard.Value > playerCard.Value)
                 {
-                    //dealerDeck.EnqueueRange(winnings);
                     foreach (var card in winnings)
-                        playerDeck.Enqueue(card);
-                    Result = "L";
-                    User.Balance -= BetAmount;
+                        dealerDeck.Enqueue(card);
                 }
                 else
                 {
@@ -155,7 +192,6 @@ namespace Kasyno.ViewModels
                             break;
                         }
 
-                        // 3 karty zakryte
                         for (int i = 0; i < 3; i++)
                         {
                             warPile.Add(playerDeck.Dequeue());
@@ -175,45 +211,47 @@ namespace Kasyno.ViewModels
 
                         if (playerWarCard.Value > dealerWarCard.Value)
                         {
-                            //playerDeck.EnqueueRange(warPile);
-                            foreach (var card in winnings)
+                            foreach (var card in warPile)
                                 playerDeck.Enqueue(card);
-                            Result = "W";
-                            User.Balance += BetAmount;
                             warResolved = true;
                         }
                         else if (dealerWarCard.Value > playerWarCard.Value)
                         {
-                            //dealerDeck.EnqueueRange(warPile);
-                            foreach (var card in winnings)
+                            foreach (var card in warPile)
                                 dealerDeck.Enqueue(card);
-                            Result = "L";
-                            User.Balance -= BetAmount;
                             warResolved = true;
                         }
                     }
                 }
-
-                OnPropertyChanged(nameof(Result));
-                OnPropertyChanged(nameof(ResultText));
-                await DataHelper.UpdateAsync(User);
-
-                var session = new GameSession(User.Id, DateTime.Now, DateTime.Now);
-                await DataHelper.InsertAsync(session);
-
-                var resultEntry = new Result(Result, Result == "W" ? BetAmount : 0);
-                await DataHelper.InsertAsync(resultEntry);
-
-                var betEntry = new Bet(session.Id, BetAmount, resultEntry.Id, "War");
-                await DataHelper.InsertAsync(betEntry);
+                PlayerDeckCount = playerDeck.Count;
+                DealerDeckCount = dealerDeck.Count;
             }
 
-            string summary = playerDeck.Count == 0 ? "Krupier wygrywa!" : "Gracz wygrywa!";
-            MessageBox.Show($"Gra zakończona! {summary}\nRund rozegranych: {roundCounter}", "Koniec gry", MessageBoxButton.OK, MessageBoxImage.Information);
+            bool playerWon = playerDeck.Count > 0;
+            string summary = playerWon ? "Gracz wygrywa!" : "Krupier wygrywa!";
+            Result = playerWon ? "W" : "L";
 
-            PlayerCard = null;
-            DealerCard = null;
-            Result = string.Empty;
+            if (playerWon)
+            {
+                User.Balance += BetAmount * 8;
+            }
+
+            // Aktualizacja UI i bazy danych
+            OnPropertyChanged(nameof(Result));
+            OnPropertyChanged(nameof(ResultText));
+            OnPropertyChanged(nameof(User.Balance));
+            await DataHelper.UpdateAsync(User);
+
+            var session = new GameSession(User.Id, DateTime.Now, DateTime.Now);
+            await DataHelper.InsertAsync(session);
+
+            var resultEntry = new Result(Result, playerWon ? BetAmount * 8 : 0);
+            await DataHelper.InsertAsync(resultEntry);
+
+            var betEntry = new Bet(session.Id, BetAmount, resultEntry.Id, "War");
+            await DataHelper.InsertAsync(betEntry);
+
+            // Reset UI
             BetAmount = 0;
 
             OnPropertyChanged(nameof(PlayerCard));
@@ -221,20 +259,8 @@ namespace Kasyno.ViewModels
             OnPropertyChanged(nameof(Result));
             OnPropertyChanged(nameof(ResultText));
             OnPropertyChanged(nameof(BetAmount));
+            IsAnimating = false;
         }
-
-        // public static class QueueExtensions
-        // {
-        //public static void EnqueueRange<T>(this Queue<T> queue, IEnumerable<T> items)
-        //{
-        //    foreach (var item in items)
-        //        queue.Enqueue(item);
-        //}
-        // }
-
-        
-
-
         public void NewGame()
         {
             PlayerCard = null;
@@ -262,14 +288,6 @@ namespace Kasyno.ViewModels
                 mainMenu.Show();
             }
         }
-
-        public void ExitGame(Window window)
-        {
-            var mainMenu = new MainMenuView();
-            mainMenu.Show();
-            window?.Close();
-        }
-
         private void OnPropertyChanged(string name) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 

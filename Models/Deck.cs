@@ -35,10 +35,5 @@ namespace Kasyno.Models
             Cards.RemoveAt(0);
             return drawnCard;
         }
-
-        internal bool HasCardsLeft(int v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

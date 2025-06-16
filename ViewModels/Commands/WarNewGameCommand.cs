@@ -25,6 +25,10 @@ namespace Kasyno.ViewModels.Commands
 
         public bool CanExecute(object? parameter)
         {
+            if(ViewModel.IsAnimating)
+            {
+                return false;
+            }
             return true;
         }
 

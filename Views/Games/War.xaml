@@ -30,38 +30,39 @@
                    Foreground="White"
                    HorizontalAlignment="Center"
                    Margin="0,20"/>
-
         <!-- ===== KARTY GRACZA I KRUPIERA ===== -->
         <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="40">
                     <TextBlock Text="Krupier" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
-                    <controls:CardControl Card="{Binding DealerCard}" IsDealerTurnOver="True"/>
+                    <controls:WarCardControl Card="{Binding DealerCard}" />
+                    <TextBlock Text="{Binding DealerDeckCount, StringFormat='Karty: {0}'}"
+                       Foreground="LightGray"
+                       FontSize="14"
+                       HorizontalAlignment="Center"
+                       Margin="0,5,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="40">
                     <TextBlock Text="Gracz" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
-                    <controls:CardControl Card="{Binding PlayerCard}" IsDealerTurnOver="True"/>
+                    <controls:WarCardControl Card="{Binding PlayerCard}" />
+                    <TextBlock Text="{Binding PlayerDeckCount, StringFormat='Karty: {0}'}"
+                       Foreground="LightGray"
+                       FontSize="14"
+                       HorizontalAlignment="Center"
+                       Margin="0,5,0,0"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
 
-        <!-- ===== STAWKA I SALDO ===== -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
-            <TextBlock Text="Stawka:" Foreground="Gold" FontSize="16" Margin="0,0,5,0" VerticalAlignment="Center"/>
-            <TextBox Width="100" Text="{Binding BetAmount, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Content="Zagraj"
-                    Style="{StaticResource CasinoActionButton}"
-                    Command="{Binding WarPlayCommand}"
-                     Margin="10,0,0,0" />
-        </StackPanel>
 
+        <!-- ===== SALDO ===== -->
         <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,30,0">
             <TextBlock Text="Saldo:" Foreground="White" FontSize="16"/>
             <TextBlock Text="{Binding User.Balance}" Foreground="Wheat" FontSize="16"/>
         </StackPanel>
 
         <!-- ===== WYNIK ===== -->
-        <TextBlock Grid.Row="3"
+        <TextBlock Grid.Row="2"
                    Text="{Binding ResultText}"
                    Foreground="Gold"
                    FontSize="20"
@@ -73,7 +74,7 @@
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
             <Button Content="Nowa gra"
                     Style="{StaticResource CasinoActionButton}"
-                    Command="{Binding WarNewGameCommand}" />
+                    Command="{Binding NewGameCommand}" />
             <Button Content="Wyjście"
                     Style="{StaticResource CasinoActionButton}"
                     Command="{Binding ExitGameCommand}"

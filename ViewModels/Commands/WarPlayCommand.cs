@@ -17,7 +17,7 @@ namespace Kasyno.ViewModels.Commands
 
         public bool CanExecute(object? parameter)
         {
-            return !viewModel.IsAnimating && viewModel.BetAmount >= 10;
+            return true;
         }
 
         public void Execute(object? parameter)

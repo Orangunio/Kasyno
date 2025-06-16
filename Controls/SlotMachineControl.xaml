@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="Kasyno.Controls.SlotMachineControl"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:fa="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
+             xmlns:local="clr-namespace:Kasyno.Helpers"
+             Height="Auto" Width="Auto">
+    <UserControl.Resources>
+        <local:IconConverter x:Key="IconConverter" />
+        <DropShadowEffect x:Key="IconGlow" Color="Gold" BlurRadius="10" ShadowDepth="0" Opacity="0.7"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Rectangle Grid.Column="1" Width="3" Fill="#FFB14E" HorizontalAlignment="Left" Opacity="0.7"/>
+        <Rectangle Grid.Column="2" Width="3" Fill="#FFB14E" HorizontalAlignment="Left" Opacity="0.7"/>
+
+        <Border Grid.Column="0" BorderBrush="#FFD700" BorderThickness="2" CornerRadius="15" Margin="10" Background="#22000000">
+            <fa:ImageAwesome x:Name="Icon1"
+                             Icon="{Binding Icon1, Converter={StaticResource IconConverter}}"
+                             Width="64" Height="64" Foreground="RosyBrown" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:ImageAwesome.RenderTransform>
+                    <TranslateTransform/>
+                </fa:ImageAwesome.RenderTransform>
+                <fa:ImageAwesome.Effect>
+                    <StaticResource ResourceKey="IconGlow"/>
+                </fa:ImageAwesome.Effect>
+            </fa:ImageAwesome>
+        </Border>
+        <Border Grid.Column="1" BorderBrush="#FFD700" BorderThickness="2" CornerRadius="15" Margin="10" Background="#22000000">
+            <fa:ImageAwesome x:Name="Icon2"
+                             Icon="{Binding Icon2, Converter={StaticResource IconConverter}}"
+                             Width="64" Height="64" Foreground="RosyBrown" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:ImageAwesome.RenderTransform>
+                    <TranslateTransform/>
+                </fa:ImageAwesome.RenderTransform>
+                <fa:ImageAwesome.Effect>
+                    <StaticResource ResourceKey="IconGlow"/>
+                </fa:ImageAwesome.Effect>
+            </fa:ImageAwesome>
+        </Border>
+        <Border Grid.Column="2" BorderBrush="#FFD700" BorderThickness="2" CornerRadius="15" Margin="10" Background="#22000000">
+            <fa:ImageAwesome x:Name="Icon3"
+                             Icon="{Binding Icon3, Converter={StaticResource IconConverter}}"
+                             Width="64" Height="64" Foreground="RosyBrown" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:ImageAwesome.RenderTransform>
+                    <TranslateTransform/>
+                </fa:ImageAwesome.RenderTransform>
+                <fa:ImageAwesome.Effect>
+                    <StaticResource ResourceKey="IconGlow"/>
+                </fa:ImageAwesome.Effect>
+            </fa:ImageAwesome>
+        </Border>
+    </Grid>
+</UserControl>
+
+
+
+

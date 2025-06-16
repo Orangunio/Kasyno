@@ -7,6 +7,7 @@ using Kasyno.Views.Games;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -63,7 +64,26 @@ namespace Kasyno.ViewModels
             Icon1 = Icon2 = Icon3 = "Question";
 
             NewGameCommand = new RelayCommand(async () => await NewGame());
-            ExitCommand = new RelayCommand(() => Application.Current.Shutdown());
+
+            ExitCommand = new RelayCommand(() =>
+            {
+                OnWindowClosing();
+            });
+        }
+
+        public void OnWindowClosing()
+        {
+            _view.Hide(); 
+
+            bool isMainMenuOpen = Application.Current.Windows
+                .OfType<MainMenuView>()
+                .Any(w => w.IsVisible);
+
+            if (!isMainMenuOpen)
+            {
+                var mainMenu = new MainMenuView();
+                mainMenu.Show();
+            }
         }
 
         private async Task NewGame()
@@ -82,11 +102,9 @@ namespace Kasyno.ViewModels
                     currentSession = new GameSession(User.Id, DateTime.Now, DateTime.Now);
                     await DataHelper.InsertAsync(currentSession);
 
-                    _view.StartSpin(); 
+                    _view.StartSpin();
                 }
-                
             }
-            
         }
 
         public async void ResolveGame()

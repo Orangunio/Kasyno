@@ -1,5 +1,6 @@
 ﻿using Kasyno.ViewModels;
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
@@ -12,6 +13,7 @@ namespace Kasyno.Views.Games
         private readonly DispatcherTimer _spinTimer;
         private int _spinTicks;
         private const int MaxSpinTicks = 20;
+
         private SlotMachineViewModel ViewModel => DataContext as SlotMachineViewModel;
 
         public SlotMachineView()
@@ -24,6 +26,17 @@ namespace Kasyno.Views.Games
                 Interval = TimeSpan.FromMilliseconds(100)
             };
             _spinTimer.Tick += SpinTimer_Tick;
+
+            this.Closing += SlotMachineView_Closing;
+        }
+
+        private void SlotMachineView_Closing(object? sender, CancelEventArgs e)
+        {
+            if (ViewModel != null)
+            {
+                e.Cancel = true; 
+                ViewModel.OnWindowClosing(); 
+            }
         }
 
         public void StartSpin()
@@ -52,8 +65,10 @@ namespace Kasyno.Views.Games
 
                 ViewModel.Icon3 = ViewModel.GetRandomIcon();
 
-                var glowStoryboard = (Storyboard)FindResource("IconFlashStoryboard");
-                glowStoryboard.Begin();
+                if (SlotMachineControlElement.Resources["IconFlashStoryboard"] is Storyboard glowStoryboard)
+                {
+                    glowStoryboard.Begin();
+                }
 
                 await Task.Delay(700);
 

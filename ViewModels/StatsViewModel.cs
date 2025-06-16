@@ -4,6 +4,7 @@ using Kasyno.ViewModels.Commands.StatsCommands;
 using Kasyno.Views;
 using LiveCharts;
 using LiveCharts.Wpf;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +19,37 @@ namespace Kasyno.ViewModels
 {
     public class StatsViewModel : INotifyPropertyChanged
     {
+        public ObservableCollection<string> AvailableCurrencies { get; set; } = new();
+        private string selectedCurrency;
+        public string SelectedCurrency
+        {
+            get => selectedCurrency;
+            set
+            {
+                selectedCurrency = value;
+                OnPropertyChanged(nameof(SelectedCurrency));
+                OnPropertyChanged(nameof(ConvertedAmount));
+                OnPropertyChanged(nameof(SelectedCurrencySymbol));
+            }
+        }
+
+        public Dictionary<string, decimal> CurrencyRates { get; set; } = new();
+
+        public double ConvertedAmount =>
+            CurrencyRates.TryGetValue(SelectedCurrency, out var rate) && rate > 0
+                ? User.Balance / (double)rate
+                : 0;
+
+        public string SelectedCurrencySymbol =>
+            SelectedCurrency switch
+            {
+                "USD" => "$",
+                "EUR" => "€",
+                "GBP" => "£",
+                "CHF" => "₣",
+                "JPY" => "¥",
+                _ => SelectedCurrency // fallback: symbol = kod waluty
+            };
         public ObservableCollection<StatsHelper> Bets { get; set; } = new();
         public User User => App.User;
         public int TotalGames => Bets.Count;
@@ -27,6 +59,7 @@ namespace Kasyno.ViewModels
         public int TotalLost => Bets.Where(b => b.Outcome == "L").Sum(b => b.Amount);
         public SeriesCollection PieSeries { get; set; }
         public ExitCommand ExitCommand { get; }
+        public KantorCommand KantorCommand { get; }
         public AddMoneyCommand AddMoneyCommand { get; }
         private bool isClosingHandled = false;
 
@@ -47,6 +80,7 @@ namespace Kasyno.ViewModels
         }
         public StatsViewModel()
         {
+            KantorCommand = new KantorCommand(this);
             ExitCommand = new ExitCommand(this);
             AddMoneyCommand = new AddMoneyCommand(this);
             _ = LoadHistoryAsync();
@@ -115,5 +149,50 @@ namespace Kasyno.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        public async void OpenKantorDialog()
+        {
+            try
+            {
+                using var httpClient = new System.Net.Http.HttpClient();
+                string url = "https://api.nbp.pl/api/exchangerates/tables/a/?format=json";
+                var response = await httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                dynamic data = JsonConvert.DeserializeObject(json);
+
+                CurrencyRates.Clear();
+                AvailableCurrencies.Clear();
+
+                foreach (var rate in data[0].rates)
+                {
+                    string code = rate.code;
+                    decimal mid = rate.mid;
+                    CurrencyRates[code] = mid;
+                    AvailableCurrencies.Add(code);
+                }
+
+                SelectedCurrency = AvailableCurrencies.FirstOrDefault();
+
+                OnPropertyChanged(nameof(CurrencyRates));
+                OnPropertyChanged(nameof(AvailableCurrencies));
+                OnPropertyChanged(nameof(SelectedCurrency));
+                OnPropertyChanged(nameof(ConvertedAmount));
+
+                var dialog = new Views.KantorDialog
+                {
+                    DataContext = this
+                };
+                dialog.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Błąd pobierania kursów walut: " + ex.Message);
+            }
+        }
+
+
+
     }
 }

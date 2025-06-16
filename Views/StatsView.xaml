@@ -133,6 +133,11 @@
                     Style="{StaticResource CasinoActionButton}"
                     Margin="0,0,10,10"
                     Command="{Binding AddMoneyCommand}"/>
+            <Button ToolTip="Zobacz ile masz pieniędzy w innych walutach"
+                    Content="{DynamicResource Cantor}"
+                    Style="{StaticResource CasinoActionButton}"
+                    Margin="0,0,10,10"
+                    Command="{Binding KantorCommand}"/>
             <Button ToolTip="Powrót do menu"
                     Content="{DynamicResource Back}"
                     Style="{StaticResource CasinoActionButton}"

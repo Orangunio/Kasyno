@@ -41,4 +41,14 @@
     <sys:String x:Key="Welcome">Witaj w Kasynie!</sys:String>
     <sys:String x:Key="Win">Wygrana</sys:String>
     <sys:String x:Key="Money_Add">Dodaj pieniądze</sys:String>
+    <sys:String x:Key="Choose_Currency">Wybierz walutę</sys:String>
+    <sys:String x:Key="Enter_Money">Wprowadź kwotę do dodania</sys:String>
+    <sys:String x:Key="Cantor">Kantor</sys:String>
+    <sys:String x:Key="Settings">Ustawienia</sys:String>
+    <sys:String x:Key="Last_wins">OSTATNIE WYGRANE</sys:String>
+    <sys:String x:Key="Delete_bet">Usuń zakład</sys:String>
+    <sys:String x:Key="Reset_bets">Resesuj zakłady</sys:String>
+    <sys:String x:Key="Cost">Koszt zakładu</sys:String>
+    <sys:String x:Key="Spin">Zakręć ruletką</sys:String>
+    <sys:String x:Key="Play_for">Grasz o</sys:String>
 </ResourceDictionary>

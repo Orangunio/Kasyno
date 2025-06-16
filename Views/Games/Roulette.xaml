@@ -44,8 +44,7 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" FontSize="20" VerticalAlignment="Center">Twoje Pieniądze:
-                    </TextBlock>
+                    <TextBlock Grid.Column="0" FontSize="20" VerticalAlignment="Center" Text="{DynamicResource Balance}"/>
                     <TextBlock Grid.Column="1" FontSize="20" VerticalAlignment="Center"
                                Name="UserMoney"></TextBlock>
                 </Grid>
@@ -56,8 +55,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               FontSize="15">Grasz o:</TextBlock>
+                               HorizontalAlignment="Center" Text="{DynamicResource Play_for}"
+                               FontSize="15"/>
                     <TextBox Grid.Column="1" FontSize="20" Width="Auto" Margin="10,0,0,0" 
                              Name="MoneyValue" VerticalAlignment="Center"/>
                 </Grid>
@@ -80,8 +79,8 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" Background="White" Margin="0,10,0,10">
                         <TextBlock Grid.Column="0" VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           FontSize="30">OSTATNIE WYGRANE</TextBlock>
+                           HorizontalAlignment="Center" Text="{DynamicResource Last_wins}"
+                           FontSize="30"/>
                     </Grid>
                     <Grid Grid.Row="1" Name="LastWinsGrid">
                         <Grid.ColumnDefinitions>
@@ -167,20 +166,20 @@
 
                 <Button Margin="10,0,10,0" Background="Red" Grid.Column="0"
                     BorderBrush="Black" Foreground="White" MaxHeight="70" MaxWidth="200"
-                        Name="DeleteBet" Click="DeleteBet_Click">Usuń Zakład
+                        Name="DeleteBet" Click="DeleteBet_Click" Content="{DynamicResource Delete_bet}">
                 </Button>
 
                 <TextBlock Grid.Column="1" FontSize="14" VerticalAlignment="Center" 
-                        TextAlignment="Center" Background="White" Name="MoneyForBet">KOSZT ZAKŁADU
+                        TextAlignment="Center" Background="White" Name="MoneyForBet" Text="{DynamicResource Cost}">
                 </TextBlock>
 
                 <Button Margin="10,0,10,0" Background="Black" Grid.Column="2"
                     BorderBrush="Black" Foreground="White" MaxHeight="70" MaxWidth="200"
-                        Name="RestartBets" Click="ResetBets">Resetuj Zakłady
+                        Name="RestartBets" Click="ResetBets" Content="{DynamicResource Reset_bets}">
                 </Button>
             </Grid>
 
-            <Button Grid.Row="2" Content="Zakręć ruletką" Name="ButtonSpinner"
+            <Button Grid.Row="2" Content="{DynamicResource Spin}" Name="ButtonSpinner"
                 FontWeight="Bold" Margin="0,10,0,0"
                  MaxHeight="90" MaxWidth="250"
                 Background="DarkRed"
@@ -191,9 +190,7 @@
             CornerRadius="5" Padding="10" Background="Gray" Margin="10">
                 <StackPanel>
                     <TextBlock FontSize="18" TextAlignment="Center"
-                       FontWeight="Bold" Margin="0,0,0,10">
-                Ustawienia
-                    </TextBlock>
+                       FontWeight="Bold" Margin="0,0,0,10" Text="{DynamicResource Settings}"/>
 
                     <TextBlock Text="Ustaw Moc Zakręcenia"
                        FontSize="12"

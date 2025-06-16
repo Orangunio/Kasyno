@@ -7,6 +7,7 @@
         xmlns:controls="clr-namespace:Kasyno.Controls"
         mc:Ignorable="d"
         Title="Automaty" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
         Background="#1A1A1A">
 
     <Window.Resources>

@@ -40,4 +40,15 @@
     <sys:String x:Key="Welcome">Wellcome to Casino!</sys:String>
     <sys:String x:Key="Win">Win</sys:String>
     <sys:String x:Key="Money_Add">Add Money</sys:String>
+    <sys:String x:Key="Choose_Currency">Choose Currency</sys:String>
+    <sys:String x:Key="Enter_Money">Enter amount to add</sys:String>
+    <sys:String x:Key="Add">Add</sys:String>
+    <sys:String x:Key="Cantor">Cantor</sys:String>
+    <sys:String x:Key="Settings">Settings</sys:String>
+    <sys:String x:Key="Last_wins">Last Wins</sys:String>
+    <sys:String x:Key="Delete_bet">Delete Bet</sys:String>
+    <sys:String x:Key="Reset_bets">Reset Bets</sys:String>
+    <sys:String x:Key="Cost">Bet Cost</sys:String>
+    <sys:String x:Key="Spin">Spin the Roulette</sys:String>
+    <sys:String x:Key="Play_for">Play for</sys:String>
 </ResourceDictionary>

@@ -115,7 +115,7 @@ namespace Kasyno.ViewModels
                 User.Balance += winAmount;
                 piniondz = winAmount;
 
-                var winDialog = new WinDialog($"🎉 Wygrałeś {winAmount} żetonów! 🎉");
+                var winDialog = new WinDialog($"Gratulacje! Twoja wygrana wynosi: {winAmount} żetonów!");
                 winDialog.ShowDialog();
             }
             else

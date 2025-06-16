@@ -18,7 +18,7 @@
     <sys:String x:Key="Exit">Wyjdź</sys:String>
     <sys:String x:Key="Games_played">Liczba gier: </sys:String>
     <sys:String x:Key="Hello">Zagrajmy</sys:String>
-    <sys:String x:Key="Hello_login">Witaj w Kasynie!</sys:String>
+    <sys:String x:Key="Hello_login">Zagraj o wszystko!</sys:String>
     <sys:String x:Key="Hit">Dobierz</sys:String>
     <sys:String x:Key="Income">Wygrane pieniądze: </sys:String>
     <sys:String x:Key="Login">Zaloguj się</sys:String>

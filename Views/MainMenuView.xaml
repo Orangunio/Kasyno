@@ -45,7 +45,7 @@
             <Button Content="{DynamicResource Machines}" Style="{StaticResource CasinoActionButton}" Click="MachinesButton_Click"/>
             <Button Content="Blackjack" Style="{StaticResource CasinoActionButton}"
                     Command="{Binding BlackjackCommand}"/>
-            <Button Content="{DynamicResource War}" Style="{StaticResource CasinoActionButton}"/>
+            <Button Content="{DynamicResource War}" Style="{StaticResource CasinoActionButton}" Command="{Binding WarCommand}"/>
             <Button Content="{DynamicResource Exit}" Style="{StaticResource CasinoActionButton}" Click="Button_Click"/>
         </StackPanel>
         <!-- Informacje o graczu -->

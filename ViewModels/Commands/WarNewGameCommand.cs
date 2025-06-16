@@ -1,5 +1,4 @@
-﻿using Kasyno.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +7,13 @@ using System.Windows.Input;
 
 namespace Kasyno.ViewModels.Commands
 {
-    public class NewGameCommand : ICommand
+    public class WarNewGameCommand : ICommand
     {
-
         public event EventHandler? CanExecuteChanged;
-        public BlackjackViewModel ViewModel { get; set; }
-        public NewGameCommand(BlackjackViewModel viewModel)
+
+        public WarViewModel ViewModel { get; set; }
+
+        public WarNewGameCommand(WarViewModel viewModel)
         {
             ViewModel = viewModel;
         }
@@ -25,9 +25,7 @@ namespace Kasyno.ViewModels.Commands
 
         public bool CanExecute(object? parameter)
         {
-            if(ViewModel.BetAmount == 0 && !ViewModel.IsAnimating)
-                return true;
-            return false;
+            return true;
         }
 
         public void Execute(object? parameter)
@@ -48,8 +46,6 @@ namespace Kasyno.ViewModels.Commands
             }
 
             ViewModel.NewGame();
-
         }
-
     }
 }

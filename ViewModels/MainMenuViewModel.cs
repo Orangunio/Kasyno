@@ -31,10 +31,12 @@ namespace Kasyno.ViewModels
         public User User => App.User;
         public BlackJackCommand BlackjackCommand { get;}
         public StatsCommand StatsCommand { get; set; }
+        public WarCommand WarCommand { get; set; }
         public MainMenuViewModel()
         {
             BlackjackCommand = new BlackJackCommand();
             StatsCommand = new StatsCommand();
+            WarCommand = new WarCommand();
         }
 
     }

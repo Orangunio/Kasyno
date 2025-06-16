@@ -9,12 +9,14 @@ namespace Kasyno.ViewModels.Commands
 {
     public class HitCommand : ICommand
     {
+
         public event EventHandler? CanExecuteChanged;
         public BlackjackViewModel ViewModel { get; set; }
         public HitCommand(BlackjackViewModel viewModel)
         {
             ViewModel = viewModel;
         }
+
         public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);

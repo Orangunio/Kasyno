@@ -1,0 +1,83 @@
+﻿<Window x:Class="Kasyno.Views.Games.War"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Kasyno.ViewModels"
+        xmlns:controls="clr-namespace:Kasyno.Controls"
+        Title="Wojna"
+        Width="1000" Height="650"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="#0F3B21"
+        FontFamily="Segoe UI">
+
+    <Window.DataContext>
+        <vm:WarViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ===== TYTUŁ ===== -->
+        <TextBlock Grid.Row="0"
+                   Text="Gra w Wojnę"
+                   FontSize="26"
+                   FontWeight="Bold"
+                   Foreground="White"
+                   HorizontalAlignment="Center"
+                   Margin="0,20"/>
+
+        <!-- ===== KARTY GRACZA I KRUPIERA ===== -->
+        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="40">
+                    <TextBlock Text="Krupier" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <controls:CardControl Card="{Binding DealerCard}" IsDealerTurnOver="True"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="40">
+                    <TextBlock Text="Gracz" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <controls:CardControl Card="{Binding PlayerCard}" IsDealerTurnOver="True"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- ===== STAWKA I SALDO ===== -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+            <TextBlock Text="Stawka:" Foreground="Gold" FontSize="16" Margin="0,0,5,0" VerticalAlignment="Center"/>
+            <TextBox Width="100" Text="{Binding BetAmount, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Zagraj"
+                    Style="{StaticResource CasinoActionButton}"
+                    Command="{Binding WarPlayCommand}"
+                     Margin="10,0,0,0" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,30,0">
+            <TextBlock Text="Saldo:" Foreground="White" FontSize="16"/>
+            <TextBlock Text="{Binding User.Balance}" Foreground="Wheat" FontSize="16"/>
+        </StackPanel>
+
+        <!-- ===== WYNIK ===== -->
+        <TextBlock Grid.Row="3"
+                   Text="{Binding ResultText}"
+                   Foreground="Gold"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,10"/>
+
+        <!-- ===== PRZYCISKI ===== -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+            <Button Content="Nowa gra"
+                    Style="{StaticResource CasinoActionButton}"
+                    Command="{Binding WarNewGameCommand}" />
+            <Button Content="Wyjście"
+                    Style="{StaticResource CasinoActionButton}"
+                    Command="{Binding ExitGameCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -12,10 +12,17 @@ namespace Kasyno.ViewModels.Commands
     public class ExitGameCommand : ICommand
     {
         private BlackjackViewModel ViewModel;
+        private WarViewModel warViewModel;
+
         public event EventHandler? CanExecuteChanged;
         public ExitGameCommand(BlackjackViewModel vm)
         {
             ViewModel = vm;
+        }
+
+        public ExitGameCommand(WarViewModel warViewModel)
+        {
+            this.warViewModel = warViewModel;
         }
 
         public bool CanExecute(object? parameter)
